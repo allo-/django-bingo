@@ -1,0 +1,8 @@
+.bingofield {
+    border: thin solid black;
+    padding: 2em;
+}
+.bingofield.middle {
+    background-color: #999;
+    color: white;
+}

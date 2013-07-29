@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} Bingo! {% endblock %}
+
+{% block content %}
+<table class="bingoboard" id="bingoboard">
+    <tr>
+    {% for field in fields %}
+        <td class="bingofield{% if field.is_middle %} middle{% endif %}" data-word-id="{{ field.word.id }}">
+            {{ field.word.word }}
+        </td>
+    {% if forloop.counter|divisibleby:5 %}
+    </tr>
+    <tr>
+    {% elif forloop.last%}
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+{% endblock content %}
