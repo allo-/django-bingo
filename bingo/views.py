@@ -55,8 +55,7 @@ def bingo(request, bingo_id=None):
     # if a bingo_id is given in the url, just show this bingo
     if not bingo_id is None:
         bingo_board = get_object_or_404(BingoBoard, id=bingo_id)
-        fields = bingo_board.bingofield_set
-        fields = fields.all()
+        fields = bingo_board.bingofield_set.all().order_by("position")
         return render(request, "bingo.html", {"fields": fields})
 
     # no bingo_id in the url, no bingo_id in the session, try the ip
