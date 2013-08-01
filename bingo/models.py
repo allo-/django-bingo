@@ -31,7 +31,7 @@ class Game(models.Model):
 
     def __unicode__(self):
         return _(u"Game created at {0}").format(
-            self.date.strftime(u"%Y-%m-%d %H:%M"))
+            self.created.strftime(u"%Y-%m-%d %H:%M"))
 
 
 def get_random_words():

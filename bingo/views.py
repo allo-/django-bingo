@@ -40,8 +40,8 @@ def _get_game():
     return game
 
 
-def _create_new_bingo(game):
-    bingo_board = BingoBoard(game=game)
+def _create_new_bingo(game, ip):
+    bingo_board = BingoBoard(game=game, ip=ip)
     bingo_board.save()
     bingo_id = bingo_board.id
     return bingo_id
@@ -50,6 +50,7 @@ def _create_new_bingo(game):
 def bingo(request, bingo_id=None):
     game = _get_game()
     session_bingo_id = request.session.get('bingo_id', None)
+    ip = request.META['REMOTE_ADDR']
 
     # if a bingo_id is given in the url, just show this bingo
     if not bingo_id is None:
@@ -60,7 +61,7 @@ def bingo(request, bingo_id=None):
 
     # no bingo_id in the url, no bingo_id in the session
     elif bingo_id is None and session_bingo_id is None:
-        bingo_id = _create_new_bingo(game)
+        bingo_id = _create_new_bingo(game, ip)
         request.session['bingo_id'] = bingo_id
         return redirect(reverse(bingo, kwargs={'bingo_id': bingo_id}))
 
@@ -72,10 +73,10 @@ def bingo(request, bingo_id=None):
             bingo_id = bingo_board.id
             # bingo_id is from a previous game
             if bingo_board.game.id != game.id:
-                bingo_id = _create_new_bingo(game)
+                bingo_id = _create_new_bingo(game, ip)
         # when it fails, create a new one
         except BingoBoard.DoesNotExist, e:
-            bingo_id = _create_new_bingo(game)
+            bingo_id = _create_new_bingo(game, ip)
 
         request.session['bingo_id'] = bingo_id
         return redirect(reverse(bingo, kwargs={'bingo_id': session_bingo_id}))
