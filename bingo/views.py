@@ -22,13 +22,13 @@ def _get_game():
         game.save()
 
     # game expired, because no one used it
-    elif (timezone.now() - games[0].last_used).total_seconds() \
+    elif (timezone.now() - games[0].last_used).seconds \
             > (GAME_SOFT_TIMEOUT * 60):
         game = Game()
         game.save()
 
     # game expired, because its too old, even when someone is using it
-    elif (timezone.now() - games[0].created).total_seconds() \
+    elif (timezone.now() - games[0].created).seconds \
             > (GAME_HARD_TIMEOUT * 60):
         game = Game()
         game.save()
