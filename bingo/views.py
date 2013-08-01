@@ -59,22 +59,23 @@ def bingo(request, bingo_id=None):
         fields = fields.all()
         return render(request, "bingo.html", {"fields": fields})
 
-    # no bingo_id in the url, no bingo_id in the session
+    # no bingo_id in the url, no bingo_id in the session, try the ip
     elif bingo_id is None and session_bingo_id is None:
-        bingo_id = _create_new_bingo(game, ip)
+        try:
+            bingo_board = BingoBoard.objects.get(game=game, ip=ip)
+            bingo_id = bingo_board.id
+        except BingoBoard.DoesNotExist:
+            bingo_id = _create_new_bingo(game, ip)
+
         request.session['bingo_id'] = bingo_id
         return redirect(reverse(bingo, kwargs={'bingo_id': bingo_id}))
 
     # no bingo_id in the url, but a bingo_id in the session
     elif bingo_id is None and not session_bingo_id is None:
-        # try to get the board from session_bingo_id
         try:
-            bingo_board = BingoBoard.objects.get(id=session_bingo_id)
+            bingo_board = BingoBoard.objects.get(id=session_bingo_id,
+                                                 game=game)
             bingo_id = bingo_board.id
-            # bingo_id is from a previous game
-            if bingo_board.game.id != game.id:
-                bingo_id = _create_new_bingo(game, ip)
-        # when it fails, create a new one
         except BingoBoard.DoesNotExist, e:
             bingo_id = _create_new_bingo(game, ip)
 
