@@ -11,7 +11,7 @@ class WordAdmin(admin.ModelAdmin):
         ordering = ("word",)
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 def bingo_user(bingo_board):
@@ -22,9 +22,21 @@ def bingo_id(bingo_board):
     return u'BingoBoard #{0}'.format(bingo_board.id)
 
 
+class BingoFieldInline(admin.TabularInline):
+    model = BingoField
+    readonly_fields = ("word", "position")
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 class BingoBoardAdmin(admin.ModelAdmin):
     list_display = (bingo_id, "color", "game", bingo_user)
     list_editable = ("color",)
+    inlines = (BingoFieldInline,)
 
 
 class BingoFieldAdmin(admin.ModelAdmin):
