@@ -16,4 +16,12 @@
     {% endif %}
     {% endfor %}
 </table>
+
+<ul class="words">
+    {% for word in all_words %}
+    <li>
+        {{ word.word }}
+    </li>
+    {% endfor %}
+</ul>
 {% endblock content %}

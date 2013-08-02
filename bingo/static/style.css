@@ -6,3 +6,10 @@
     background-color: #999;
     color: white;
 }
+ul.words li{
+    float: left;
+    list-style: none;
+    width: 22em;
+    border: thin solid black;
+    padding: 1ex;
+}

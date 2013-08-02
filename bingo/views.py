@@ -56,7 +56,13 @@ def bingo(request, bingo_id=None):
     if not bingo_id is None:
         bingo_board = get_object_or_404(BingoBoard, id=bingo_id)
         fields = bingo_board.bingofield_set.all().order_by("position")
-        return render(request, "bingo.html", {"fields": fields})
+        return render(request, "bingo.html", {
+            "fields": fields,
+            "all_words":
+            Word.objects.filter(is_middle=False).order_by("word"),
+            "all_middle_words":
+            Word.objects.filter(is_middle=False).order_by("word"),
+            })
 
     # no bingo_id in the url, no bingo_id in the session, try the ip
     elif bingo_id is None and session_bingo_id is None:
