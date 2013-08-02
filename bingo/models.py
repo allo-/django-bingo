@@ -54,19 +54,23 @@ class BingoBoard(models.Model):
 
     def clean(self):
         if self.ip is None and self.user is None:
-            raise ValidationError(_(u"BingoBoard must have either an ip or an user"))
+            raise ValidationError(
+                _(u"BingoBoard must have either an ip or an user"))
 
     def save(self):
         if self.ip is None and self.user is None:
-            raise ValidationError(_(u"BingoBoard must have either an ip or an user"))
+            raise ValidationError(
+                _(u"BingoBoard must have either an ip or an user"))
         elif not self.user is None:
             if BingoBoard.objects.filter(game=self.game,
-                                         user=self.user).count() >0:
-                raise ValidationError(_(u"game and user must be unique_together"))
+                                         user=self.user).count() > 0:
+                raise ValidationError(
+                    _(u"game and user must be unique_together"))
         elif not self.ip is None:
             if BingoBoard.objects.filter(game=self.game,
-                                         ip=self.ip).count() >0:
-                raise ValidationError(_(u"game and ip must be unique_together"))
+                                         ip=self.ip).count() > 0:
+                raise ValidationError(
+                    _(u"game and ip must be unique_together"))
 
         if self.pk is None:
             self.color = "#%x%x%x" % (
