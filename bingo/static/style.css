@@ -28,3 +28,19 @@ ul.words li{
     border: thin solid black;
     padding: 1ex;
 }
+form.reclaim p {
+    margin: 0;
+}
+form.create p {
+    margin: 0;
+}
+ul.errorlist {
+    list-style: none;
+    padding: 0;
+    display: inline;
+}
+ul.errorlist li {
+    background-color: red;
+    color: white;
+    display: table;
+}

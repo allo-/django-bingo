@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block headline %}
+    <h1>Bingo!</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if not my_board %}
+{% trans 'You seem not to have a BingoBoard for the current game' %}
+<p></p>
+{% include "forms.html" %}
+
+{% else %}
+
+<p>
+    {% trans 'Go to my board' %}:
+    <a href="{% url 'bingo.views.bingo' my_board.id %}">
+        {% trans 'Board' %} #{{ my_board.id }}
+    </a>
+    </p>
+
+{% endif %}
+
+{% if boards.count > 0 %}
+<p>
+{% trans 'View a board from the current game:' %}
+<ul>
+    {% for board in boards %}
+    <li><a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</a></li>
+    {% endfor %}
+</ul>
+</p>
+{% endif %}
+
+{% if games.count > 0 %}
+<p>
+{% trans 'View boards from older games:' %}
+<ul>
+    {% for game in games|slice:'0:10' %}
+    {% if game.bingoboard_set.count > 0 %}
+    <li>
+        {{ game }}
+        <ul>
+            {% for board in game.bingoboard_set.all %}
+            <li>
+                <a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</li>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+</p>
+
+{% endblock %}

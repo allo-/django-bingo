@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.utils import timezone
 from django.db import models
 
 from colorful.fields import RGBColorField
@@ -10,6 +11,8 @@ from random import randint
 
 COLOR_FROM = getattr(settings, "COLOR_FROM", 80)
 COLOR_TO = getattr(settings, "COLOR_TO", 160)
+GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 120)
+GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 300)
 
 
 class Word(models.Model):
@@ -33,6 +36,18 @@ class Game(models.Model):
         return _(u"Game created at {0}").format(
             self.created.strftime(u"%Y-%m-%d %H:%M"))
 
+    def is_expired(self):
+        # game expired, because no one used it
+        if (timezone.now() - self.last_used).seconds \
+                > (GAME_SOFT_TIMEOUT * 60):
+            return True
+        # game expired, because its too old, even when someone is using it
+        elif (timezone.now() - self.created).seconds \
+                > (GAME_HARD_TIMEOUT * 60):
+            return True
+        else:
+            return False
+
 
 def get_random_words():
     words = Word.objects.order_by("?")
@@ -51,6 +66,7 @@ class BingoBoard(models.Model):
     color = RGBColorField()
     ip = models.IPAddressField(blank=True, null=True)
     user = models.ForeignKey(get_user_model(), blank=True, null=True)
+    password = models.CharField(max_length=255)
 
     def clean(self):
         if self.ip is None and self.user is None:
@@ -61,18 +77,19 @@ class BingoBoard(models.Model):
         if self.ip is None and self.user is None:
             raise ValidationError(
                 _(u"BingoBoard must have either an ip or an user"))
-        elif not self.user is None:
-            if BingoBoard.objects.filter(game=self.game,
-                                         user=self.user).count() > 0:
-                raise ValidationError(
-                    _(u"game and user must be unique_together"))
-        elif not self.ip is None:
-            if BingoBoard.objects.filter(game=self.game,
-                                         ip=self.ip).count() > 0:
-                raise ValidationError(
-                    _(u"game and ip must be unique_together"))
 
         if self.pk is None:
+            if not self.user is None:
+                if BingoBoard.objects.filter(game=self.game,
+                                             user=self.user).count() > 0:
+                    raise ValidationError(
+                        _(u"game and user must be unique_together"))
+            if not self.ip is None:
+                if BingoBoard.objects.filter(game=self.game,
+                                             ip=self.ip).count() > 0:
+                    raise ValidationError(
+                        _(u"game and ip must be unique_together"))
+
             self.color = "#%x%x%x" % (
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO),
