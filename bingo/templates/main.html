@@ -45,7 +45,7 @@
         <ul>
             {% for board in game.bingoboard_set.all %}
             <li>
-                <a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</li>
+                <a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</a>
             </li>
             {% endfor %}
         </ul>
