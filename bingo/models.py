@@ -34,7 +34,7 @@ class Game(models.Model):
 
     def __unicode__(self):
         return _(u"Game created at {0}").format(
-            self.created.strftime(u"%Y-%m-%d %H:%M"))
+            timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"))
 
     def is_expired(self):
         # game expired, because no one used it

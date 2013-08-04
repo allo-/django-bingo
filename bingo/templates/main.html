@@ -41,7 +41,7 @@
     {% for game in games|slice:'0:10' %}
     {% if game.bingoboard_set.count > 0 %}
     <li>
-        {{ game }}
+        {% trans 'Game #' %}{{ game.id }} ({{ game.created }})
         <ul>
             {% for board in game.bingoboard_set.all %}
             <li>
