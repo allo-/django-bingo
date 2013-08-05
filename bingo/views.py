@@ -1,29 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 
-from models import Word, Game, BingoBoard
+from models import Word, Game, BingoBoard, get_game
 from forms import CreateForm, ReclaimForm
-
-
-def _get_game(create=False):
-    """
-        get the current game. creates a new one, if the old one is expired.
-        @param create: create a game, if there is no active game
-    """
-
-    game = None
-    games = Game.objects.order_by("-created")
-
-    # no game, yet, or game expired
-    if (games.count() == 0 or games[0].is_expired()):
-        if create:
-            game = Game()
-            game.save()
-    else:
-        game = games[0]
-        game.save()  # update timestamp
-
-    return game
 
 
 def _create_new_bingo(game, ip):
@@ -35,7 +14,7 @@ def _create_new_bingo(game, ip):
 
 def _get_bingo_board(request):
     bingo_board = None
-    game = _get_game(create=False)
+    game = get_game(create=False)
     session_bingo_id = request.session.get('bingo_id', None)
     ip = request.META['REMOTE_ADDR']
 
@@ -61,7 +40,7 @@ def _get_bingo_board(request):
 
 
 def main(request, reclaim_form=None, create_form=None):
-    game = _get_game(create=False)
+    game = get_game(create=False)
     bingo_board = _get_bingo_board(request)
     create_form = CreateForm()
     reclaim_form = ReclaimForm(game=game)
@@ -76,7 +55,7 @@ def main(request, reclaim_form=None, create_form=None):
 
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
-    game = _get_game(create=False)
+    game = get_game(create=False)
     if request.POST:
         reclaim_form = ReclaimForm(request.POST, game=game)
         if reclaim_form.is_valid():
@@ -104,7 +83,7 @@ def create_board(request):
         create_form = CreateForm(request.POST)
         if create_form.is_valid():
             ip = request.META['REMOTE_ADDR']
-            game = _get_game(create=True)
+            game = get_game(create=True)
             password = create_form.cleaned_data['password']
             bingo_board = BingoBoard(game=game, ip=ip, password=password)
             bingo_board.save()
@@ -114,7 +93,7 @@ def create_board(request):
 
 
 def bingo(request, bingo_id=None):
-    game = _get_game(create=False)
+    game = get_game(create=False)
     bingo_board = get_object_or_404(BingoBoard, id=bingo_id)
     fields = bingo_board.bingofield_set.all().order_by("position")
     return render(request, "bingo.html", {

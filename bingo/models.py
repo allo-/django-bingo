@@ -28,6 +28,27 @@ class Word(models.Model):
         return self.word
 
 
+def get_game(create=False):
+    """
+        get the current game. creates a new one, if the old one is expired.
+        @param create: create a game, if there is no active game
+    """
+
+    game = None
+    games = Game.objects.order_by("-created")
+
+    # no game, yet, or game expired
+    if (games.count() == 0 or games[0].is_expired()):
+        if create:
+            game = Game()
+            game.save()
+    else:
+        game = games[0]
+        game.save()  # update timestamp
+
+    return game
+
+
 class Game(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)

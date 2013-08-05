@@ -43,8 +43,10 @@ class BingoFieldAdmin(admin.ModelAdmin):
     list_display = ("word", "board", "position")
     list_filter = ("word", "position")
 
+
 class GameAdmin(admin.ModelAdmin):
     list_display = ("created", "last_used")
+
 
 admin.site.register(Word, WordAdmin)
 admin.site.register(Game, GameAdmin)
