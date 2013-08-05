@@ -95,11 +95,13 @@ def create_board(request):
 def bingo(request, bingo_id=None):
     game = get_game(create=False)
     bingo_board = get_object_or_404(BingoBoard, id=bingo_id)
-    fields = bingo_board.bingofield_set.all().order_by("position")
+    all_fields = bingo_board.bingofield_set.all()
+    fields = bingo_board.bingofield_set.all().exclude(position=None) \
+        .order_by("position")[:25]
     return render(request, "bingo.html", {
         "fields": fields,
-        "all_words":
-        Word.objects.filter(is_active=True, is_middle=False).order_by("word"),
+        "all_fields":
+        all_fields.order_by("word__word"),
         "all_middle_words":
         Word.objects.filter(is_active=True, is_middle=True).order_by("word"),
         })

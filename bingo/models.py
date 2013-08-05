@@ -70,13 +70,13 @@ class Game(models.Model):
             return False
 
 
-def get_random_words():
-    words = Word.objects.filter(is_active=True).order_by("?")
-    middle_words = words.filter(is_middle=True).order_by("?")
+def _get_random_words():
+    all_words = Word.objects.filter(is_active=True).order_by("?")
+    middle_words = all_words.filter(is_middle=True).order_by("?")
+    words = all_words.filter(is_middle=False)
     if middle_words.count() == 0:
         raise ValidationError(_(u"No middle words in database"))
     middle = middle_words[0]
-    words = words.filter(is_middle=False)[:24]
     if words.count() < 24:
         raise ValidationError(_(u"Not enough (non-middle) words in database"))
     return list(words), middle
@@ -122,13 +122,18 @@ class BingoBoard(models.Model):
 
     def create_bingofields(self):
         count = 0
-        words, middle = get_random_words()
+        words, middle = _get_random_words()
         for i in xrange(25):
+            # 13th field = middle
             if i == 12:
                 BingoField(word=middle, board=self, position=i+1).save()
             else:
                 BingoField(word=words[count], board=self, position=i+1).save()
                 count += 1
+        # create fields without position for every
+        # active word not on the board, too.
+        for word in words[25:]:
+            BingoField(word=word, board=self, position=None).save()
 
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1}").format(
@@ -137,15 +142,18 @@ class BingoBoard(models.Model):
 
 
 def position_validator(value):
-    if not (0 < value < 26):
+    if not value is None and not (0 < value < 26):
         raise ValidationError(_(
-            _(u"invalid position. valid values range: 1-25")))
+            _(u"invalid position. valid values range: 1-25 or None")))
 
 
 class BingoField(models.Model):
     word = models.ForeignKey("Word")
     board = models.ForeignKey("BingoBoard")
-    position = models.SmallIntegerField(validators=[position_validator])
+    position = models.SmallIntegerField(
+        validators=[position_validator],
+        blank=True, null=True, default=None)
+    vote = models.NullBooleanField(default=None)
 
     def is_middle(self):
         return self.position == 13
