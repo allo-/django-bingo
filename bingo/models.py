@@ -50,14 +50,14 @@ class Game(models.Model):
 
 
 def get_random_words():
-    words = Word.objects.order_by("?")
-    middle_words = words.filter(is_active=True, is_middle=True).order_by("?")
+    words = Word.objects.filter(is_active=True).order_by("?")
+    middle_words = words.filter(is_middle=True).order_by("?")
     if middle_words.count() == 0:
         raise ValidationError(_(u"No middle words in database"))
     middle = middle_words[0]
-    words = words.filter(is_active=True, is_middle=False)[:24]
+    words = words.filter(is_middle=False)[:24]
     if words.count() < 24:
-        raise ValidationError(_(u"Not enough words in database"))
+        raise ValidationError(_(u"Not enough (non-middle) words in database"))
     return list(words), middle
 
 

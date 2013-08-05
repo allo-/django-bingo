@@ -120,7 +120,7 @@ def bingo(request, bingo_id=None):
     return render(request, "bingo.html", {
         "fields": fields,
         "all_words":
-        Word.objects.filter(is_middle=False).order_by("word"),
+        Word.objects.filter(is_active=True, is_middle=False).order_by("word"),
         "all_middle_words":
-        Word.objects.filter(is_middle=False).order_by("word"),
+        Word.objects.filter(is_active=True, is_middle=True).order_by("word"),
         })
