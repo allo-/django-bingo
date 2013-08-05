@@ -23,7 +23,7 @@ def bingo_id(bingo_board):
 
 
 class BingoBoardAdmin(admin.ModelAdmin):
-    list_display = (bingo_id, "color", "game", bingo_user)
+    list_display = (bingo_id, "color", "created", "game", bingo_user)
     list_editable = ("color",)
 
 

@@ -88,6 +88,7 @@ class BingoBoard(models.Model):
     ip = models.IPAddressField(blank=True, null=True)
     user = models.ForeignKey(get_user_model(), blank=True, null=True)
     password = models.CharField(max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
         if self.ip is None and self.user is None:
