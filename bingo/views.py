@@ -56,6 +56,9 @@ def main(request, reclaim_form=None, create_form=None):
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(create=False)
+    bingo_board = _get_bingo_board(request)
+    if not bingo_board is None:
+        return redirect(reverse(bingo, kwargs={'bingo_id': bingo_board.id}))
     if request.POST:
         reclaim_form = ReclaimForm(request.POST, game=game)
         if reclaim_form.is_valid():
@@ -87,7 +90,8 @@ def create_board(request):
             password = create_form.cleaned_data['password']
             bingo_board = BingoBoard(game=game, ip=ip, password=password)
             bingo_board.save()
-            return redirect(reverse(bingo, kwargs={'bingo_id': bingo_board.id}))
+            return redirect(reverse(bingo, kwargs={
+                'bingo_id': bingo_board.id}))
     else:
         return redirect(reverse(main))
 
