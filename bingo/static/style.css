@@ -15,6 +15,7 @@ h1 {
 }
 .bingofield {
     border: thin solid black;
+    text-align: center;
     padding: 2em;
 }
 .bingofield.middle {

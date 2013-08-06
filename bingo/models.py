@@ -26,6 +26,9 @@ class Word(models.Model):
     is_middle = models.BooleanField(default=False)
     site = models.ForeignKey(Site)
 
+    class Meta:
+        unique_together = ("word", "site")
+
     def __unicode__(self):
         return u"Word: " + self.word + u" (site {0})".format(self.site)
 
@@ -56,6 +59,9 @@ class Game(models.Model):
     site = models.ForeignKey(Site)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("game_id", "site")
 
     def __unicode__(self):
         return _(u"Game created at {0} (site {1})").format(
@@ -119,14 +125,13 @@ class BingoBoard(models.Model):
 
         if self.pk is None:
             # unique_together for optional fields
+            game_boards = BingoBoard.objects.filter(game=self.game)
             if not self.user is None:
-                if BingoBoard.objects.filter(game=self.game,
-                                             user=self.user).count() > 0:
+                if game_boards.filter(user=self.user).count() > 0:
                     raise ValidationError(
                         _(u"game and user must be unique_together"))
             if not self.ip is None:
-                if BingoBoard.objects.filter(game=self.game,
-                                             ip=self.ip).count() > 0:
+                if game_boards.filter(ip=self.ip).count() > 0:
                     raise ValidationError(
                         _(u"game and ip must be unique_together"))
 

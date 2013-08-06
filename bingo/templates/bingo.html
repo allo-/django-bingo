@@ -2,7 +2,7 @@
 {% block title %} Bingo! {% endblock %}
 
 {% block headline %}
-<h1>Bingo!</h1>
+<h1>Bingo #{{ board.board_id }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -10,6 +10,7 @@
     <tr>
     {% for field in fields %}
         <td class="bingofield{% if field.is_middle %} middle{% endif %}" data-word-id="{{ field.word.id }}">
+            {% if field.is_middle %}Bingo #{{ board.board_id }}<br />{% endif %}
             {{ field.word.word }}
         </td>
     {% if forloop.counter|divisibleby:5 %}

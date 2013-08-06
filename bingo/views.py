@@ -101,6 +101,7 @@ def bingo(request, board_id=None):
         .order_by("position")[:25]
     return render(request, "bingo.html", {
         "fields": fields,
+        "board": bingo_board,
         "all_fields":
         all_fields.order_by("word__word"),
         "all_middle_words":
