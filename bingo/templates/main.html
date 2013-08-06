@@ -16,8 +16,8 @@
 
 <p>
     {% trans 'Go to my board' %}:
-    <a href="{% url 'bingo.views.bingo' my_board.id %}">
-        {% trans 'Board' %} #{{ my_board.id }}
+    <a href="{% url 'bingo.views.bingo' my_board.board_id %}">
+        {% trans 'Board' %} #{{ my_board.board_id }}
     </a>
     </p>
 
@@ -28,7 +28,7 @@
 {% trans 'View a board from the current game:' %}
 <ul>
     {% for board in boards %}
-    <li><a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</a></li>
+    <li><a href="{% url 'bingo.views.bingo' board.board_id %}">{% trans 'Board' %} #{{ board.board_id }}</a></li>
     {% endfor %}
 </ul>
 </p>
@@ -41,11 +41,11 @@
     {% for game in games|slice:'0:10' %}
     {% if game.bingoboard_set.count > 0 %}
     <li>
-        {% trans 'Game #' %}{{ game.id }} ({{ game.created }})
+        {% trans 'Game #' %}{{ game.game_id }} ({{ game.created }})
         <ul>
             {% for board in game.bingoboard_set.all %}
             <li>
-                <a href="{% url 'bingo.views.bingo' board.id %}">{% trans 'Board' %} #{{ board.id }}</a>
+                <a href="{% url 'bingo.views.bingo' board.board_id %}">{% trans 'Board' %} #{{ board.board_id }}</a>
             </li>
             {% endfor %}
         </ul>

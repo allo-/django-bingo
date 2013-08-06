@@ -13,10 +13,11 @@ class CreateForm(forms.Form):
     password = forms.CharField(label=_(u"Password (optional)"),
                                widget=forms.PasswordInput(),
                                required=False)
+
     def clean_password(self):
         hasher = get_hasher()
         hashed_password = hasher.encode(self.cleaned_data['password'],
-            SALT)
+                                        SALT)
         return hashed_password
 
 
@@ -30,7 +31,7 @@ class ReclaimForm(forms.Form):
     def clean_password(self):
         hasher = get_hasher()
         hashed_password = hasher.encode(self.cleaned_data['password'],
-            SALT)
+                                        SALT)
         if not self.game or self.game.is_expired():
             raise forms.ValidationError(
                 _("The game is expired, please create a new field"))

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
 from django.db import models
+from django.contrib.sites.models import Site
 
 from colorful.fields import RGBColorField
 
@@ -23,24 +24,25 @@ class Word(models.Model):
     word = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_middle = models.BooleanField(default=False)
+    site = models.ForeignKey(Site)
 
     def __unicode__(self):
-        return self.word
+        return u"Word: " + self.word + u" (site {0})".format(self.site)
 
 
-def get_game(create=False):
+def get_game(site, create=False):
     """
         get the current game. creates a new one, if the old one is expired.
         @param create: create a game, if there is no active game
     """
 
     game = None
-    games = Game.objects.order_by("-created")
+    games = Game.objects.filter(site=site).order_by("-created")
 
     # no game, yet, or game expired
     if (games.count() == 0 or games[0].is_expired()):
         if create:
-            game = Game()
+            game = Game(site=site)
             game.save()
     else:
         game = games[0]
@@ -50,12 +52,15 @@ def get_game(create=False):
 
 
 class Game(models.Model):
+    game_id = models.IntegerField(blank=True, null=True)
+    site = models.ForeignKey(Site)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return _(u"Game created at {0}").format(
-            timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"))
+        return _(u"Game created at {0} (site {1})").format(
+            timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"),
+            self.site)
 
     def is_expired(self):
         # game expired, because no one used it
@@ -69,10 +74,21 @@ class Game(models.Model):
         else:
             return False
 
+    def save(self):
+        if self.pk is None:
+            games = Game.objects.filter(site=self.site)
+            current_id = games.aggregate(
+                max_id=models.Max('game_id'))['max_id']
+            if current_id is None:
+                self.game_id = 1
+            else:
+                self.game_id = current_id + 1
+        return super(Game, self).save()
 
-def _get_random_words():
-    all_words = Word.objects.filter(is_active=True).order_by("?")
-    middle_words = all_words.filter(is_middle=True).order_by("?")
+
+def _get_random_words(site):
+    all_words = Word.objects.filter(site=site, is_active=True).order_by("?")
+    middle_words = all_words.filter(site=site, is_middle=True).order_by("?")
     words = all_words.filter(is_middle=False)
     if middle_words.count() == 0:
         raise ValidationError(_(u"No middle words in database"))
@@ -83,11 +99,12 @@ def _get_random_words():
 
 
 class BingoBoard(models.Model):
+    board_id = models.IntegerField(blank=True, null=True)
     game = models.ForeignKey("Game")
     color = RGBColorField()
     ip = models.IPAddressField(blank=True, null=True)
     user = models.ForeignKey(get_user_model(), blank=True, null=True)
-    password = models.CharField(max_length=255)
+    password = models.CharField(max_length=255, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
@@ -101,6 +118,7 @@ class BingoBoard(models.Model):
                 _(u"BingoBoard must have either an ip or an user"))
 
         if self.pk is None:
+            # unique_together for optional fields
             if not self.user is None:
                 if BingoBoard.objects.filter(game=self.game,
                                              user=self.user).count() > 0:
@@ -112,6 +130,17 @@ class BingoBoard(models.Model):
                     raise ValidationError(
                         _(u"game and ip must be unique_together"))
 
+            # get the board_id
+            bingo_boards = BingoBoard.objects.filter(
+                game__site=self.game.site)
+            current_id = bingo_boards.aggregate(
+                max_id=models.Max('board_id'))['max_id']
+            if current_id is None:
+                self.board_id = 1
+            else:
+                self.board_id = current_id + 1
+
+            # generate a color
             self.color = "#%x%x%x" % (
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO),
@@ -123,7 +152,7 @@ class BingoBoard(models.Model):
 
     def create_bingofields(self):
         count = 0
-        words, middle = _get_random_words()
+        words, middle = _get_random_words(site=self.game.site)
         for i in xrange(25):
             # 13th field = middle
             if i == 12:
@@ -137,9 +166,10 @@ class BingoBoard(models.Model):
             BingoField(word=word, board=self, position=None).save()
 
     def __unicode__(self):
-        return _(u"BingoBoard #{0} created by {1}").format(
-            self.id,
-            self.user if self.user else self.ip)
+        return _(u"BingoBoard #{0} created by {1} (site {1})").format(
+            self.board_id,
+            self.user if self.user else self.ip,
+            self.game.site)
 
 
 def position_validator(value):
