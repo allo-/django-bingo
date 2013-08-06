@@ -113,11 +113,6 @@ class BingoBoard(models.Model):
     password = models.CharField(max_length=255, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    def clean(self):
-        if self.ip is None and self.user is None:
-            raise ValidationError(
-                _(u"BingoBoard must have either an ip or an user"))
-
     def save(self):
         if self.ip is None and self.user is None:
             raise ValidationError(
