@@ -44,4 +44,5 @@ ul.errorlist li {
     background-color: red;
     color: white;
     display: table;
+    padding: 0.5ex 1ex;
 }

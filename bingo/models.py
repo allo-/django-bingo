@@ -9,11 +9,56 @@ from django.contrib.sites.models import Site
 from colorful.fields import RGBColorField
 
 from random import randint
+from datetime import datetime
+import pytz
 
+# Color ranges
 COLOR_FROM = getattr(settings, "COLOR_FROM", 80)
 COLOR_TO = getattr(settings, "COLOR_TO", 160)
-GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 120)
-GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 300)
+
+# Expire game after hard-timeout seconds, or
+# soft-timeout seconds inactivity, whatever comes first.
+GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 60)
+GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
+
+# Time range, in which a game can be started. None = no limit
+# or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
+GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
+
+
+def is_starttime():
+    if GAME_START_TIMES is None:
+        return True
+    else:
+        now = timezone.localtime(timezone.now()).replace(
+            tzinfo=pytz.timezone("Europe/Berlin"))
+        start, end = GAME_START_TIMES
+
+        start_time = datetime(
+            now.year, now.month, now.day,
+            start[0], start[1], tzinfo=pytz.timezone("Europe/Berlin"))
+        end_time = datetime(
+            now.year, now.month, now.day,
+            end[0], end[1], tzinfo=pytz.timezone("Europe/Berlin"))
+
+        # game ends in the future
+        if end_time > now:
+            # game starts today before the end
+            if start_time < end_time:
+                pass
+            # game started yesterday
+            else:
+                start_time = start_time - timezone.timedelta(1)
+        # game ends tomorrow or has already ended.
+        else:
+            # start started today, and has already ended
+            if end_time > start_time:
+                pass
+            # game will end tomorrow
+            else:
+                end_time = end_time + timezone.timedelta(1)
+
+        return start_time <= now and now <= end_time
 
 
 class Word(models.Model):
@@ -33,6 +78,10 @@ class Word(models.Model):
         return u"Word: " + self.word + u" (site {0})".format(self.site)
 
 
+class TimeRangeError(Exception):
+    pass
+
+
 def get_game(site, create=False):
     """
         get the current game. creates a new one, if the old one is expired.
@@ -45,8 +94,12 @@ def get_game(site, create=False):
     # no game, yet, or game expired
     if (games.count() == 0 or games[0].is_expired()):
         if create:
-            game = Game(site=site)
-            game.save()
+            if is_starttime():
+                game = Game(site=site)
+                game.save()
+            else:
+                raise TimeRangeError(
+                    _(u"game start outside of the valid timerange"))
     else:
         game = games[0]
         game.save()  # update timestamp
@@ -186,6 +239,9 @@ class BingoField(models.Model):
         blank=True, null=True, default=None)
     vote = models.NullBooleanField(default=None)
 
+    class Meta:
+        ordering = ("board", "-position")
+
     def is_middle(self):
         return self.position == 13
 
@@ -200,6 +256,10 @@ class BingoField(models.Model):
                 u"but the word is a middle word"))
 
     def __unicode__(self):
-        return _(u"BingoField: word={0}, pos=({1},{2}){3}").format(
-            self.word, self.position/5+1, self.position % 5,
-            _(u" [middle]") if self.is_middle() else u"")
+        if self.position is not None:
+            return _(u"BingoField: word={0}, pos=({1},{2}){3}").format(
+                self.word, self.position/5+1, self.position % 5,
+                _(u" [middle]") if self.is_middle() else u"")
+        else:
+            return _(u"BingoField: word={0}, (not on a board)").format(
+                self.word)

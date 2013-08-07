@@ -37,7 +37,7 @@ def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
     bingo_board = _get_bingo_board(request)
     create_form = CreateForm()
-    reclaim_form = ReclaimForm(game=game)
+    reclaim_form = ReclaimForm()
     return render(request, "main.html", {
         'my_board': bingo_board,
         'create_form': create_form,
@@ -65,7 +65,7 @@ def reclaim_board(request):
             return redirect(reverse(bingo, kwargs={'board_id':
                                                    bingo_board.board_id}))
     else:
-        reclaim_form = ReclaimForm(game=game)
+        reclaim_form = ReclaimForm()
     create_form = CreateForm()
     return render(request,
                   "reclaim_board.html", {
@@ -89,6 +89,13 @@ def create_board(request):
             bingo_board.save()
             return redirect(reverse(bingo, kwargs={
                 'board_id': bingo_board.board_id}))
+        else:
+            reclaim_form = ReclaimForm()
+            return render(request,
+                          "reclaim_board.html", {
+                              'reclaim_form': reclaim_form,
+                              'create_form': create_form,
+                          })
     else:
         return redirect(reverse(main))
 
