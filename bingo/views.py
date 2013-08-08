@@ -101,8 +101,8 @@ def create_board(request):
 
 
 def bingo(request, board_id=None):
-    game = get_game(site=get_current_site(request), create=False)
-    bingo_board = get_object_or_404(BingoBoard, board_id=board_id, game=game)
+    bingo_board = get_object_or_404(BingoBoard, board_id=board_id,
+        game__site=get_current_site(request))
     all_fields = bingo_board.bingofield_set.all()
     fields = bingo_board.bingofield_set.all().exclude(position=None) \
         .order_by("position")[:25]
@@ -113,5 +113,8 @@ def bingo(request, board_id=None):
         all_fields.order_by("word__word"),
         "all_middle_words":
         Word.objects.filter(
-            site=game.site, is_active=True, is_middle=True).order_by("word"),
+            site=get_current_site(request),
+            is_active=True, 
+            is_middle=True)
+        .order_by("word"),
         })
