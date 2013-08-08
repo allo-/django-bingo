@@ -5,6 +5,12 @@
 	<meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+    <style>
+{% block extrastyle %}
+{% endblock %}
+    </style>
+{% block extrahead %}
+{% endblock %}
 </head>
 <body>
 {% block headline %}{% endblock %}
