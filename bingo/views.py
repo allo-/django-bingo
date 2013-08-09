@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
+from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 
 from models import Word, Game, BingoBoard, get_game
@@ -129,6 +130,13 @@ def image(request, board_id, marked=False, voted=False):
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
     response = HttpResponse(mimetype="image/png")
+    if voted:
+        filename = _("board_{0}_voted.png").format(board_id)
+    elif marked:
+        filename = _("board_{0}_marked.png").format(board_id)
+    else:
+        filename = _("board_{0}.png").format(board_id)
+    response['Content-Disposition'] = 'filename={0}'.format(filename)
     im = get_image(bingo_board, marked, voted)
     im.save(response, "png")
     return response
