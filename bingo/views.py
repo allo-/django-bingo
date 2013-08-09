@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
+from django.http import HttpResponse
 
 from models import Word, Game, BingoBoard, get_game
 from forms import CreateForm, ReclaimForm
+
+from image import get_image
 
 
 def _get_bingo_board(request):
@@ -101,7 +104,8 @@ def create_board(request):
 
 
 def bingo(request, board_id=None):
-    bingo_board = get_object_or_404(BingoBoard, board_id=board_id,
+    bingo_board = get_object_or_404(
+        BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
     all_fields = bingo_board.bingofield_set.all()
     fields = bingo_board.bingofield_set.all().exclude(position=None) \
@@ -114,7 +118,17 @@ def bingo(request, board_id=None):
         "all_middle_words":
         Word.objects.filter(
             site=get_current_site(request),
-            is_active=True, 
+            is_active=True,
             is_middle=True)
         .order_by("word"),
         })
+
+
+def image(request, board_id, marked=False, voted=False):
+    bingo_board = get_object_or_404(
+        BingoBoard, board_id=board_id,
+        game__site=get_current_site(request))
+    response = HttpResponse(mimetype="image/png")
+    im = get_image(bingo_board, marked, voted)
+    im.save(response, "png")
+    return response

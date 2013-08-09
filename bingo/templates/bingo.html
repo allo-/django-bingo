@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title %} Bingo! {% endblock %}
 {% block extrastyle %}
     td.bingofield.active {
@@ -11,6 +12,12 @@
 {% endblock %}
 
 {% block content %}
+{% trans "Images:" %}
+<a href="{% url 'bingo.views.image' board_id=board.board_id %}">{% trans "empty" %}</a>
+<a href="{% url 'bingo.views.image' marked=True board_id=board.board_id %}">{% trans "marked" %}</a>
+<a href="{% url 'bingo.views.image' voted=True board_id=board.board_id %}">{% trans "voted" %}</a>
+
+<p></p>
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields %}
