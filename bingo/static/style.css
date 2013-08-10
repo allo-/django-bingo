@@ -13,16 +13,20 @@ h1 {
     color: white;
     padding: 1ex;
 }
-.bingofield {
+td.bingofield {
+    vertical-align: top;
     border: thin solid black;
-    text-align: center;
-    padding: 2em;
+    text-align: right;
 }
-.bingofield.middle {
+td.bingofield.middle {
     background-color: #999;
     color: white;
 }
-.bingofield.veto, li.word.veto {
+td.bingofield div.bingofield {
+    padding: 2em;
+    text-align: center;
+}
+td.bingofield.veto div.bingofield, li.word.veto {
     color: red;
 }
 li.word{
@@ -30,7 +34,17 @@ li.word{
     list-style: none;
     width: 22em;
     border: thin solid black;
+}
+li.word div.word {
+    float: left;
     padding: 1ex;
+}
+ul.words li.word form.voteform {
+    display: inline;
+    float: right;
+}
+li.word form.voteform input {
+    width: 2em;
 }
 form.reclaim p {
     margin: 0;

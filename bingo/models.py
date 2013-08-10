@@ -252,6 +252,13 @@ class BingoField(models.Model):
     def is_middle(self):
         return self.position == 13
 
+    def num_votes(self):
+        fields = BingoField.objects.filter(
+            board__game=self.board.game, word=self.word)
+        positive = fields.filter(vote=True).count()
+        negative = fields.filter(vote=False).count()
+        return max(0, positive - negative)
+
     def clean(self):
         if self.is_middle() and not self.word.is_middle:
             raise ValidationError(_(

@@ -4,7 +4,7 @@ from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 
-from models import Word, Game, BingoBoard, get_game
+from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm
 
 from image import get_image
@@ -111,16 +111,32 @@ def bingo(request, board_id=None):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
-    board_fields = bingo_board.get_board_fields()
+    my_bingo_board = _get_user_bingo_board(request)
+    fields_on_board = bingo_board.get_board_fields()
     all_word_fields = bingo_board.get_all_word_fields()
 
     return render(request, "bingo.html", {
-        "board_fields": board_fields,
+        "fields_on_board": fields_on_board,
         "board": bingo_board,
+        "my_board": my_bingo_board,
         "all_word_fields":
         all_word_fields,
         })
 
+
+def vote(request):
+    my_bingo_board = _get_user_bingo_board(request)
+    field = get_object_or_404(BingoField, id=request.POST.get("field_id", 0))
+    if field.board == my_bingo_board:
+        vote = request.POST.get("vote", "0")
+        if vote == "0":
+            field.vote = None
+        elif vote == "+":
+            field.vote = True
+        elif vote == "-":
+            field.vote = False
+        field.save()
+    return redirect(reverse(bingo, kwargs={"board_id": field.board.id}))
 
 def image(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(

@@ -20,11 +20,14 @@
 <p></p>
 <table class="bingoboard" id="bingoboard">
     <tr>
-    {% for field in board_fields %}
-    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-word-id="{{ field.word.id }}">
-            {% if field.is_middle %}Bingo #{{ board.board_id }}<br />{% endif %}
-            {{ field.word.word }}
-        </td>
+    {% for field in fields_on_board %}
+    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
+        {% include 'vote_form.html' %}
+        <div class="bingofield">
+        {% if field.is_middle %}Bingo #{{ board.board_id }}<br />{% endif %}
+        {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
+        </div>
+    </td>
     {% if forloop.counter|divisibleby:5 %}
     </tr>
     <tr>
@@ -37,7 +40,10 @@
 <ul class="words">
     {% for field in all_word_fields %}
     <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
-        {{ field.word.word }}
+        <div class="word">
+            {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
+        </div>
+        {% include 'vote_form.html' %}
     </li>
     {% endfor %}
 </ul>
