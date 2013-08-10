@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load staticfiles %}
 {% block title %} Bingo! {% endblock %}
 {% block extrastyle %}
     td.bingofield.active, li.word.active {
         background-color: {{ board.color }};
     }
+{% endblock %}
+{% block extrahead %}
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bingo.js' %}"></script>
 {% endblock %}
 
 {% block headline %}
