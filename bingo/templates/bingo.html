@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block title %} Bingo! {% endblock %}
 {% block extrastyle %}
-    td.bingofield.active {
+    td.bingofield.active, li.word.active {
         background-color: {{ board.color }};
     }
 {% endblock %}
@@ -20,8 +20,8 @@
 <p></p>
 <table class="bingoboard" id="bingoboard">
     <tr>
-    {% for field in fields %}
-        <td class="bingofield{% if field.is_middle %} middle{% endif %}" data-word-id="{{ field.word.id }}">
+    {% for field in board_fields %}
+    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-word-id="{{ field.word.id }}">
             {% if field.is_middle %}Bingo #{{ board.board_id }}<br />{% endif %}
             {{ field.word.word }}
         </td>
@@ -35,8 +35,8 @@
 </table>
 
 <ul class="words">
-    {% for field in all_fields %}
-    <li>
+    {% for field in all_word_fields %}
+    <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
         {{ field.word.word }}
     </li>
     {% endfor %}

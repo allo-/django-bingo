@@ -22,7 +22,10 @@ h1 {
     background-color: #999;
     color: white;
 }
-ul.words li{
+.bingofield.veto, li.word.veto {
+    color: red;
+}
+li.word{
     float: left;
     list-style: none;
     width: 22em;

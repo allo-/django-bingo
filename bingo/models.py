@@ -219,6 +219,12 @@ class BingoBoard(models.Model):
         for word in words[25:]:
             BingoField(word=word, board=self, position=None).save()
 
+    def get_board_fields(self):
+        return self.bingofield_set.exclude(position=None).order_by("position")
+
+    def get_all_word_fields(self):
+        return self.bingofield_set.filter(word__is_middle=False)
+
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1} (site {2})").format(
             self.board_id,

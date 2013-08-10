@@ -111,20 +111,14 @@ def bingo(request, board_id=None):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
-    all_fields = bingo_board.bingofield_set.all()
-    fields = bingo_board.bingofield_set.all().exclude(position=None) \
-        .order_by("position")[:25]
+    board_fields = bingo_board.get_board_fields()
+    all_word_fields = bingo_board.get_all_word_fields()
+
     return render(request, "bingo.html", {
-        "fields": fields,
+        "board_fields": board_fields,
         "board": bingo_board,
-        "all_fields":
-        all_fields.order_by("word__word"),
-        "all_middle_words":
-        Word.objects.filter(
-            site=get_current_site(request),
-            is_active=True,
-            is_middle=True)
-        .order_by("word"),
+        "all_word_fields":
+        all_word_fields,
         })
 
 
