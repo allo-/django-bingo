@@ -27,6 +27,18 @@ def bingo_board_name(bingo_board):
 bingo_board_name.short_description = "Bingo"
 
 
+class BingoFieldInline(admin.StackedInline):
+    model = BingoField
+    list_display = ("word", "position", "vote")
+    readonly_fields = ("word", "position")
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 class BingoBoardAdmin(admin.ModelAdmin):
     list_display = (bingo_board_name, "color", "created",
                     "game", bingo_board_user)
@@ -34,6 +46,7 @@ class BingoBoardAdmin(admin.ModelAdmin):
     # cannot be changed, because its hashed.
     # if we would hash it on save, it will be hashed again on each save
     readonly_fields = ("password",)
+    inlines = (BingoFieldInline,)
 
 
 class BingoFieldAdmin(admin.ModelAdmin):
