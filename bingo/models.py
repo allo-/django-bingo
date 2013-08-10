@@ -220,7 +220,7 @@ class BingoBoard(models.Model):
             BingoField(word=word, board=self, position=None).save()
 
     def __unicode__(self):
-        return _(u"BingoBoard #{0} created by {1} (site {1})").format(
+        return _(u"BingoBoard #{0} created by {1} (site {2})").format(
             self.board_id,
             self.user if self.user else self.ip,
             self.game.site)
