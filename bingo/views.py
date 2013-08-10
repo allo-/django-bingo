@@ -10,7 +10,7 @@ from forms import CreateForm, ReclaimForm
 from image import get_image
 
 
-def _get_bingo_board(request):
+def _get_user_bingo_board(request):
     bingo_board = None
     game = get_game(site=get_current_site(request), create=False)
     session_board_id = request.session.get('board_id', None)
@@ -34,12 +34,15 @@ def _get_bingo_board(request):
         except BingoBoard.DoesNotExist, e:
             pass
 
+    if bingo_board is not None:
+        bingo_board.save()  # update last_used timestamp
+
     return bingo_board
 
 
 def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
-    bingo_board = _get_bingo_board(request)
+    bingo_board = _get_user_bingo_board(request)
     create_form = CreateForm()
     reclaim_form = ReclaimForm()
     return render(request, "main.html", {
@@ -55,7 +58,7 @@ def main(request, reclaim_form=None, create_form=None):
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)
-    bingo_board = _get_bingo_board(request)
+    bingo_board = _get_user_bingo_board(request)
     if not bingo_board is None:
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
@@ -79,7 +82,7 @@ def reclaim_board(request):
 
 
 def create_board(request):
-    bingo_board = _get_bingo_board(request)
+    bingo_board = _get_user_bingo_board(request)
     if bingo_board:
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
