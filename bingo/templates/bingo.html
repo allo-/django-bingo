@@ -27,10 +27,14 @@
     <tr>
     {% for field in fields_on_board %}
     <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
-        {% include 'vote_form.html' %}
+        {% if not field.is_middle %}{% include 'vote_form.html' %}{% endif %}
         <div class="bingofield">
-        {% if field.is_middle %}Bingo #{{ board.board_id }}<br />{% endif %}
         {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
+        {% if field.is_middle %}
+        <br />
+        {{ field.board.get_created }}<br />
+            Bingo #{{ board.board_id }}
+        {% endif %}
         </div>
     </td>
     {% if forloop.counter|divisibleby:5 %}

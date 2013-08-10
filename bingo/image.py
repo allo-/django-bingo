@@ -50,7 +50,7 @@ def get_texts(bingo_fields, font):
     for bingo_field in bingo_fields:
         text = bingo_field.word.word
         if bingo_field.is_middle():
-            text += _("\n{time}\nBoard #{board_id}").format(
+            text += _("\n{time}\nBingo #{board_id}").format(
                 time=bingo_field.board.created.strftime(BINGO_DATETIME_FORMAT),
                 board_id=bingo_field.board.id)
         texts.append(Text(draw, font, text))

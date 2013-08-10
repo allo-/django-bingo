@@ -25,6 +25,9 @@ GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
 # or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 
+BINGO_DATETIME_FORMAT = getattr(
+    settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
+
 
 def is_starttime():
     if GAME_START_TIMES is None:
@@ -224,6 +227,18 @@ class BingoBoard(models.Model):
 
     def get_all_word_fields(self):
         return self.bingofield_set.filter(word__is_middle=False)
+
+    def get_created(self):
+        """
+            get created field with BINGO_DATETIME_FORMAT formatting
+        """
+        return self.created.strftime(BINGO_DATETIME_FORMAT)
+
+    def get_last_used(self):
+        """
+            get last_used field with BINGO_DATETIME_FORMAT formatting
+        """
+        return self.last_used.strftime(BINGO_DATETIME_FORMAT)
 
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1} (site {2})").format(
