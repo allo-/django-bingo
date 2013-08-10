@@ -45,7 +45,7 @@ class BingoBoardAdmin(admin.ModelAdmin):
     list_editable = ("color",)
     # cannot be changed, because its hashed.
     # if we would hash it on save, it will be hashed again on each save
-    readonly_fields = ("password",)
+    readonly_fields = ("created", "last_used", "password")
     inlines = (BingoFieldInline,)
 
 
