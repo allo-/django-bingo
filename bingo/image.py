@@ -1,24 +1,33 @@
-from PIL import Image, ImageDraw, ImageFont, ImageDraw, ImageFont
-from models import Word, BingoField
 from django.db.models import Count, Max
 from django.conf import settings
+from django.utils.translation import ugettext as _
+
+from PIL import Image, ImageDraw, ImageFont, ImageDraw, ImageFont
+
+from models import Word, BingoField
 
 
 COLOR_MODE_BLANK, COLOR_MODE_MARKED, COLOR_MODE_VOTED = range(3)
 
 
-def get_word_sizes(bingo_fields, font):
+def get_texts_and_sizes(bingo_fields, font):
     im = Image.new("RGB", (200, 200), color=(255, 255, 255))
     draw = ImageDraw.Draw(im)
     words = []
     word_widths = []
     word_heights = []
+    texts = []
     for bingo_field in bingo_fields:
-        word_width, word_height = draw.textsize(
-            bingo_field.word.word, font=font)
+        text = bingo_field.word.word
+        if bingo_field.is_middle():
+            text = _("Board #{0}: ").format(bingo_field.board.id) + text
+
+        word_width, word_height = draw.textsize(text, font=font)
         word_widths.append(word_width)
         word_heights.append(word_height)
-    return word_widths, word_heights
+        texts.append(text)
+
+    return texts, word_widths, word_heights
 
 
 def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
@@ -73,7 +82,7 @@ def get_image(bingo_board, marked=False, voted=False):
         position=None).order_by("position")
 
     # image sizes
-    word_widths, word_heights = get_word_sizes(bingo_fields, font)
+    texts, word_widths, word_heights = get_texts_and_sizes(bingo_fields, font)
     max_word_width = max(word_widths)
     max_word_height = max(word_heights)
 
@@ -138,10 +147,11 @@ def get_image(bingo_board, marked=False, voted=False):
 
         h_center = (inner_width - word_widths[pos]) / 2.0
         v_center = (inner_height - word_heights[pos]) / 2.0
+        text = texts[pos]
         draw.text(
             (word_left + h_center,
              word_top + v_center),
-            bingo_field.word.word, font=font, fill=word_color
+            text, font=font, fill=word_color
         )
 
     return im
