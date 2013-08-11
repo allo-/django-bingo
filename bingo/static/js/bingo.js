@@ -6,19 +6,36 @@ $(document).ready(function(){
         var vote_neutral_link = $("<a>").attr("href", "#").addClass("vote_link").text("[0]");
         var vote_up_link = $("<a>").attr("href", "#").addClass("vote_link").text("[+]");
 
+        function ajax_submit(form){
+            var data = {"ajax": true};
+            form.find("input").each(function(idx, obj){
+                form_field = $(obj);
+                data[form_field.attr("name")] = form_field.val();
+            })
+            $.ajax(form.attr("action"), {"type": "post", "data": data});
+        }
         vote_veto_link.click(function(){
-            $(obj).find("input[name=vote]").val("-");
-            $(obj).submit();
+            form = $(obj);
+            form.find("input[name=vote]").val("-");
+            ajax_submit(form);
+            var field_id = $(obj).find("input[name='field_id']").val()
+            $("[data-field-id=" + field_id + "]").removeClass("active").addClass("veto");
             return false;
         })
         vote_neutral_link.click(function(){
-            $(obj).find("input[name=vote]").val("0");
-            $(obj).submit();
+            form = $(obj);
+            form.find("input[name=vote]").val("0");
+            ajax_submit(form);
+            var field_id = $(obj).find("input[name='field_id']").val()
+            $("[data-field-id=" + field_id + "]").removeClass("active").removeClass("veto");
             return false;
         })
         vote_up_link.click(function(){
-            $(obj).find("input[name=vote]").val("+");
-            $(obj).submit();
+            form = $(obj);
+            form.find("input[name=vote]").val("+");
+            ajax_submit(form);
+            var field_id = $(obj).find("input[name='field_id']").val()
+            $("[data-field-id=" + field_id + "]").addClass("active").removeClass("veto");
             return false;
         })
 

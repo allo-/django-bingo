@@ -26,7 +26,7 @@
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields_on_board %}
-    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
+    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}">
         {% if not field.is_middle %}{% include 'vote_form.html' %}{% endif %}
         <div class="bingofield">
         {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
@@ -48,7 +48,7 @@
 
 <ul class="words">
     {% for field in all_word_fields %}
-    <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}">
+    <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}">
         <div class="word">
             {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
         </div>
