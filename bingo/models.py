@@ -245,7 +245,7 @@ class BingoBoard(models.Model):
         """
             get created field with BINGO_DATETIME_FORMAT formatting
         """
-        return self.created.strftime(BINGO_DATETIME_FORMAT)
+        return timezone.localtime(self.created).strftime(BINGO_DATETIME_FORMAT)
 
     def get_last_used(self):
         """

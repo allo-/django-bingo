@@ -1,6 +1,7 @@
 from django.db.models import Count, Max
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 from PIL import Image, ImageDraw, ImageFont, ImageDraw, ImageFont
 
@@ -51,7 +52,7 @@ def get_texts(bingo_fields, font):
         text = bingo_field.word.word
         if bingo_field.is_middle():
             text += _("\n{time}\nBingo #{board_id}").format(
-                time=bingo_field.board.created.strftime(BINGO_DATETIME_FORMAT),
+                time=bingo_field.board.get_created(),
                 board_id=bingo_field.board.id)
         texts.append(Text(draw, font, text))
     return texts
