@@ -72,7 +72,7 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
     # middle field
     middle_field_color = (90, 90, 90)
     middle_board_text_color = (255, 255, 255)
-    # border 
+    # border
     border_color = (0, 0, 0)
 
     field_color = neutral_field_color

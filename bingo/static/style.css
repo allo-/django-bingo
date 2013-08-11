@@ -63,3 +63,7 @@ ul.errorlist li {
     display: table;
     padding: 0.5ex 1ex;
 }
+#num_users_table {
+    text-align: right;
+    float: right;
+}

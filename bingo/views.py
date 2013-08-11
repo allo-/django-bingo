@@ -22,7 +22,6 @@ def _get_user_bingo_board(request):
             bingo_board = BingoBoard.objects.get(board_id=session_board_id,
                                                  game=game)
             bingo_board.ip = ip
-            bingo_board.save()
         except BingoBoard.DoesNotExist, e:
             pass
 
@@ -34,7 +33,7 @@ def _get_user_bingo_board(request):
         except BingoBoard.DoesNotExist, e:
             pass
 
-    if bingo_board is not None:
+    if bingo_board is not None and not bingo_board.game.is_expired():
         bingo_board.save()  # update last_used timestamp
 
     return bingo_board
@@ -137,6 +136,7 @@ def vote(request):
             field.vote = False
         field.save()
     return redirect(reverse(bingo, kwargs={"board_id": field.board.id}))
+
 
 def image(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(

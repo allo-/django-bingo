@@ -23,6 +23,18 @@
 <a href="{% url 'bingo.views.image' voted=True board_id=board.board_id %}">{% trans "voted" %}</a>
 
 <p></p>
+
+<table id="num_users_table">
+    <tr>
+        <th>{% trans 'Total Users:' %}</th>
+        <td id="num_users">{{ board.game.num_users }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Active Users:' %}</th>
+        <td id="num_active">{{ board.game.num_active_users }}</td>
+    </tr>
+</table>
+
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields_on_board %}

@@ -28,6 +28,10 @@ GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
+# if a user did not vote/refresh his board for this time,
+# he is counted as inactive
+USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
+
 
 def is_starttime():
     if GAME_START_TIMES is None:
@@ -135,6 +139,15 @@ class Game(models.Model):
             return True
         else:
             return False
+
+    def num_users(self):
+        return self.bingoboard_set.count()
+
+    def num_active_users(self):
+        return self.bingoboard_set.exclude(
+            last_used__lte=timezone.now()
+            - timezone.timedelta(0, USER_ACTIVE_TIMEOUT)
+        ).count()
 
     def save(self):
         if self.pk is None:
