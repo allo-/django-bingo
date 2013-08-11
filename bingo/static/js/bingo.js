@@ -30,14 +30,17 @@ $(document).ready(function(){
             $("[data-field-id=" + field_id + "]").removeClass("active").removeClass("veto");
             return false;
         })
-        vote_up_link.click(function(){
+        function vote_up(){
             form = $(obj);
             form.find("input[name=vote]").val("+");
             ajax_submit(form);
             var field_id = $(obj).find("input[name='field_id']").val()
             $("[data-field-id=" + field_id + "]").addClass("active").removeClass("veto");
             return false;
-        })
+        }
+        $(vote_up_link).click(vote_up);
+        $(obj).parent().click(vote_up);
+        console.log($(obj).parent()[0]);
 
         $(obj).append(vote_field);
         $(obj).append(vote_veto_link);
