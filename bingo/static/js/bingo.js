@@ -14,33 +14,42 @@ $(document).ready(function(){
             })
             $.ajax(form.attr("action"), {"type": "post", "data": data});
         }
-        vote_veto_link.click(function(){
-            form = $(obj);
-            form.find("input[name=vote]").val("-");
+
+        function vote(form, what){
+            form.find("input[name=vote]").val(what);
             ajax_submit(form);
-            var field_id = $(obj).find("input[name='field_id']").val()
-            $("[data-field-id=" + field_id + "]").removeClass("active").addClass("veto");
-            return false;
-        })
-        vote_neutral_link.click(function(){
-            form = $(obj);
-            form.find("input[name=vote]").val("0");
-            ajax_submit(form);
-            var field_id = $(obj).find("input[name='field_id']").val()
-            $("[data-field-id=" + field_id + "]").removeClass("active").removeClass("veto");
-            return false;
-        })
-        function vote_up(){
-            form = $(obj);
-            form.find("input[name=vote]").val("+");
-            ajax_submit(form);
-            var field_id = $(obj).find("input[name='field_id']").val()
-            $("[data-field-id=" + field_id + "]").addClass("active").removeClass("veto");
-            return false;
+            var field_id = $(obj).find("input[name='field_id']").val();
+            var fields = $("[data-field-id=" + field_id + "]");
+            if(what == "+") {
+                fields.addClass("active").removeClass("veto");
+            } else if(what == "0") {
+                fields.removeClass("active").removeClass("veto");
+            } else if(what == "-") {
+                fields.removeClass("active").addClass("veto");
+            }
         }
-        $(vote_up_link).click(vote_up);
-        $(obj).parent().click(vote_up);
-        console.log($(obj).parent()[0]);
+
+        vote_veto_link.click(function(){
+            vote($(obj), "-");
+            return false;
+        });
+        vote_neutral_link.click(function(){
+            vote($(obj), "0");
+            return false;
+        });
+        $(vote_up_link).click(function(){
+            vote($(obj), "+");
+            return false;
+        });
+        $(obj).parent().click(function(){
+            // toggle
+            if($(obj).parent().hasClass("active")){
+                vote($(obj), "0");
+            } else {
+                vote($(obj), "+");
+            }
+            return false;
+        });
 
         $(obj).append(vote_field);
         $(obj).append(vote_veto_link);
