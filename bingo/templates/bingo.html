@@ -8,8 +8,14 @@
     }
 {% endblock %}
 {% block extrahead %}
+<script>
+var vote_url = "{% url 'bingo.views.vote' %}";
+var bingo_board = {{ board.id }};
+</script>
 <script src="{% static 'js/jquery.js' %}"></script>
+{% if not board.game.is_expired %}
 <script src="{% static 'js/bingo.js' %}"></script>
+{% endif %}
 {% endblock %}
 
 {% block headline %}
@@ -31,7 +37,7 @@
     </tr>
     <tr>
         <th>{% trans 'Active Users:' %}</th>
-        <td id="num_active">{{ board.game.num_active_users }}</td>
+        <td id="num_active_users">{{ board.game.num_active_users }}</td>
     </tr>
 </table>
 

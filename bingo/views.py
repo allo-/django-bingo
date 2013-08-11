@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
+import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm
@@ -125,17 +126,43 @@ def bingo(request, board_id=None):
 
 def vote(request):
     my_bingo_board = _get_user_bingo_board(request)
-    field = get_object_or_404(BingoField, id=request.POST.get("field_id", 0))
-    if field.board == my_bingo_board:
-        vote = request.POST.get("vote", "0")
-        if vote == "0":
-            field.vote = None
-        elif vote == "+":
-            field.vote = True
-        elif vote == "-":
-            field.vote = False
-        field.save()
-    return redirect(reverse(bingo, kwargs={"board_id": field.board.id}))
+
+    # post request: update field.vote
+    if "field_id" in request.POST:
+        field_id = request.POST.get("field_id", 0)
+        field = get_object_or_404(BingoField, id=field_id)
+        if field.board == my_bingo_board:
+            vote = request.POST.get("vote", "0")
+            if vote == "0":
+                field.vote = None
+            elif vote == "+":
+                field.vote = True
+            elif vote == "-":
+                field.vote = False
+            field.save()
+
+    # for all ajax requests, send updated field data
+    if "ajax" in request.GET:
+        if "bingo_board" in request.GET:
+            bingo_board = get_object_or_404(
+                BingoBoard, id=request.GET.get("bingo_board", 0))
+        else:
+            bingo_board = my_bingo_board
+        data = {
+            'num_users': bingo_board.game.num_users(),
+            'num_active_users': bingo_board.game.num_active_users()
+        }
+        for field in bingo_board.bingofield_set.all():
+            if field.vote is None:
+                vote = "0"
+            elif field.vote:
+                vote = "+"
+            else:
+                vote = "-"
+            data[field.id] = (vote, field.num_votes())
+        return HttpResponse(json.dumps(data), mimetype="application/json")
+    else:
+        return redirect(reverse(bingo, kwargs={"board_id": field.board.id}))
 
 
 def image(request, board_id, marked=False, voted=False):

@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    // dummy, for when no ajax request was executed, yet
+    var ajaxRequest = {"abort": function(){}};
+
     $("form.voteform").each(function(idx, obj){
         $(obj).find("input[type=submit]").remove();
         var vote_field = $("<input>").attr("name", "vote").attr("type", "hidden");
@@ -7,12 +10,18 @@ $(document).ready(function(){
         var vote_up_link = $("<a>").attr("href", "#").addClass("vote_link").text("[+]");
 
         function ajax_submit(form){
-            var data = {"ajax": true};
+            var data = {};
             form.find("input").each(function(idx, obj){
                 form_field = $(obj);
                 data[form_field.attr("name")] = form_field.val();
             })
-            $.ajax(form.attr("action"), {"type": "post", "data": data});
+            ajaxRequest.abort(); // abort any running ajax requests
+            ajaxRequest = $.ajax(vote_url+"?ajax=true&bingo_board=" + bingo_board, {
+                "type": "post",
+                "dataType": "json",
+                "data": data,
+                "success":  update_numbers
+            });
         }
 
         function vote(form, what){
@@ -20,13 +29,7 @@ $(document).ready(function(){
             ajax_submit(form);
             var field_id = $(obj).find("input[name='field_id']").val();
             var fields = $("[data-field-id=" + field_id + "]");
-            if(what == "+") {
-                fields.addClass("active").removeClass("veto");
-            } else if(what == "0") {
-                fields.removeClass("active").removeClass("veto");
-            } else if(what == "-") {
-                fields.removeClass("active").addClass("veto");
-            }
+            mark_field(fields, what);
         }
 
         vote_veto_link.click(function(){
@@ -57,5 +60,39 @@ $(document).ready(function(){
         $(obj).append(vote_neutral_link);
         $(obj).append(" ");
         $(obj).append(vote_up_link);
-    })
+    });
+
+    function mark_field(obj, vote){
+        if(vote == "+") {
+            obj.removeClass("veto").addClass("active");
+        } else if (vote == "0" ){
+            obj.removeClass("veto").removeClass("active");
+        } else if (vote == "-" ){
+            obj.addClass("veto").removeClass("active");
+        }
+    }
+
+    function update_numbers(data) {
+        if(data != null) {
+            $("#num_active_users").text(data["num_active_users"]);
+            $("#num_users").text(data["num_users"]);
+            $("[data-field-id]").each(function(idx, obj){
+                var field_data = data[$(obj).attr("data-field-id")];
+                var vote = field_data[0];
+                var num_votes = field_data[1]
+
+                mark_field($(obj), vote);
+                $(obj).find("span.votes").text(num_votes)
+            });
+        } else {
+            ajaxRequest.abort(); // abort any running ajax requests
+            ajaxRequest = $.ajax(vote_url+"?ajax=true&bingo_board=" + bingo_board, {
+                "type": "get",
+                "dataType": "json",
+                "success": update_numbers
+            });
+        }
+    }
+
+    setInterval(update_numbers, 10000)
 })
