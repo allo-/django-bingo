@@ -281,14 +281,14 @@ class BingoField(models.Model):
                 u"but the word is no middle word"))
         elif not self.is_middle() and self.word.is_middle:
             raise ValidationError(_(
-                u"The BingoField is not in the middle,"
+                u"The BingoField is not in the middle, "
                 u"but the word is a middle word"))
 
     def __unicode__(self):
         if self.position is not None:
-            return _(u"BingoField: word={0}, pos=({1},{2}){3}").format(
+            return _(u"BingoField: word={0}, pos=({1},{2}){3})").format(
                 self.word, self.position/5+1, self.position % 5,
                 _(u" [middle]") if self.is_middle() else u"")
         else:
-            return _(u"BingoField: word={0}, (not on a board)").format(
+            return _(u"BingoField: word={0}, (not on the board)").format(
                 self.word)
