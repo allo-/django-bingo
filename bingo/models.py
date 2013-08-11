@@ -179,7 +179,7 @@ class BingoBoard(models.Model):
     color = RGBColorField()
     ip = models.IPAddressField(blank=True, null=True)
     user = models.ForeignKey(get_user_model(), blank=True, null=True)
-    password = models.CharField(max_length=255, blank=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)
 

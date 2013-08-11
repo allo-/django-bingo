@@ -16,10 +16,13 @@ class CreateForm(forms.Form):
                                required=False)
 
     def clean_password(self):
-        hasher = get_hasher()
-        hashed_password = hasher.encode(self.cleaned_data['password'],
-                                        SALT)
-        return hashed_password
+        if self.cleaned_data['password']:
+            hasher = get_hasher()
+            hashed_password = hasher.encode(
+                self.cleaned_data['password'], SALT)
+            return hashed_password
+        else:
+            return None
 
     def clean(self):
         if not is_starttime():
