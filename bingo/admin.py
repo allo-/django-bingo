@@ -5,8 +5,9 @@ from models import *
 
 class WordAdmin(admin.ModelAdmin):
     list_filter = ("site", "is_middle", "is_active")
-    list_display = ("word", "site", "is_active", "is_middle")
+    list_display = ("word", "is_active", "is_middle")
     list_editable = ("is_active",)
+    search_fields = ("word", )
 
     class Meta:
         ordering = ("word",)

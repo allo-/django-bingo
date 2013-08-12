@@ -76,13 +76,10 @@ class Word(models.Model):
     word = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_middle = models.BooleanField(default=False)
-    site = models.ForeignKey(Site)
-
-    class Meta:
-        unique_together = ("word", "site")
+    site = models.ManyToManyField(Site)
 
     def __unicode__(self):
-        return u"Word: " + self.word + u" (site {0})".format(self.site)
+        return u"Word: " + self.word
 
 
 class TimeRangeError(Exception):
