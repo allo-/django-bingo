@@ -35,7 +35,7 @@ def _get_user_bingo_board(request):
             pass
 
     if bingo_board is not None and not bingo_board.game.is_expired():
-        bingo_board.save()  # update last_used timestamp
+        bingo_board.save()  # update last_used
 
     return bingo_board
 
@@ -58,6 +58,7 @@ def main(request, reclaim_form=None, create_form=None):
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)
+    game.save()  # update last_used
     bingo_board = _get_user_bingo_board(request)
     if not bingo_board is None:
         return redirect(reverse(bingo, kwargs={
@@ -84,6 +85,7 @@ def reclaim_board(request):
 def create_board(request):
     bingo_board = _get_user_bingo_board(request)
     if bingo_board:
+        bingo_board.game.save()  # update last_used
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     elif request.POST:
@@ -91,6 +93,7 @@ def create_board(request):
         if create_form.is_valid():
             ip = request.META['REMOTE_ADDR']
             game = get_game(site=get_current_site(request), create=True)
+            game.save()  # update last_used
             password = create_form.cleaned_data['password']
             bingo_board = BingoBoard(game=game, ip=ip, password=password)
             bingo_board.save()
@@ -98,11 +101,14 @@ def create_board(request):
                 'board_id': bingo_board.board_id}))
         else:
             reclaim_form = ReclaimForm()
-            return render(request,
-                          "reclaim_board.html", {
-                              'reclaim_form': reclaim_form,
-                              'create_form': create_form,
-                          })
+            return render(
+                request,
+                "reclaim_board.html",
+                {
+                    'reclaim_form': reclaim_form,
+                    'create_form': create_form,
+                }
+            )
     else:
         return redirect(reverse(main))
 
@@ -110,7 +116,8 @@ def create_board(request):
 def bingo(request, board_id=None):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
-        game__site=get_current_site(request))
+        game__site=get_current_site(request)
+    )
     my_bingo_board = _get_user_bingo_board(request)
     fields_on_board = bingo_board.get_board_fields()
     all_word_fields = bingo_board.get_all_word_fields()
@@ -119,8 +126,7 @@ def bingo(request, board_id=None):
         "fields_on_board": fields_on_board,
         "board": bingo_board,
         "my_board": my_bingo_board,
-        "all_word_fields":
-        all_word_fields,
+        "all_word_fields": all_word_fields,
         })
 
 
@@ -140,6 +146,7 @@ def vote(request):
             elif vote == "-":
                 field.vote = False
             field.save()
+            my_bingo_board.game.save()  # update last_used
 
     # for all ajax requests, send updated field data
     if "ajax" in request.GET:

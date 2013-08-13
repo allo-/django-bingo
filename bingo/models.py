@@ -106,7 +106,6 @@ def get_game(site, create=False):
                     _(u"game start outside of the valid timerange"))
     else:
         game = games[0]
-        game.save()  # update timestamp
 
     return game
 
