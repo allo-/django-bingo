@@ -211,25 +211,35 @@ class BingoBoard(models.Model):
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO))
+            # first create the fields, so the board will
+            # not be saved, when field creation fails
+            fields = self.create_bingofields()
+            # create the board
             super(BingoBoard, self).save()
-            self.create_bingofields()
+            # now that the board has a pk, save the fields
+            for field in fields:
+                field.board = self
+                field.save()
         else:
             super(BingoBoard, self).save()
 
     def create_bingofields(self):
         count = 0
         words, middle = _get_random_words(site=self.game.site)
+        fields = []
         for i in xrange(25):
             # 13th field = middle
             if i == 12:
-                BingoField(word=middle, board=self, position=i+1).save()
+                fields.append(BingoField(word=middle, position=i+1))
             else:
-                BingoField(word=words[count], board=self, position=i+1).save()
+                fields.append(BingoField(word=words[count], position=i+1))
                 count += 1
         # create fields without position for every
-        # active word not on the board, too.
+        # active word, which is not on the board, too.
         for word in words[25:]:
-            BingoField(word=word, board=self, position=None).save()
+            fields.append(BingoField(word=word, position=None))
+
+        return fields
 
     def get_board_fields(self):
         return self.bingofield_set.exclude(position=None).order_by("position")
