@@ -14,9 +14,13 @@
 </head>
 <body>
 {% block headline %}{% endblock %}
+{% block extra_content_top %}
+{% endblock %}
 <div class="content">
     {% block content %}
     {% endblock %}
 </div>
+{% block extra_content_bottom %}
+{% endblock %}
 </body>
 </html>
