@@ -62,6 +62,7 @@ def game_name(game):
 class GameAdmin(admin.ModelAdmin):
     list_display = (game_name, "site", "created", "last_used")
     list_filter = ("site",)
+    readonly_fields = ("created", "last_used")
 
 
 admin.site.register(Word, WordAdmin)
