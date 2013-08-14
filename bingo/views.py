@@ -51,7 +51,9 @@ def main(request, reclaim_form=None, create_form=None):
         'reclaim_form': reclaim_form,
         'boards': BingoBoard.objects.filter(game=game),
         'games': Game.objects.filter(
-            site=get_current_site(request)).order_by("-created"),
+            site=get_current_site(request))
+        .exclude(game_id=None)
+        .order_by("-created"),
         })
 
 
