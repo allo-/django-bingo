@@ -17,8 +17,21 @@ V_BOX_PADDING = getattr(settings, "VERTICAL_PADDING", 30)
 H_LINE_MARGIN = getattr(settings, "HORIZONTAL_LINE_MARGIN", 0)
 V_LINE_MARGIN = getattr(settings, "VERTICAL_LINE_MARGIN", 5)
 BORDER = getattr(settings, "BORDER", 1)
+
 FONTPATH = getattr(settings, "FONT_PATH", "/path/to/font.ttf")
 FONTSIZE = getattr(settings, "FONT_SIZE", 16)
+
+NEUTRAL_FIELD_COLOR = getattr(settings, "NEUTRAL_FIELD_COLOR", (255, 255, 255))
+NEUTRAL_WORD_COLOR = getattr(settings, "NEUTRAL_WORD_COLOR", (0, 0, 0))
+MIDDLE_FIELD_COLOR = getattr(settings, "MIDDLE_FIELD_COLOR", (90, 90, 90))
+MIDDLE_WORD_COLOR = getattr(settings, "MIDDLE_WORD_COLOR", (255, 255, 255))
+# MARKED_FIELD_COLOR is stored in the BingoBoard model
+MARKED_WORD_COLOR = getattr(settings, "MARKED_WORD_COLOR", (0, 0, 0))
+# VOTED_FIELD_COLOR is stored in the BingoBoard model
+VOTED_WORD_COLOR = getattr(settings, "VOTED_WORD_COLOR", (0, 0, 0))
+VETO_FIELD_COLOR = getattr(settings, "VETO_FIELD_COLOR", (255, 255, 255))
+VETO_WORD_COLOR = getattr(settings, "VETO_WORD_COLOR", (255, 0, 0))
+
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
@@ -67,22 +80,23 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
         int(marked_field_color[2:4], 16),
         int(marked_field_color[4:6], 16),
     )
-    # normal fields
-    neutral_field_color = (255, 255, 255)
-    neutral_word_color = (0, 0, 0)
-    # middle field
-    middle_field_color = (90, 90, 90)
-    middle_board_text_color = (255, 255, 255)
+    # veto fields
+    veto_field_color = (255, 255, 255)
+    veto_word_color = (255, 0, 0)
     # border
     border_color = (0, 0, 0)
 
-    field_color = neutral_field_color
-    word_color = neutral_word_color
+    field_color = NEUTRAL_FIELD_COLOR
+    word_color = NEUTRAL_WORD_COLOR
     if bingo_field.is_middle():
-        field_color = (90, 90, 90)
-        word_color = (255, 255, 255)
+        field_color = MIDDLE_FIELD_COLOR
+        word_color = MIDDLE_WORD_COLOR
     elif colormode == COLOR_MODE_MARKED and bingo_field.vote:
         field_color = marked_field_color
+        word_color = MARKED_WORD_COLOR
+    elif colormode == COLOR_MODE_MARKED and bingo_field.vote is False:
+        field_color = VETO_FIELD_COLOR
+        word_color = VETO_WORD_COLOR
     elif colormode == COLOR_MODE_VOTED:
         max_votes = max(vote_counts.values())
         if max_votes > 0:
@@ -92,6 +106,7 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
             color_1 = int(255 - scaling * (255 - marked_field_color[1]))
             color_2 = int(255 - scaling * (255 - marked_field_color[2]))
             field_color = (color_0, color_1, color_2)
+            word_color = VOTED_WORD_COLOR
 
     return field_color, word_color, border_color
 
