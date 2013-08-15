@@ -12,6 +12,8 @@ from random import randint
 from datetime import datetime
 import pytz
 
+TIMEZONE = getattr(settings, "TIMEZONE", "UTC")
+
 # Color ranges
 COLOR_FROM = getattr(settings, "COLOR_FROM", 80)
 COLOR_TO = getattr(settings, "COLOR_TO", 160)
@@ -38,15 +40,15 @@ def is_starttime():
         return True
     else:
         now = timezone.localtime(timezone.now()).replace(
-            tzinfo=pytz.timezone("Europe/Berlin"))
+            tzinfo=pytz.timezone(TIMEZONE))
         start, end = GAME_START_TIMES
 
         start_time = datetime(
             now.year, now.month, now.day,
-            start[0], start[1], tzinfo=pytz.timezone("Europe/Berlin"))
+            start[0], start[1], tzinfo=pytz.timezone(TIMEZONE))
         end_time = datetime(
             now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone("Europe/Berlin"))
+            end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
 
         # game ends in the future
         if end_time > now:
