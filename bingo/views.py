@@ -123,7 +123,8 @@ def bingo(request, board_id=None):
     )
     my_bingo_board = _get_user_bingo_board(request)
     fields_on_board = bingo_board.get_board_fields().select_related()
-    all_word_fields = bingo_board.get_all_word_fields().select_related()
+    all_word_fields = bingo_board.get_all_word_fields().order_by(
+        "word__word").select_related()
 
     return render(request, "bingo.html", {
         "fields_on_board": fields_on_board,
