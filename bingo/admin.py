@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db import models
+from django import forms
 
 from models import *
 
@@ -28,10 +30,10 @@ def bingo_board_name(bingo_board):
 bingo_board_name.short_description = "Bingo"
 
 
-class BingoFieldInline(admin.StackedInline):
+class BingoFieldInline(admin.TabularInline):
     model = BingoField
     list_display = ("word", "position", "vote")
-    readonly_fields = ("word", "position")
+    readonly_fields = ("word", "position", "vote")
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -46,13 +48,14 @@ class BingoBoardAdmin(admin.ModelAdmin):
     list_editable = ("color",)
     # cannot be changed, because its hashed.
     # if we would hash it on save, it will be hashed again on each save
-    readonly_fields = ("created", "last_used", "password")
+    readonly_fields = ("created", "last_used", "game", "password")
     inlines = (BingoFieldInline,)
 
 
 class BingoFieldAdmin(admin.ModelAdmin):
     list_display = ("word", "board", "position")
     list_filter = ("word", "position")
+    readonly_fields = ("board", "word", "position", "vote")
 
 
 def game_name(game):
