@@ -148,8 +148,9 @@ def get_image(bingo_board, marked=False, voted=False):
     # count votes per word, find the maximum
     vote_counts = {}
     for word in words:
-        vote_counts[word.id] = all_bingo_fields.filter(
-            word=word, vote=True).count()
+        bingofields_word = all_bingo_fields.filter(word=word)
+        vote_counts[word.id] = max(0, bingofields_word.filter(
+            vote=True).count() - bingofields_word.filter(vote=False).count())
 
     # draw the board
     for bingo_field in bingo_fields:
