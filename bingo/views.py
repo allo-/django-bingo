@@ -121,8 +121,8 @@ def bingo(request, board_id=None):
         game__site=get_current_site(request)
     )
     my_bingo_board = _get_user_bingo_board(request)
-    fields_on_board = bingo_board.get_board_fields()
-    all_word_fields = bingo_board.get_all_word_fields()
+    fields_on_board = bingo_board.get_board_fields().select_related()
+    all_word_fields = bingo_board.get_all_word_fields().select_related()
 
     return render(request, "bingo.html", {
         "fields_on_board": fields_on_board,
