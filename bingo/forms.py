@@ -35,7 +35,7 @@ class CreateForm(forms.Form):
                 str(end[1]).zfill(2))
 
             raise forms.ValidationError(
-                _(u"Game can only be started between {0} and {1}.").format(
+                _(u"Games can only be started between {0} and {1}.").format(
                     start_time_str, end_time_str))
 
         return super(CreateForm, self).clean()
