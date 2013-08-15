@@ -60,7 +60,8 @@ def main(request, reclaim_form=None, create_form=None):
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)
-    game.save()  # update last_used
+    if game is not None:
+        game.save()  # update last_used
     bingo_board = _get_user_bingo_board(request)
     if not bingo_board is None:
         return redirect(reverse(bingo, kwargs={
