@@ -43,8 +43,8 @@ def _get_user_bingo_board(request):
 def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
     bingo_board = _get_user_bingo_board(request)
-    create_form = CreateForm()
-    reclaim_form = ReclaimForm()
+    create_form = CreateForm(prefix="create")
+    reclaim_form = ReclaimForm(prefix="reclaim")
     return render(request, "main.html", {
         'my_board': bingo_board,
         'create_form': create_form,
@@ -67,7 +67,7 @@ def reclaim_board(request):
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     if request.POST:
-        reclaim_form = ReclaimForm(request.POST, game=game)
+        reclaim_form = ReclaimForm(request.POST, game=game, prefix="reclaim")
         if reclaim_form.is_valid():
             bingo_board = reclaim_form.cleaned_data['bingo_board']
             request.session['board_id'] = bingo_board.board_id
@@ -76,8 +76,8 @@ def reclaim_board(request):
             return redirect(reverse(bingo, kwargs={'board_id':
                                                    bingo_board.board_id}))
     else:
-        reclaim_form = ReclaimForm()
-    create_form = CreateForm()
+        reclaim_form = ReclaimForm(prefix="reclaim")
+    create_form = CreateForm(prefix="create")
     return render(request,
                   "reclaim_board.html", {
                       'reclaim_form': reclaim_form,
@@ -92,7 +92,7 @@ def create_board(request):
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     elif request.POST:
-        create_form = CreateForm(request.POST)
+        create_form = CreateForm(request.POST, prefix="create")
         if create_form.is_valid():
             ip = request.META['REMOTE_ADDR']
             game = get_game(site=get_current_site(request), create=True)
@@ -103,7 +103,7 @@ def create_board(request):
             return redirect(reverse(bingo, kwargs={
                 'board_id': bingo_board.board_id}))
         else:
-            reclaim_form = ReclaimForm()
+            reclaim_form = ReclaimForm(prefix="reclaim")
             return render(
                 request,
                 "reclaim_board.html",

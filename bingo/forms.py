@@ -44,9 +44,9 @@ class CreateForm(forms.Form):
 class ReclaimForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
-    def __init__(self, data=None, game=None):
+    def __init__(self, data=None, game=None, *args, **kwargs):
         self.game = game
-        super(ReclaimForm, self).__init__(data)
+        super(ReclaimForm, self).__init__(data=data, *args, **kwargs)
 
     def clean_password(self):
         hasher = get_hasher()
