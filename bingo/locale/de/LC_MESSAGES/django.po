@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-15 20:25+0200\n"
-"PO-Revision-Date: 2013-08-15 21:24+0200\n"
+"POT-Creation-Date: 2013-08-17 19:00+0200\n"
+"PO-Revision-Date: 2013-08-17 19:00+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: forms.py:14
 msgid "Password (optional)"
@@ -109,17 +110,17 @@ msgstr " [Mitte]"
 msgid "BingoField: word={0}, (not on the board)"
 msgstr "BingoField: word={0} (nicht auf dem Brett)"
 
-#: views.py:183
+#: views.py:186
 #, python-brace-format
 msgid "board_{0}_voted.png"
 msgstr "brett_{0}_abgestimmt.png"
 
-#: views.py:185
+#: views.py:188
 #, python-brace-format
 msgid "board_{0}_marked.png"
 msgstr "brett_{0}_markiert.png"
 
-#: views.py:187
+#: views.py:190
 #, python-brace-format
 msgid "board_{0}.png"
 msgstr "brett_{0}.png"
@@ -164,30 +165,34 @@ msgstr "Ich möchte ein Brett erstellen."
 msgid "create board"
 msgstr "Brett erstellen"
 
-#: templates/main.html:11
+#: templates/main.html:4
+msgid "Bingo - Startpage"
+msgstr "Bingo - Startseite"
+
+#: templates/main.html:12
 msgid "You seem not to have a bingo board for the current game"
 msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
-#: templates/main.html:18
+#: templates/main.html:19
 msgid "Go to my board"
 msgstr "Gehe zu meinem Brett"
 
-#: templates/main.html:20 templates/main.html.py:33 templates/main.html:53
+#: templates/main.html:21 templates/main.html.py:35 templates/main.html:55
 msgid "Board"
 msgstr "Brett"
 
-#: templates/main.html:28
+#: templates/main.html:29
 msgid "View a board from the current game:"
 msgstr "Ein Brett vom aktuellem Spiel ansehen:"
 
-#: templates/main.html:35 templates/main.html.py:54
+#: templates/main.html:37 templates/main.html.py:56
 msgid "(your board)"
 msgstr "(Dein Brett)"
 
-#: templates/main.html:44
+#: templates/main.html:45
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
 
-#: templates/main.html:49
+#: templates/main.html:51
 msgid "Game #"
 msgstr "Spiel #"
