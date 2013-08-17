@@ -62,5 +62,5 @@ optional:
 * ```GAME_START_TIMES``` ```None``` for no restriction or ```((start hour, start minute), (end hour, end minute))``` for restricting the start time to a special time range (i.e. the broadcasting time of the radio show)
 * ```GAME_HARD_TIMEOUT``` minutes after the game will be ended, i.e. the duration of the radio show)
 * ```GAME_SOFT_TIMEOUT``` minutes of inactivity, after which the game will be be ended.
-* ```USER_ACTIVY_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
+* ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
 * ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.

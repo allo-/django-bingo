@@ -144,7 +144,7 @@ class Game(models.Model):
     def num_active_users(self):
         return self.bingoboard_set.exclude(
             last_used__lte=timezone.now()
-            - timezone.timedelta(0, USER_ACTIVE_TIMEOUT)
+            - timezone.timedelta(0, 60 * USER_ACTIVE_TIMEOUT)
         ).count()
 
     def save(self):
