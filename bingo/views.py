@@ -173,7 +173,8 @@ def vote(request):
             data[field.id] = (vote, field.num_votes())
         return HttpResponse(json.dumps(data), mimetype="application/json")
     else:
-        return redirect(reverse(bingo, kwargs={"board_id": field.board.id}))
+        return redirect(
+            reverse(bingo, kwargs={"board_id": field.board.board_id}))
 
 
 def image(request, board_id, marked=False, voted=False):
