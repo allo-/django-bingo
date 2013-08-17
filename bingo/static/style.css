@@ -67,3 +67,10 @@ ul.errorlist li {
     text-align: right;
     float: right;
 }
+
+ul.board_list {
+    list-style: square
+}
+span.board_list_entry {
+    color: black;
+}

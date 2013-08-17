@@ -28,16 +28,7 @@
 <p>
 {% trans 'View a board from the current game:' %}
 </p>
-<ul>
-    {% for board in boards %}
-    <li>
-        <a href="{% url 'bingo.views.bingo' board.board_id %}">
-            {% trans 'Board' %} #{{ board.board_id }}
-        </a>
-        {% if board == my_board %}{% trans '(your board)' %}{% endif %}
-    </li>
-    {% endfor %}
-</ul>
+{% include "board_list.html" %}
 {% endif %}
 
 {% if games.count > 0 %}
@@ -49,14 +40,9 @@
     {% if game.bingoboard_set.count > 0 %}
     <li>
         {% trans 'Game #' %}{{ game.game_id }} ({{ game.created }})
-        <ul>
-            {% for board in game.bingoboard_set.all %}
-            <li>
-                <a href="{% url 'bingo.views.bingo' board.board_id %}">{% trans 'Board' %} #{{ board.board_id }}</a>
-                {% if board == my_board %}{% trans '(your board)' %}{% endif %}
-            </li>
-            {% endfor %}
-        </ul>
+        {% with boards=game.bingoboard_set.all %}
+            {% include "board_list.html" %}
+        {% endwith %}
     </li>
     {% endif %}
     {% endfor %}
