@@ -55,11 +55,11 @@ var bingo_board = {{ board.id }};
         {% endif %}
         </div>
     </td>
-    {% if forloop.counter|divisibleby:5 %}
+    {% if forloop.last%}
+    </tr>
+    {% elif forloop.counter|divisibleby:5 %}
     </tr>
     <tr>
-    {% elif forloop.last%}
-    </tr>
     {% endif %}
     {% endfor %}
 </table>

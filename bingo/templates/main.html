@@ -27,6 +27,7 @@
 {% if boards.count > 0 %}
 <p>
 {% trans 'View a board from the current game:' %}
+</p>
 <ul>
     {% for board in boards %}
     <li>
@@ -37,12 +38,12 @@
     </li>
     {% endfor %}
 </ul>
-</p>
 {% endif %}
 
 {% if games.count > 0 %}
 <p>
 {% trans 'View boards from older games:' %}
+</p>
 <ul>
     {% for game in games|slice:'0:10' %}
     {% if game.bingoboard_set.count > 0 %}
@@ -61,6 +62,5 @@
     {% endfor %}
 </ul>
 {% endif %}
-</p>
 
 {% endblock %}
