@@ -35,6 +35,9 @@ VETO_WORD_COLOR = getattr(settings, "VETO_WORD_COLOR", (255, 0, 0))
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
+THUMBNAIL_WIDTH = getattr(settings, "THUMBNAIL_WIDTH", 200)
+THUMBNAIL_HEIGHT = getattr(settings, "THUMBNAIL_HEIGHT", 60)
+
 
 class Text(object):
     def __init__(self, draw, font, input):
@@ -198,4 +201,13 @@ def get_image(bingo_board, marked=False, voted=False):
             )
             h_offset += text.line_heights[idx]
 
+    return im
+
+
+def get_thumbnail(bingo_board, marked=False, voted=False,
+                  thumbnail_width=THUMBNAIL_WIDTH,
+                  thumbnail_height=THUMBNAIL_HEIGHT):
+    im = get_image(bingo_board, marked, voted)
+    im.thumbnail(
+        size=(thumbnail_width, thumbnail_height), resample=Image.ANTIALIAS)
     return im

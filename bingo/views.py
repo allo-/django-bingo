@@ -3,12 +3,15 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
+from django.conf import settings
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm
+import image as image_module
 
-from image import get_image
+TIMEOUT = getattr(settings, "TIMEOUT", 5 * 60)
 
 
 def _get_user_bingo_board(request):
@@ -177,18 +180,38 @@ def vote(request):
             reverse(bingo, kwargs={"board_id": field.board.board_id}))
 
 
+def get_image_name(board_id, marked=False, voted=False):
+    if voted:
+        filename = _("board_{0}_voted").format(board_id)
+    elif marked:
+        filename = _("board_{0}_marked").format(board_id)
+    else:
+        filename = _("board_{0}").format(board_id)
+
+    return filename
+
+
 def image(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
     response = HttpResponse(mimetype="image/png")
-    if voted:
-        filename = _("board_{0}_voted.png").format(board_id)
-    elif marked:
-        filename = _("board_{0}_marked.png").format(board_id)
-    else:
-        filename = _("board_{0}.png").format(board_id)
+    filename = get_image_name(board_id, marked, voted) + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
-    im = get_image(bingo_board, marked, voted)
+    im = image_module.get_image(bingo_board, marked, voted)
+    im.save(response, "png")
+    return response
+
+
+@cache_page(TIMEOUT)
+def thumbnail(request, board_id, marked=False, voted=False):
+    bingo_board = get_object_or_404(
+        BingoBoard, board_id=board_id,
+        game__site=get_current_site(request))
+    response = HttpResponse(mimetype="image/png")
+    filename = get_image_name(board_id, marked, voted) + \
+        "_" + _("thumbnail") + ".png"
+    response['Content-Disposition'] = 'filename={0}'.format(filename)
+    im = image_module.get_thumbnail(bingo_board, marked, voted)
     im.save(response, "png")
     return response

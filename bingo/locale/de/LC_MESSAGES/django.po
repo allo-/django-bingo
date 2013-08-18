@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-19 00:11+0200\n"
-"PO-Revision-Date: 2013-08-18 15:52+0200\n"
+"POT-Creation-Date: 2013-08-19 00:15+0200\n"
+"PO-Revision-Date: 2013-08-19 00:16+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -92,16 +92,19 @@ msgid "BingoField: word={0}, (not on the board)"
 msgstr "BingoField: word={0} (nicht auf dem Brett)"
 
 #, python-brace-format
-msgid "board_{0}_voted.png"
-msgstr "brett_{0}_abgestimmt.png"
+msgid "board_{0}_voted"
+msgstr "brett_{0}_abgestimmt\n"
 
 #, python-brace-format
-msgid "board_{0}_marked.png"
-msgstr "brett_{0}_markiert.png"
+msgid "board_{0}_marked"
+msgstr "brett_{0}_markiert\n"
 
 #, python-brace-format
-msgid "board_{0}.png"
-msgstr "brett_{0}.png"
+msgid "board_{0}"
+msgstr "brett_{0}\n"
+
+msgid "thumbnail"
+msgstr "thumbnail\n"
 
 msgid "Images:"
 msgstr "Bilder:"

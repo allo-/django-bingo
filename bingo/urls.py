@@ -8,6 +8,13 @@ urlpatterns = patterns('',
     url('^bingo/create/$', views.create_board),
     url('^bingo/vote/$', views.vote),
     url('^bingo/(?P<board_id>[0-9]*)/$', views.bingo),
+
+    url('^thumbnail/(?P<board_id>[0-9]*)/marked/$',
+        views.thumbnail, {"marked": True}),
+    url('^thumbnail/(?P<board_id>[0-9]*)/voted/$',
+        views.thumbnail, {"voted": True}),
+    url('^thumbnail/(?P<board_id>[0-9]*)/$', views.thumbnail),
+
     url('^image/(?P<board_id>[0-9]*)/marked/$', views.image, {"marked": True}),
     url('^image/(?P<board_id>[0-9]*)/voted/$', views.image, {"voted": True}),
     url('^image/(?P<board_id>[0-9]*)/$', views.image),
