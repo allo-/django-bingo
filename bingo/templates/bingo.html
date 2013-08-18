@@ -49,11 +49,13 @@ var bingo_board = {{ board.id }};
     <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}">
         {% if not field.is_middle %}{% include 'vote_form.html' %}{% endif %}
         <div class="bingofield">
-        {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
+        {{ field.word.word }}
         {% if field.is_middle %}
-        <br />
-        {{ field.board.get_created }}<br />
+            <br />
+            {{ field.board.get_created }}<br />
             Bingo #{{ board.board_id }}
+        {% else %}
+            (<span class="votes">{{ field.num_votes }}</span>)
         {% endif %}
         </div>
     </td>
