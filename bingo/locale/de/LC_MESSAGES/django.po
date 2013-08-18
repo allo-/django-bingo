@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-18 15:51+0200\n"
+"POT-Creation-Date: 2013-08-19 00:11+0200\n"
 "PO-Revision-Date: 2013-08-18 15:52+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -18,26 +18,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: forms.py:14
 msgid "Password (optional)"
 msgstr "Passwort (optional)"
 
-#: forms.py:38
 #, python-brace-format
 msgid "Games can only be started between {0} and {1}."
 msgstr "Spiele können nur zwischen {0} und {1} gestartet werden."
 
-#: forms.py:57
 msgid "The game is expired, please create a new board."
 msgstr "Das Spiel ist nicht mehr aktiv, bitte erstelle ein neues Brett."
 
-#: forms.py:66
 msgid "No active board with this password. Try again, or create a new one."
 msgstr ""
 "Keine aktiven Bretter mit diesem Passwort. Versuche es noch einmal, oder "
 "erstelle ein Neues."
 
-#: image.py:67
 #, python-brace-format
 msgid ""
 "\n"
@@ -48,155 +43,119 @@ msgstr ""
 "{time}\n"
 "Bingo #{board_id}"
 
-#: models.py:108
 msgid "game start outside of the valid timerange"
 msgstr "Spielstart außerhalb der gültigen Zeiten."
 
-#: models.py:125
 #, python-brace-format
 msgid "Game created at {0} (site {1})"
 msgstr "Spiel erstellt am {0} (Seite {1})"
 
-#: models.py:167
 msgid "No middle words in database"
 msgstr "Keine Mittelwörter in der Datenbank."
 
-#: models.py:170
 msgid "Not enough (non-middle) words in database"
 msgstr "Nicht genug (nicht Mittel-)Wörter in der Datenbank."
 
-#: models.py:187
 msgid "BingoBoard must have either an ip or an user"
 msgstr "Ein BingoBoard muss entweder eine IP oder einen Nutzer haben."
 
-#: models.py:195
 msgid "game and user must be unique_together"
 msgstr "game und user müssen zusammen eindeutig sein."
 
-#: models.py:199
 msgid "game and ip must be unique_together"
 msgstr "game und ip müssen zusammen eindeutig sein."
 
-#: models.py:265
 #, python-brace-format
 msgid "BingoBoard #{0} created by {1} (site {2})"
 msgstr "BingoBoard #{0} erstellt von {1} (Seite {2})"
 
-#: models.py:274
 msgid "invalid position. valid values range: 1-25 or None"
 msgstr "Ungültige Position. Gültiger Bereich: 1-25 oder None."
 
-#: models.py:301
 msgid "The BingoField has middle position, but the word is no middle word"
 msgstr ""
 "Das BingoField hat die mittlere Position, aber das Wort ist kein Mittelwort"
 
-#: models.py:305
 msgid "The BingoField is not in the middle, but the word is a middle word"
 msgstr ""
 "Das BingoField ist nicht in der Mitte, aber das Wort ist ein Mittelwort."
 
-#: models.py:310
 #, python-brace-format
 msgid "BingoField: word={0}, pos=({1},{2}){3})"
 msgstr "BingoField: word={0}, pos=({1},{2}){3})"
 
-#: models.py:312
 msgid " [middle]"
 msgstr " [Mitte]"
 
-#: models.py:314
 #, python-brace-format
 msgid "BingoField: word={0}, (not on the board)"
 msgstr "BingoField: word={0} (nicht auf dem Brett)"
 
-#: views.py:186
 #, python-brace-format
 msgid "board_{0}_voted.png"
 msgstr "brett_{0}_abgestimmt.png"
 
-#: views.py:188
 #, python-brace-format
 msgid "board_{0}_marked.png"
 msgstr "brett_{0}_markiert.png"
 
-#: views.py:190
 #, python-brace-format
 msgid "board_{0}.png"
 msgstr "brett_{0}.png"
 
-#: templates/bingo.html:28
 msgid "Images:"
 msgstr "Bilder:"
 
-#: templates/bingo.html:29
 msgid "empty"
 msgstr "leer"
 
-#: templates/bingo.html:30
 msgid "marked"
 msgstr "markiert"
 
-#: templates/bingo.html:31
 msgid "voted"
 msgstr "abgestimmt"
 
-#: templates/bingo.html:37
 msgid "Total Users:"
 msgstr "Alle Teilnehmer:"
 
-#: templates/bingo.html:41
 msgid "Active Users:"
 msgstr "Aktive Teilnehmer:"
 
-#: templates/board_list.html:6 templates/main.html:21
 msgid "Board"
 msgstr "Brett"
 
-#: templates/board_list.html:7
 msgid "(your board)"
 msgstr "(Dein Brett)"
 
-#: templates/forms.html:2
 msgid "I have a board and my board password is:"
 msgstr "Ich habe ein Brett und mein Brett-Passwort ist:"
 
-#: templates/forms.html:6
 msgid "go to my board"
 msgstr "Brett aufrufen"
 
-#: templates/forms.html:9
 msgid "I want to create a new board"
 msgstr "Ich möchte ein Brett erstellen."
 
-#: templates/forms.html:13
 msgid "create board"
 msgstr "Brett erstellen"
 
-#: templates/main.html:4
 msgid "Bingo - Startpage"
 msgstr "Bingo - Startseite"
 
-#: templates/main.html:12
 msgid "You seem not to have a bingo board for the current game"
 msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
-#: templates/main.html:19
 msgid "Go to my board"
 msgstr "Gehe zu meinem Brett"
 
-#: templates/main.html:29
 msgid "View a board from the current game:"
 msgstr "Ein Brett vom aktuellem Spiel ansehen:"
 
-#: templates/main.html:36
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
 
-#: templates/main.html:42
 msgid "Game #"
 msgstr "Spiel #"
 
-#: templates/reclaim_board.html:3 templates/reclaim_board.html.py:5
 msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"
