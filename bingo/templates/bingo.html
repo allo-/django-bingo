@@ -2,12 +2,14 @@
 {% load i18n %}
 {% load staticfiles %}
 {% block title %} Bingo! {% endblock %}
-{% block extrastyle %}
+{% block extra_style %}
+    {{ block.super }}
     td.bingofield.active, li.word.active {
         background-color: {{ board.color }};
     }
 {% endblock %}
-{% block extrahead %}
+{% block extra_head %}
+{{ block.super }}
 <script>
 var vote_url = "{% url 'bingo.views.vote' %}";
 var bingo_board = {{ board.id }};
@@ -74,4 +76,4 @@ var bingo_board = {{ board.id }};
     </li>
     {% endfor %}
 </ul>
-{% endblock content %}
+{% endblock %}

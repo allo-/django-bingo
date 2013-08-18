@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-17 19:00+0200\n"
-"PO-Revision-Date: 2013-08-17 19:00+0200\n"
+"POT-Creation-Date: 2013-08-18 15:51+0200\n"
+"PO-Revision-Date: 2013-08-18 15:52+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -125,29 +125,37 @@ msgstr "brett_{0}_markiert.png"
 msgid "board_{0}.png"
 msgstr "brett_{0}.png"
 
-#: templates/bingo.html:26
+#: templates/bingo.html:28
 msgid "Images:"
 msgstr "Bilder:"
 
-#: templates/bingo.html:27
+#: templates/bingo.html:29
 msgid "empty"
 msgstr "leer"
 
-#: templates/bingo.html:28
+#: templates/bingo.html:30
 msgid "marked"
 msgstr "markiert"
 
-#: templates/bingo.html:29
+#: templates/bingo.html:31
 msgid "voted"
 msgstr "abgestimmt"
 
-#: templates/bingo.html:35
+#: templates/bingo.html:37
 msgid "Total Users:"
 msgstr "Alle Teilnehmer:"
 
-#: templates/bingo.html:39
+#: templates/bingo.html:41
 msgid "Active Users:"
 msgstr "Aktive Teilnehmer:"
+
+#: templates/board_list.html:6 templates/main.html:21
+msgid "Board"
+msgstr "Brett"
+
+#: templates/board_list.html:7
+msgid "(your board)"
+msgstr "(Dein Brett)"
 
 #: templates/forms.html:2
 msgid "I have a board and my board password is:"
@@ -177,22 +185,18 @@ msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 msgid "Go to my board"
 msgstr "Gehe zu meinem Brett"
 
-#: templates/main.html:21 templates/main.html.py:35 templates/main.html:55
-msgid "Board"
-msgstr "Brett"
-
 #: templates/main.html:29
 msgid "View a board from the current game:"
 msgstr "Ein Brett vom aktuellem Spiel ansehen:"
 
-#: templates/main.html:37 templates/main.html.py:56
-msgid "(your board)"
-msgstr "(Dein Brett)"
-
-#: templates/main.html:45
+#: templates/main.html:36
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
 
-#: templates/main.html:51
+#: templates/main.html:42
 msgid "Game #"
 msgstr "Spiel #"
+
+#: templates/reclaim_board.html:3 templates/reclaim_board.html.py:5
+msgid "Reclaim your board"
+msgstr "Brett wiederaktivieren"
