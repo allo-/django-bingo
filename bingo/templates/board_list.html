@@ -1,11 +1,14 @@
 {% load i18n %}
 <ul class="board_list">
 {% for board in boards %}
-    <li style="color: {{ board.color }}">
-        <span class="board_list_entry">
-        <a href="{% url 'bingo.views.bingo' board.board_id %}">{% trans 'Board' %} #{{ board.board_id }}</a>
-        {% if board == my_board %}{% trans '(your board)' %}{% endif %}
-        </span>
+    <li>
+        <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
+            <img src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" />
+            <br />
+            <a href="{% url 'bingo.views.bingo' board.board_id %}">{% trans 'Board' %} #{{ board.board_id }}</a>
+            {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+        </div>
     </li>
 {% endfor %}
 </ul>
+<p style="clear: both"></p>
