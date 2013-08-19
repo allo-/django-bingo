@@ -57,6 +57,12 @@ def main(request, reclaim_form=None, create_form=None):
         })
 
 
+def game(request, game_id):
+    return render(request, "game.html", {
+        'game': get_object_or_404(Game, game_id=game_id),
+    })
+
+
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)

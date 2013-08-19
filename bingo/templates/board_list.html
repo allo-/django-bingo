@@ -8,4 +8,7 @@
         </span>
     </li>
 {% endfor %}
+{% if total_boards > 10 %}
+    <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'more ...' %}</a></li>
+{% endif %}
 </ul>

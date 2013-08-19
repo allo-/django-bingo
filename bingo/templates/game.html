@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
+{% block headline %}
+<h1>{% trans 'Game #' %}{{ game.game_id }}</h1>
+{% endblock %}
+{% block content %}
+{% with game.bingoboard_set.all as boards %}
+    {% include "board_list.html" %}
+{% endwith %}
+{% endblock %}

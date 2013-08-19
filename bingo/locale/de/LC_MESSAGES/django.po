@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-19 00:11+0200\n"
-"PO-Revision-Date: 2013-08-18 15:52+0200\n"
+"POT-Creation-Date: 2013-08-20 01:11+0200\n"
+"PO-Revision-Date: 2013-08-20 01:11+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -127,6 +127,9 @@ msgstr "Brett"
 msgid "(your board)"
 msgstr "(Dein Brett)"
 
+msgid "more ..."
+msgstr "mehr ..."
+
 msgid "I have a board and my board password is:"
 msgstr "Ich habe ein Brett und mein Brett-Passwort ist:"
 
@@ -138,6 +141,9 @@ msgstr "Ich möchte ein Brett erstellen."
 
 msgid "create board"
 msgstr "Brett erstellen"
+
+msgid "Game #"
+msgstr "Spiel #"
 
 msgid "Bingo - Startpage"
 msgstr "Bingo - Startseite"
@@ -153,9 +159,6 @@ msgstr "Ein Brett vom aktuellem Spiel ansehen:"
 
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
-
-msgid "Game #"
-msgstr "Spiel #"
 
 msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"

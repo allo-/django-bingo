@@ -28,19 +28,21 @@
 <p>
 {% trans 'View a board from the current game:' %}
 </p>
-{% include "board_list.html" %}
+{% with boards=boards.all|slice:":10" total_boards=boards.count game=games.0 %}
+    {% include "board_list.html" %}
+{% endwith %}
 {% endif %}
 
 {% if games.count > 0 %}
 <p>
-{% trans 'View boards from older games:' %}
+    {% trans 'View boards from older games:' %}
 </p>
 <ul>
     {% for game in games|slice:'0:10' %}
-    {% if game.bingoboard_set.count > 0 %}
+    {% if game.bingoboard_set.count > 0 and game.id != my_board.game.id %}
     <li>
-        {% trans 'Game #' %}{{ game.game_id }} ({{ game.created }})
-        {% with boards=game.bingoboard_set.all %}
+        <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
+        {% with boards=game.bingoboard_set.all|slice:":10" total_boards=game.bingoboard_set.count %}
             {% include "board_list.html" %}
         {% endwith %}
     </li>
