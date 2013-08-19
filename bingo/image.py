@@ -35,8 +35,8 @@ VETO_WORD_COLOR = getattr(settings, "VETO_WORD_COLOR", (255, 0, 0))
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
-THUMBNAIL_WIDTH = getattr(settings, "THUMBNAIL_WIDTH", 200)
-THUMBNAIL_HEIGHT = getattr(settings, "THUMBNAIL_HEIGHT", 60)
+THUMBNAIL_WIDTH = getattr(settings, "THUMBNAIL_WIDTH", 300)
+THUMBNAIL_HEIGHT = getattr(settings, "THUMBNAIL_HEIGHT", 80)
 
 
 class Text(object):
