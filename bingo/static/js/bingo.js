@@ -5,7 +5,7 @@ $(document).ready(function(){
     $("form.voteform").each(function(idx, obj){
         $(obj).find("input[type=submit]").remove();
         var vote_field = $("<input>").attr("name", "vote").attr("type", "hidden");
-        var vote_veto_link = $("<a>").attr("href", "#").addClass("vote_link").text("[-]");
+        var veto_link = $("<a>").attr("href", "#").addClass("veto_link").text("[-]");
 
         function ajax_submit(form){
             var data = {};
@@ -30,7 +30,7 @@ $(document).ready(function(){
             mark_field(fields, what);
         }
 
-        vote_veto_link.click(function(){
+        veto_link.click(function(){
             vote($(obj), "-");
             return false;
         });
@@ -47,7 +47,7 @@ $(document).ready(function(){
         });
 
         $(obj).append(vote_field);
-        $(obj).append(vote_veto_link);
+        $(obj).append(veto_link);
     });
 
     function mark_field(obj, vote){
