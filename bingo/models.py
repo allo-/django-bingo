@@ -96,6 +96,9 @@ class Word(models.Model):
     is_middle = models.BooleanField(default=False)
     site = models.ManyToManyField(Site)
 
+    class Meta:
+        ordering = ("word",)
+
     def __unicode__(self):
         return u"Word: " + self.word
 
