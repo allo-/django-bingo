@@ -65,3 +65,6 @@ optional:
 * ```GAME_SOFT_TIMEOUT``` minutes of inactivity, after which the game will be be ended.
 * ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
 * ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.
+
+notes:
+* At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` needs to be set, even when ```GAME_END_TIME``` is set. If not, the game never ends and no new game can be created on the next day.
