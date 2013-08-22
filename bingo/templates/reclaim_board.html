@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block title %}{% trans 'Reclaim your board' %}{% endblock %}
-{% block headline %}
-<h1>{% trans 'Reclaim your board' %}</h1>
-{% endblock %}
+{% block headline %}{% trans 'Reclaim your board' %}{% endblock %}
 
 {% block content %}
 {% include "forms.html" %}

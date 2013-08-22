@@ -7,11 +7,14 @@ body {
 div.content {
     padding: 0.5ex 2ex;
 }
-h1 {
+.header {
     margin: 0;
     background-color: darkgreen;
     color: white;
-    padding: 1ex;
+}
+.header h1 {
+    margin: 0;
+    padding: 0.5ex;
 }
 td.bingofield {
     vertical-align: top;
@@ -32,7 +35,7 @@ td.bingofield.veto div.bingofield, li.word.veto {
 li.word{
     float: left;
     list-style: none;
-    width: 22em;
+    width: 23em;
     border: thin solid black;
 }
 li.word div.word {

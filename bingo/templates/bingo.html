@@ -20,9 +20,7 @@ var bingo_board = {{ board.id }};
 {% endif %}
 {% endblock %}
 
-{% block headline %}
-<h1>Bingo #{{ board.board_id }}</h1>
-{% endblock %}
+{% block headline %}Bingo #{{ board.board_id }}{% endblock %}
 
 {% block content %}
 {% trans "Images:" %}

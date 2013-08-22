@@ -13,7 +13,11 @@
 {% endblock %}
 </head>
 <body>
-{% block headline %}{% endblock %}
+{% block header %}
+<div class="header">
+    <h1>{% block headline %}{% endblock %}</h1>
+</div>
+{% endblock %}
 {% block extra_content_top %}
 {% endblock %}
 <div class="content">
