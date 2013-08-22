@@ -59,7 +59,8 @@ def main(request, reclaim_form=None, create_form=None):
 
 def game(request, game_id):
     return render(request, "game.html", {
-        'game': get_object_or_404(Game, game_id=game_id),
+        'game': get_object_or_404(
+            Game, site=get_current_site(request), game_id=game_id),
     })
 
 
