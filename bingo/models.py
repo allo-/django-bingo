@@ -27,6 +27,11 @@ GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
 # or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 
+# Time, after which a running game is ended. Has only effect, if
+# GAME_START_TIMES is set, and needs to be outside of GAME_START_TIMES.
+# Values: tuple (hour, minute) or None for no restriction
+GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
+
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
@@ -35,39 +40,50 @@ BINGO_DATETIME_FORMAT = getattr(
 USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
 
 
+def get_starttimes():
+    start, end = GAME_START_TIMES
+
+    now = timezone.localtime(timezone.now()).replace(
+        tzinfo=pytz.timezone(TIMEZONE))
+    start_time_start = datetime(
+        now.year, now.month, now.day,
+        start[0], start[1], tzinfo=pytz.timezone(TIMEZONE))
+    start_time_end = datetime(
+        now.year, now.month, now.day,
+        end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
+
+    return now, start_time_start, start_time_end
+
+
 def is_starttime():
     if GAME_START_TIMES is None:
         return True
     else:
-        now = timezone.localtime(timezone.now()).replace(
-            tzinfo=pytz.timezone(TIMEZONE))
-        start, end = GAME_START_TIMES
+        now, start_time_start, start_time_end = get_starttimes()
+        if start_time_end > start_time_start:
+            return start_time_start < now < start_time_end
+        else:
+            # to check if its inside a interval between two days,
+            # check if its *not* in the interval between
+            # end and the *next* start
+            return not (start_time_end < now < start_time_start)
 
-        start_time = datetime(
-            now.year, now.month, now.day,
-            start[0], start[1], tzinfo=pytz.timezone(TIMEZONE))
+
+def is_after_endtime():
+    if GAME_END_TIME is None or is_starttime():
+        return False
+    else:
+        now, start_time_start, start_time_end = get_starttimes()
+        end = GAME_END_TIME
         end_time = datetime(
             now.year, now.month, now.day,
             end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
-
-        # game ends in the future
-        if end_time > now:
-            # game starts today before the end
-            if start_time < end_time:
-                pass
-            # game started yesterday
-            else:
-                start_time = start_time - timezone.timedelta(1)
-        # game ends tomorrow or has already ended.
+        # game starts today and ends today
+        if start_time_end < end_time:
+            return not (start_time_end < now < end_time)
         else:
-            # start started today, and has already ended
-            if end_time > start_time:
-                pass
-            # game will end tomorrow
-            else:
-                end_time = end_time + timezone.timedelta(1)
-
-        return start_time <= now and now <= end_time
+            # time is between end_time and *next* start time
+            return end_time < now < start_time_start
 
 
 class Word(models.Model):
@@ -90,8 +106,12 @@ class TimeRangeError(Exception):
 
 def get_game(site, create=False):
     """
-        get the current game. creates a new one, if the old one is expired.
+        get the current game, if its still active, else
+        creates a new game, if the current time is inside the
+        GAME_START_TIMES interval and create=True
         @param create: create a game, if there is no active game
+        @returns: None if there is no active Game, and none shoul be
+        created or the (new) active Game.
     """
 
     game = None
@@ -106,7 +126,8 @@ def get_game(site, create=False):
             else:
                 raise TimeRangeError(
                     _(u"game start outside of the valid timerange"))
-    else:
+    # game exists and its not after the GAME_END_TIME
+    elif not is_after_endtime():
         game = games[0]
 
     return game
