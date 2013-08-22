@@ -149,11 +149,11 @@ class Game(models.Model):
 
     def is_expired(self):
         # game expired, because no one used it
-        if (timezone.now() - self.last_used).seconds \
+        if GAME_SOFT_TIMEOUT and (timezone.now() - self.last_used).seconds \
                 > (GAME_SOFT_TIMEOUT * 60):
             return True
         # game expired, because its too old, even when someone is using it
-        elif (timezone.now() - self.created).seconds \
+        elif GAME_HARD_TIMEOUT and (timezone.now() - self.created).seconds \
                 > (GAME_HARD_TIMEOUT * 60):
             return True
         else:
@@ -163,10 +163,13 @@ class Game(models.Model):
         return self.bingoboard_set.count()
 
     def num_active_users(self):
-        return self.bingoboard_set.exclude(
-            last_used__lte=timezone.now()
-            - timezone.timedelta(0, 60 * USER_ACTIVE_TIMEOUT)
-        ).count()
+        if USER_ACTIVE_TIMEOUT:
+            return self.bingoboard_set.exclude(
+                last_used__lte=timezone.now()
+                - timezone.timedelta(0, 60 * USER_ACTIVE_TIMEOUT)
+            ).count()
+        else:
+            return self.num_users()
 
     def save(self):
         if self.pk is None:
