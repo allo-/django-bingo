@@ -9,10 +9,9 @@ from django.contrib.sites.models import Site
 from colorful.fields import RGBColorField
 
 from random import randint
-from datetime import datetime
-import pytz
 
-TIMEZONE = getattr(settings, "TIMEZONE", "UTC")
+from times import is_starttime, is_after_endtime
+
 
 # Color ranges
 COLOR_FROM = getattr(settings, "COLOR_FROM", 80)
@@ -23,67 +22,12 @@ COLOR_TO = getattr(settings, "COLOR_TO", 160)
 GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 60)
 GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
 
-# Time range, in which a game can be started. None = no limit
-# or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
-GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
-
-# Time, after which a running game is ended. Has only effect, if
-# GAME_START_TIMES is set, and needs to be outside of GAME_START_TIMES.
-# Values: tuple (hour, minute) or None for no restriction
-GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
-
 BINGO_DATETIME_FORMAT = getattr(
     settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
 # if a user did not vote/refresh his board for this time,
 # he is counted as inactive
 USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
-
-
-def get_starttimes():
-    start, end = GAME_START_TIMES
-
-    now = timezone.localtime(timezone.now()).replace(
-        tzinfo=pytz.timezone(TIMEZONE))
-    start_time_start = datetime(
-        now.year, now.month, now.day,
-        start[0], start[1], tzinfo=pytz.timezone(TIMEZONE))
-    start_time_end = datetime(
-        now.year, now.month, now.day,
-        end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
-
-    return now, start_time_start, start_time_end
-
-
-def is_starttime():
-    if GAME_START_TIMES is None:
-        return True
-    else:
-        now, start_time_start, start_time_end = get_starttimes()
-        if start_time_end > start_time_start:
-            return start_time_start < now < start_time_end
-        else:
-            # to check if its inside a interval between two days,
-            # check if its *not* in the interval between
-            # end and the *next* start
-            return not (start_time_end < now < start_time_start)
-
-
-def is_after_endtime():
-    if GAME_END_TIME is None or is_starttime():
-        return False
-    else:
-        now, start_time_start, start_time_end = get_starttimes()
-        end = GAME_END_TIME
-        end_time = datetime(
-            now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
-        # game starts today and ends today
-        if start_time_end < end_time:
-            return not (start_time_end < now < end_time)
-        else:
-            # time is between end_time and *next* start time
-            return end_time < now < start_time_start
 
 
 class Word(models.Model):

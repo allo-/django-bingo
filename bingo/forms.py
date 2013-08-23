@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.hashers import get_hasher
 
 from models import BingoBoard, is_starttime
+from times import is_starttime
 
 
 SALT = getattr(settings, "SALT", "hackme")
