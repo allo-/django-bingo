@@ -97,11 +97,22 @@ class Game(models.Model):
 
     def is_expired(self):
         # game expired, because no one used it
-        if GAME_SOFT_TIMEOUT and (timezone.now() - self.last_used).seconds \
+        now = timezone.now()
+        diff_last_used = now - self.last_used
+        diff_created = now - self.created
+
+        seconds_since_last_used = \
+            diff_last_used.days * 24 * 60 * 60 + diff_last_used.seconds
+        seconds_since_created = \
+            diff_created.days * 24 * 60 * 60 + diff_created.seconds
+
+        # game expired, because nobody used it
+        if GAME_SOFT_TIMEOUT and seconds_since_last_used \
                 > (GAME_SOFT_TIMEOUT * 60):
             return True
+
         # game expired, because its too old, even when someone is using it
-        elif GAME_HARD_TIMEOUT and (timezone.now() - self.created).seconds \
+        elif GAME_HARD_TIMEOUT and seconds_since_created \
                 > (GAME_HARD_TIMEOUT * 60):
             return True
         else:
