@@ -90,7 +90,8 @@ class Game(models.Model):
         unique_together = ("game_id", "site")
 
     def __unicode__(self):
-        return _(u"Game created at {0} (site {1})").format(
+        return _(u"Game #{0} created at {1} (site {2})").format(
+            self.game_id,
             timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"),
             self.site)
 

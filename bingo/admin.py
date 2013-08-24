@@ -46,6 +46,7 @@ class BingoBoardAdmin(admin.ModelAdmin):
     list_display = (bingo_board_name, "color", "created",
                     "game", bingo_board_user)
     list_editable = ("color",)
+    list_filter = ("game__site",)
     # cannot be changed, because its hashed.
     # if we would hash it on save, it will be hashed again on each save
     readonly_fields = ("created", "last_used", "game", "password")
