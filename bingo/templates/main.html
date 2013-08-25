@@ -23,12 +23,15 @@
 {% endif %}
 
 {% if boards.count > 0 %}
-<p>
-{% trans 'View a board from the current game:' %}
-</p>
-{% with boards=boards.all|slice:":10" total_boards=boards.count game=games.0 %}
-    {% include "board_list.html" %}
-{% endwith %}
+<p>{% trans 'Current game:' %}<p>
+<ul>
+    {% with games.0 as game %}
+        <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</li>
+    {% endwith %}
+    {% with boards=boards.all|slice:":10" total_boards=boards.count game=games.0 %}
+        {% include "board_list.html" %}
+    {% endwith %}
+</ul>
 {% endif %}
 
 {% if games.count > 0 %}
