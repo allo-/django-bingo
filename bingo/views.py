@@ -141,7 +141,7 @@ def bingo(request, board_id=None):
         })
 
 
-def vote(request):
+def vote(request, ajax, board_id=None):
     my_bingo_board = _get_user_bingo_board(request)
 
     # post request: update field.vote
@@ -160,10 +160,10 @@ def vote(request):
             my_bingo_board.game.save()  # update last_used
 
     # for all ajax requests, send updated field data
-    if "ajax" in request.GET:
-        if "bingo_board" in request.GET:
+    if ajax:
+        if board_id:
             bingo_board = get_object_or_404(
-                BingoBoard, id=request.GET.get("bingo_board", 0))
+                BingoBoard, id=board_id)
         else:
             bingo_board = my_bingo_board
         data = {

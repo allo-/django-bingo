@@ -11,7 +11,8 @@
 {% block extra_head %}
 {{ block.super }}
 <script>
-var vote_url = "{% url 'bingo.views.vote' %}";
+var vote_url = "{% url 'bingo.views.vote' ajax=False %}";
+var ajax_vote_url = "{% url 'bingo.views.vote' ajax=True %}";
 var bingo_board = {{ board.id }};
 </script>
 <script src="{% static 'js/jquery.js' %}"></script>

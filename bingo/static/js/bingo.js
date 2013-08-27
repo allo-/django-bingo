@@ -14,7 +14,7 @@ $(document).ready(function(){
                 data[form_field.attr("name")] = form_field.val();
             })
             ajaxRequest.abort(); // abort any running ajax requests
-            ajaxRequest = $.ajax(vote_url+"?ajax=true&bingo_board=" + bingo_board, {
+            ajaxRequest = $.ajax(ajax_vote_url + bingo_board + "/", {
                 "type": "post",
                 "dataType": "json",
                 "data": data,
@@ -74,7 +74,7 @@ $(document).ready(function(){
             });
         } else {
             ajaxRequest.abort(); // abort any running ajax requests
-            ajaxRequest = $.ajax(vote_url+"?ajax=true&bingo_board=" + bingo_board, {
+            ajaxRequest = $.ajax(ajax_vote_url + bingo_board + "/", {
                 "type": "get",
                 "dataType": "json",
                 "success": update_numbers

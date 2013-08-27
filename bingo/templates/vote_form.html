@@ -1,5 +1,5 @@
 {% if my_board == board %}
-<form action="{% url 'bingo.views.vote' %}" method="post" class="voteform">
+<form action="{% url 'bingo.views.vote' ajax=False %}" method="post" class="voteform">
     {% spaceless %}
     {% csrf_token %}
     <input type="hidden" name="field_id" value="{{ field.id }}" />
