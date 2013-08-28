@@ -143,6 +143,7 @@ def bingo(request, board_id=None):
 
 def vote(request, ajax, board_id=None):
     my_bingo_board = _get_user_bingo_board(request)
+    field = None
 
     # post request: update field.vote
     if "field_id" in request.POST:
@@ -180,8 +181,11 @@ def vote(request, ajax, board_id=None):
             data[field.id] = (vote, field.num_votes())
         return HttpResponse(json.dumps(data), mimetype="application/json")
     else:
-        return redirect(
-            reverse(bingo, kwargs={"board_id": field.board.board_id}))
+        if field:
+            return redirect(
+                reverse(bingo, kwargs={"board_id": field.board.board_id}))
+        else:
+            return redirect(reverse(main))
 
 
 def image(request, board_id, marked=False, voted=False):
