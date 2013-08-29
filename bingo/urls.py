@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 import views
+import generic
 
 urlpatterns = patterns('',
     url('^$', views.main),
@@ -11,6 +12,7 @@ urlpatterns = patterns('',
     url('^ajax/vote/(?P<board_id>[0-9]*)/$', views.vote, {"ajax": True}),
     url('^bingo/(?P<board_id>[0-9]*)/$', views.bingo),
     url('^game/(?P<game_id>[0-9]*)/$', views.game),
+    url('^game/$', generic.GameList.as_view(), name="games_list"),
     url('^image/(?P<board_id>[0-9]*)/marked/$', views.image, {"marked": True}),
     url('^image/(?P<board_id>[0-9]*)/voted/$', views.image, {"voted": True}),
     url('^image/(?P<board_id>[0-9]*)/$', views.image),

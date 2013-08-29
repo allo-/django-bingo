@@ -47,6 +47,9 @@
         {% endwith %}
     </li>
     {% endfor %}
+    {% if games|length > 10 %}
+    <li><a href="{% url 'games_list' %}">{% trans 'older games' %}</a></li>
+    {% endif %}
 </ul>
 {% endif %}
 

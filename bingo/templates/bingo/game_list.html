@@ -1,0 +1,25 @@
+{% extends "bingo/base.html" %}
+{% load i18n %}
+{% block headline %}{% trans "Old Games" %}{% endblock %}
+{% block title %}{% trans "Old Games" %}{% endblock %}
+{% block content %}
+{% trans "Game archive:" %}
+<ul>
+{% for game in object_list %}
+    <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</li>
+{% endfor %}
+</ul>
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number}}">{% trans "newer games" %}</a></li>
+    {% else %}
+        <li class="inactive">{% trans "newer games" %}</li>
+    {% endif %}
+    <li>{% trans "page" %} {{ page_obj.number }}</li>
+    {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number}}">{% trans "older games" %}</a></li>
+    {% else %}
+        <li class="inactive">{% trans "older games" %}</li>
+    {% endif %}
+</ul>
+{% endblock %}

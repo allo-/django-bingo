@@ -77,3 +77,22 @@ ul.board_list {
 span.board_list_entry {
     color: black;
 }
+
+ul.pagination {
+    padding: 0;
+    list-style: none;
+}
+ul.pagination li {
+    margin: 0.5ex;
+    border: 2px solid #a0a0a0;
+    background-color: #c0d0c0;
+    padding: 0.5ex;
+    float: left;
+    font-weight: bold;
+}
+ul.pagination li.inactive {
+    color: #808080;
+}
+ul.pagination li a {
+    text-decoration: none;
+}

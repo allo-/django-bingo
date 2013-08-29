@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-26 00:04+0200\n"
-"PO-Revision-Date: 2013-08-26 00:05+0200\n"
+"POT-Creation-Date: 2013-08-29 22:05+0200\n"
+"PO-Revision-Date: 2013-08-29 22:05+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -144,6 +144,21 @@ msgstr "Brett erstellen"
 
 msgid "Game #"
 msgstr "Spiel #"
+
+msgid "Old Games"
+msgstr "Alte Spiele"
+
+msgid "Game archive:"
+msgstr "Spielarchiv:"
+
+msgid "newer games"
+msgstr "neuere Spiele"
+
+msgid "page"
+msgstr "Seite"
+
+msgid "older games"
+msgstr "ältere Spiele"
 
 msgid "Bingo - Startpage"
 msgstr "Bingo - Startseite"
