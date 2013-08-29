@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 <head>
 	<meta charset="UTF-8">
-    <title>Bingo - {% block title %}{% endblock %}</title>
+    <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
     <style>
 {% block extra_style %}
