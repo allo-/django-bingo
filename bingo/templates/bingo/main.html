@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'bingo/base.html' %}
 {% load i18n %}
 
 {% block title %}{% trans 'Bingo - Startpage' %}{% endblock %}
@@ -9,7 +9,7 @@
 {% if not my_board %}
 {% trans 'You seem not to have a bingo board for the current game' %}
 <p></p>
-{% include "forms.html" %}
+{% include "bingo/forms.html" %}
 
 {% else %}
 
@@ -29,7 +29,7 @@
         <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</li>
     {% endwith %}
     {% with boards=boards.all|slice:":10" total_boards=boards.count game=games.0 %}
-        {% include "board_list.html" %}
+        {% include "bingo/board_list.html" %}
     {% endwith %}
 </ul>
 {% endif %}
@@ -44,7 +44,7 @@
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
         {% with boards=game.bingoboard_set.all|slice:":10" total_boards=game.bingoboard_set.count %}
-            {% include "board_list.html" %}
+            {% include "bingo/board_list.html" %}
         {% endwith %}
     </li>
     {% endif %}

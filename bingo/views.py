@@ -45,7 +45,7 @@ def main(request, reclaim_form=None, create_form=None):
     bingo_board = _get_user_bingo_board(request)
     create_form = CreateForm(prefix="create")
     reclaim_form = ReclaimForm(prefix="reclaim")
-    return render(request, "main.html", {
+    return render(request, "bingo/main.html", {
         'my_board': bingo_board,
         'create_form': create_form,
         'reclaim_form': reclaim_form,
@@ -58,7 +58,7 @@ def main(request, reclaim_form=None, create_form=None):
 
 
 def game(request, game_id):
-    return render(request, "game.html", {
+    return render(request, "bingo/game.html", {
         'game': get_object_or_404(
             Game, site=get_current_site(request), game_id=game_id),
     })
@@ -86,7 +86,7 @@ def reclaim_board(request):
         reclaim_form = ReclaimForm(prefix="reclaim")
     create_form = CreateForm(prefix="create")
     return render(request,
-                  "reclaim_board.html", {
+                  "bingo/reclaim_board.html", {
                       'reclaim_form': reclaim_form,
                       'create_form': create_form,
                   })
@@ -113,7 +113,7 @@ def create_board(request):
             reclaim_form = ReclaimForm(prefix="reclaim")
             return render(
                 request,
-                "reclaim_board.html",
+                "bingo/reclaim_board.html",
                 {
                     'reclaim_form': reclaim_form,
                     'create_form': create_form,
@@ -133,7 +133,7 @@ def bingo(request, board_id=None):
     all_word_fields = bingo_board.get_all_word_fields().order_by(
         "word__word").select_related()
 
-    return render(request, "bingo.html", {
+    return render(request, "bingo/bingo.html", {
         "fields_on_board": fields_on_board,
         "board": bingo_board,
         "my_board": my_bingo_board,
