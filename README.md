@@ -33,6 +33,20 @@ include the bingo-app in your project urls.py, like this:
 You can use the Sites framework to add several different Bingo sites.
 Different Sites have different sets of Words, and they will generate a different set of Games, so the Bingos are independend from each other.
 
+Customizing
+-----------
+
+Many minor changes can be done with project templates:
+
+* install [django-apptemplates](https://pypi.python.org/pypi/django-apptemplates/) and add it to the ```TEMPLATE_LOADER``` setting.
+* add an own templates directory to ```TEMPLATE_DIRS```.
+* create custom templates, which inherit from the app templates.
+
+example for "mytemplates/bingo/main.html":
+
+    {% extends "bingo:bingo/base.html %}
+    {% block extra_content_top %}Welcome to my bingo game!{% endblock %}
+
 Settings
 --------
 
@@ -66,5 +80,6 @@ optional:
 * ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
 * ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.
 
-notes:
-* At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` needs to be set, even when ```GAME_END_TIME``` is set. If not, the game never ends and no new game can be created on the next day.
+Notes
+-----
+* At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` must be set, even when ```GAME_END_TIME``` is set. When both are ```None```, the game never ends and no new game can be created on the next day.
