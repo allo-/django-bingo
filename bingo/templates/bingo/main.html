@@ -40,14 +40,12 @@
 </p>
 <ul>
     {% for game in games|slice:'0:10' %}
-    {% if game.bingoboard_set.count > 0 and game.id != my_board.game.id %}
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
         {% with boards=game.bingoboard_set.all|slice:":10" total_boards=game.bingoboard_set.count %}
             {% include "bingo/board_list.html" %}
         {% endwith %}
     </li>
-    {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
