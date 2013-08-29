@@ -4,6 +4,10 @@ body {
     height: 100%;
     margin: 0;
 }
+div.header a {
+    color: white;
+    text-decoration: none;
+}
 div.content {
     padding: 0.5ex 2ex;
 }

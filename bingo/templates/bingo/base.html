@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 <head>
 	<meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>Bingo - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
     <style>
 {% block extra_style %}
@@ -15,7 +15,7 @@
 <body>
 {% block header %}
 <div class="header">
-    <h1>{% block headline %}{% endblock %}</h1>
+    <h1><a href="{% url 'bingo.views.main' %}">Bingo</a> - {% block headline %}{% endblock %}</h1>
 </div>
 {% endblock %}
 {% block extra_content_top %}

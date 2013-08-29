@@ -1,7 +1,7 @@
 {% extends 'bingo/base.html' %}
 {% load i18n %}
 {% load staticfiles %}
-{% block title %} Bingo! {% endblock %}
+{% block title %}{% trans "Board" %} #{{ board.board_id }}{% endblock %}
 {% block extra_style %}
     {{ block.super }}
     td.bingofield.active, li.word.active {
@@ -21,7 +21,7 @@ var bingo_board = {{ board.id }};
 {% endif %}
 {% endblock %}
 
-{% block headline %}Bingo #{{ board.board_id }}{% endblock %}
+{% block headline %}{% trans "Board" %} #{{ board.board_id }}{% endblock %}
 
 {% block content %}
 {% trans "Images:" %}
