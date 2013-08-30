@@ -53,6 +53,11 @@ ul.words li.word form.voteform {
 li.word form.voteform input {
     width: 2em;
 }
+form.reclaim, form.create {
+    border: 2px solid darkgreen;
+    display: table;
+    padding: 1ex;
+}
 form.reclaim p {
     margin: 0;
 }

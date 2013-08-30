@@ -1,12 +1,12 @@
 {% load i18n %}
-{% trans 'I have a board and my board password is:' %}
+{% trans 'reclaim your board:' %}
 <form class="reclaim" action="{% url 'bingo.views.reclaim_board' %}" method="post">
     {{ reclaim_form.as_p }}
     {% csrf_token %}
     <input type="submit" value="{% trans 'go to my board' %}" />
 </form>
 <p></p>
-{% trans 'I want to create a new board' %}:
+{% trans 'create a new board:' %}
 <form class="create" action="{% url 'bingo.views.create_board' %}" method="post">
     {{ create_form.as_p }}
     {% csrf_token %}
