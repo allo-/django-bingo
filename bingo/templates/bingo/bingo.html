@@ -17,7 +17,7 @@ var bingo_board = {{ board.id }};
 </script>
 <script src="{% static 'js/jquery.js' %}"></script>
 {% if not board.game.is_expired %}
-<script src="{% static 'js/bingo.js' %}"></script>
+<script src="{% static 'bingo/js/bingo.js' %}"></script>
 {% endif %}
 {% endblock %}
 
