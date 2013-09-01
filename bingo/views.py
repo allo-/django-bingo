@@ -162,15 +162,21 @@ def vote(request, ajax, board_id=None):
 
     # for all ajax requests, send updated field data
     if ajax:
-        if board_id:
+        if board_id is not None:
             bingo_board = get_object_or_404(
                 BingoBoard, id=board_id)
-        else:
+        elif my_bingo_board is not None:
             bingo_board = my_bingo_board
+        else:
+            # view called without needed parameters.
+            # Set data to {} to prevent an AttributeError
+            return HttpResponse(json.dumps({}), mimetype="application/json")
+
         data = {
             'num_users': bingo_board.game.num_users(),
             'num_active_users': bingo_board.game.num_active_users()
         }
+
         for field in bingo_board.bingofield_set.all():
             if field.vote is None:
                 vote = "0"
