@@ -164,6 +164,9 @@ class BingoBoard(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ("-board_id",)
+
     def save(self):
         if self.ip is None and self.user is None:
             raise ValidationError(
