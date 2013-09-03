@@ -49,6 +49,9 @@ $(document).ready(function(){
         $(obj).append(vote_field);
         $(obj).append(veto_link);
     });
+    $(".bingofield, .word").not(".middle").each(function(idx, obj){
+        $(obj).addClass("clickable");
+    });
 
     function mark_field(obj, vote){
         if(vote == "+") {

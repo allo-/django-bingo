@@ -35,6 +35,9 @@ td.bingofield div.bingofield {
     padding: 2em;
     text-align: center;
 }
+.clickable {
+    cursor: pointer;
+}
 td.bingofield.veto div.bingofield, li.word.veto {
     color: red;
 }
