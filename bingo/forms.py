@@ -10,6 +10,8 @@ from times import is_starttime
 SALT = getattr(settings, "SALT", "hackme")
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 
+GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
+
 
 class CreateForm(forms.Form):
     password = forms.CharField(label=_(u"Password (optional)"),
@@ -26,6 +28,10 @@ class CreateForm(forms.Form):
             return None
 
     def clean(self):
+        if GAME_START_DISABLED:
+            raise forms.ValidationError(
+                _(u"Starting new games is disabled."))
+
         if not is_starttime():
             start, end = GAME_START_TIMES
             start_time_str = "{0}:{1}".format(

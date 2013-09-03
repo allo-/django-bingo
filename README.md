@@ -73,6 +73,7 @@ optional:
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
 * ```FONT_SIZE``` the font size in the images.
+* ```GAME_START_DISABLED``` set to ```True```, to disable starting new games.
 * ```GAME_START_TIMES``` ```None``` for no restriction or ```((start hour, start minute), (end hour, end minute))``` for restricting the start time to a special time range (i.e. the broadcasting time of the radio show)
 * ```GAME_END_TIME``` ```None``` for no restriction or ```(end hour, end minute)``` for setting a time, after which the game is ended. The end time needs to be outside of the ```GAME_START_TIMES``` interval.
 * ```GAME_HARD_TIMEOUT``` minutes after the game will be ended, i.e. the duration of the radio show)
