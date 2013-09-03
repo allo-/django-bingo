@@ -4,7 +4,7 @@ from django.conf import settings
 import pytz
 from datetime import datetime
 
-TIMEZONE = getattr(settings, "TIMEZONE", "UTC")
+TIME_ZONE = getattr(settings, "TIME_ZONE", "UTC")
 
 # Time range, in which a game can be started. None = no limit
 # or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
@@ -18,15 +18,15 @@ GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
 
 def get_times():
     now = timezone.localtime(timezone.now()).replace(
-        tzinfo=pytz.timezone(TIMEZONE))
+        tzinfo=pytz.timezone(TIME_ZONE))
     if GAME_START_TIMES:
         start, end = GAME_START_TIMES
         start_time_start = datetime(
             now.year, now.month, now.day,
-            start[0], start[1], tzinfo=pytz.timezone(TIMEZONE))
+            start[0], start[1], tzinfo=pytz.timezone(TIME_ZONE))
         start_time_end = datetime(
             now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
+            end[0], end[1], tzinfo=pytz.timezone(TIME_ZONE))
     else:
         start_time_start = None
         start_time_end = None
@@ -34,7 +34,7 @@ def get_times():
         end = GAME_END_TIME
         end_time = datetime(
             now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone(TIMEZONE))
+            end[0], end[1], tzinfo=pytz.timezone(TIME_ZONE))
     else:
         end_time = None
 
