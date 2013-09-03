@@ -16,7 +16,7 @@ GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
 
 
-def get_starttimes():
+def get_times():
     now = timezone.localtime(timezone.now()).replace(
         tzinfo=pytz.timezone(TIMEZONE))
     if GAME_START_TIMES:
@@ -45,7 +45,7 @@ def is_starttime():
     if GAME_START_TIMES is None:
         return True
     else:
-        now, start_time_start, start_time_end, end_time = get_starttimes()
+        now, start_time_start, start_time_end, end_time = get_times()
         if start_time_end > start_time_start:
             return start_time_start < now < start_time_end
         else:
@@ -59,7 +59,7 @@ def is_after_endtime():
     if GAME_END_TIME is None or is_starttime():
         return False
     else:
-        now, start_time_start, start_time_end, end_time = get_starttimes()
+        now, start_time_start, start_time_end, end_time = get_times()
         end = GAME_END_TIME
         # game starts today and ends today
         if start_time_end < end_time:
