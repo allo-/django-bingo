@@ -4,8 +4,6 @@ from django.conf import settings
 import pytz
 from datetime import datetime
 
-TIME_ZONE = getattr(settings, "TIME_ZONE", "UTC")
-
 # Time range, in which a game can be started. None = no limit
 # or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
@@ -17,24 +15,21 @@ GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
 
 
 def get_times():
-    now = timezone.localtime(timezone.now()).replace(
-        tzinfo=pytz.timezone(TIME_ZONE))
+    now = timezone.get_current_timezone().normalize(timezone.now())
     if GAME_START_TIMES:
         start, end = GAME_START_TIMES
-        start_time_start = datetime(
-            now.year, now.month, now.day,
-            start[0], start[1], tzinfo=pytz.timezone(TIME_ZONE))
-        start_time_end = datetime(
-            now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone(TIME_ZONE))
+        start_time_start = now.replace(
+            hour=start[0], minute=start[1], second=0, microsecond=0)
+        start_time_end = now.replace(
+            hour=end[0], minute=end[1], second=0, microsecond=0)
     else:
         start_time_start = None
         start_time_end = None
     if GAME_END_TIME:
         end = GAME_END_TIME
-        end_time = datetime(
-            now.year, now.month, now.day,
-            end[0], end[1], tzinfo=pytz.timezone(TIME_ZONE))
+        end_time = now
+        end_time = end_time.replace(
+            hour=end[0], minute=end[1], second=0, microsecond=0)
         if start_time_end is not None and end_time < start_time_end:
             end_time = end_time + timezone.timedelta(1, 0)
     else:
