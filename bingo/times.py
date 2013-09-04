@@ -35,6 +35,8 @@ def get_times():
         end_time = datetime(
             now.year, now.month, now.day,
             end[0], end[1], tzinfo=pytz.timezone(TIME_ZONE))
+        if start_time_end is not None and end_time < start_time_end:
+            end_time = end_time + timezone.timedelta(1, 0)
     else:
         end_time = None
 
