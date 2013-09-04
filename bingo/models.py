@@ -10,7 +10,7 @@ from colorful.fields import RGBColorField
 
 from random import randint
 
-from times import is_starttime, is_after_endtime
+from times import is_starttime, is_after_endtime, get_times
 
 
 # Color ranges
@@ -94,6 +94,27 @@ class Game(models.Model):
             self.game_id,
             timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"),
             self.site)
+
+    def hard_expiry(self):
+        if GAME_HARD_TIMEOUT is not None:
+            return self.created + timezone.timedelta(0, GAME_HARD_TIMEOUT * 60)
+
+    def soft_expiry(self):
+        if GAME_SOFT_TIMEOUT is not None:
+            return self.last_used + timezone.timedelta(
+                0, GAME_SOFT_TIMEOUT * 60)
+
+    def end_time(self):
+        hard_expiry = self.hard_expiry()
+        end_time = get_times()[3]
+        if hard_expiry is not None and end_time is not None:
+            return min(end_time, hard_expiry)
+        elif hard_expiry is None:
+            # may be None
+            return end_time
+        else:
+            # may be None
+            return hard_expiry
 
     def is_expired(self):
         # game expired, because no one used it
