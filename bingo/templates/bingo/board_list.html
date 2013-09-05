@@ -9,6 +9,8 @@
     </li>
 {% endfor %}
 {% if total_boards > 10 %}
-    <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{{ total_boards|add:-10 }} {% trans 'other boards' %}</a></li>
+<li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">
+    {% blocktrans count total_boards|add:-10 as board_count %}{{ board_count }} other board{% plural %}{{ board_count }} other boards{% endblocktrans %}
+</a></li>
 {% endif %}
 </ul>
