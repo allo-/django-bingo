@@ -22,8 +22,8 @@ COLOR_TO = getattr(settings, "COLOR_TO", 160)
 GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 60)
 GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
 
-BINGO_DATETIME_FORMAT = getattr(
-    settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
+BINGO_IMAGE_DATETIME_FORMAT = getattr(
+    settings, "BINGO_IMAGE_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
 # if a user did not vote/refresh his board for this time,
 # he is counted as inactive
@@ -258,15 +258,15 @@ class BingoBoard(models.Model):
 
     def get_created(self):
         """
-            get created field with BINGO_DATETIME_FORMAT formatting
+            get created field with BINGO_IMAGE_DATETIME_FORMAT formatting
         """
-        return timezone.localtime(self.created).strftime(BINGO_DATETIME_FORMAT)
+        return timezone.localtime(self.created).strftime(BINGO_IMAGE_DATETIME_FORMAT)
 
     def get_last_used(self):
         """
-            get last_used field with BINGO_DATETIME_FORMAT formatting
+            get last_used field with BINGO_IMAGE_DATETIME_FORMAT formatting
         """
-        return self.last_used.strftime(BINGO_DATETIME_FORMAT)
+        return self.last_used.strftime(BINGO_IMAGE_DATETIME_FORMAT)
 
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1} (site {2})").format(

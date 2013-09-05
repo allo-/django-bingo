@@ -72,6 +72,7 @@ optional:
 * ```VOTES_WORD_COLOR``` word color of neutral fields
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
+* ```BINGO_IMAGE_DATETIME_FORMAT``` format for the datetime in the board images
 * ```FONT_SIZE``` the font size in the images.
 * ```GAME_START_DISABLED``` set to ```True```, to disable starting new games.
 * ```GAME_START_TIMES``` ```None``` for no restriction or ```((start hour, start minute), (end hour, end minute))``` for restricting the start time to a special time range (i.e. the broadcasting time of the radio show)

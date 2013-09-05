@@ -32,8 +32,8 @@ VOTED_WORD_COLOR = getattr(settings, "VOTED_WORD_COLOR", (0, 0, 0))
 VETO_FIELD_COLOR = getattr(settings, "VETO_FIELD_COLOR", (255, 255, 255))
 VETO_WORD_COLOR = getattr(settings, "VETO_WORD_COLOR", (255, 0, 0))
 
-BINGO_DATETIME_FORMAT = getattr(
-    settings, "BINGO_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
+BINGO_IMAGE_DATETIME_FORMAT = getattr(
+    settings, "BINGO_IMAGE_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
 
 
 class Text(object):
