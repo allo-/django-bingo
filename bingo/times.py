@@ -16,24 +16,31 @@ GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
 
 def get_times():
     now = timezone.get_current_timezone().normalize(timezone.now())
+
+    start_time_start = None
+    start_time_end = None
+    end_time = None
     if GAME_START_TIMES:
         start, end = GAME_START_TIMES
         start_time_start = now.replace(
             hour=start[0], minute=start[1], second=0, microsecond=0)
         start_time_end = now.replace(
             hour=end[0], minute=end[1], second=0, microsecond=0)
-    else:
-        start_time_start = None
-        start_time_end = None
+
+        # when the end of start time is "before" the start of start time,
+        # the end of start time is tomorrow
+        if start_time_end < start_time_start:
+            start_time_end += timezone.timedelta(1, 0)
+
     if GAME_END_TIME:
         end = GAME_END_TIME
-        end_time = now
-        end_time = end_time.replace(
+        end_time = now.replace(
             hour=end[0], minute=end[1], second=0, microsecond=0)
+
+        # when the end time is "before" the end of start timeend_time,
+        # the game ends tomorrow
         if start_time_end is not None and end_time < start_time_end:
             end_time = end_time + timezone.timedelta(1, 0)
-    else:
-        end_time = None
 
     return now, start_time_start, start_time_end, end_time
 
@@ -43,13 +50,7 @@ def is_starttime():
         return True
     else:
         now, start_time_start, start_time_end, end_time = get_times()
-        if start_time_end > start_time_start:
-            return start_time_start < now < start_time_end
-        else:
-            # to check if its inside a interval between two days,
-            # check if its *not* in the interval between
-            # end and the *next* start
-            return not (start_time_end < now < start_time_start)
+        return start_time_start < now < start_time_end
 
 
 def is_after_endtime():
@@ -58,9 +59,4 @@ def is_after_endtime():
     else:
         now, start_time_start, start_time_end, end_time = get_times()
         end = GAME_END_TIME
-        # game starts today and ends today
-        if start_time_end < end_time:
-            return not (start_time_end < now < end_time)
-        else:
-            # time is between end_time and *next* start time
-            return end_time < now < start_time_start
+        return end_time < now
