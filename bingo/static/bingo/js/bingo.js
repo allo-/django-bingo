@@ -49,9 +49,11 @@ $(document).ready(function(){
         $(obj).append(vote_field);
         $(obj).append(veto_link);
     });
-    $(".bingofield, .word").not(".middle").each(function(idx, obj){
-        $(obj).addClass("clickable");
-    });
+    if(bingo_board == my_board){
+        $(".bingofield, .word").not(".middle").each(function(idx, obj){
+            $(obj).addClass("clickable");
+        });
+    }
 
     function mark_field(obj, vote){
         if(vote == "+") {
