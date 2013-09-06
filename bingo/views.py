@@ -25,6 +25,9 @@ def _get_user_bingo_board(request):
             bingo_board.ip = ip
         except BingoBoard.DoesNotExist, e:
             pass
+        # double board_id?
+        except BingoBoard.MultipleObjectsReturned:
+            pass
 
     # no board_id in the session, try the ip
     if bingo_board is None:

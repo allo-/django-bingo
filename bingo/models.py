@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
-from django.db import models
+from django.db import models, transaction
 from django.contrib.sites.models import Site
 
 from colorful.fields import RGBColorField
@@ -187,6 +187,7 @@ class BingoBoard(models.Model):
 
     class Meta:
         ordering = ("-board_id",)
+        unique_together = ("game", "board_id")
 
     def save(self):
         if self.ip is None and self.user is None:
@@ -205,30 +206,34 @@ class BingoBoard(models.Model):
                     raise ValidationError(
                         _(u"game and ip must be unique_together"))
 
-            # get the board_id
-            bingo_boards = BingoBoard.objects.filter(
-                game__site=self.game.site)
-            current_id = bingo_boards.aggregate(
-                max_id=models.Max('board_id'))['max_id']
-            if current_id is None:
-                self.board_id = 1
-            else:
-                self.board_id = current_id + 1
-
             # generate a color
             self.color = "#%x%x%x" % (
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO),
                 randint(COLOR_FROM, COLOR_TO))
+
             # first create the fields, so the board will
             # not be saved, when field creation fails
             fields = self.create_bingofields()
-            # create the board
-            super(BingoBoard, self).save()
-            # now that the board has a pk, save the fields
-            for field in fields:
-                field.board = self
-                field.save()
+
+            # then create a board_id
+            with transaction.commit_on_success():
+                bingo_boards = BingoBoard.objects.filter(
+                    game__site=self.game.site)
+                current_id = bingo_boards.aggregate(
+                    max_id=models.Max('board_id'))['max_id']
+                if current_id is None:
+                    self.board_id = 1
+                else:
+                    self.board_id = current_id + 1
+
+                # create the board
+                super(BingoBoard, self).save()
+
+                # now that the board has a pk, save the fields
+                for field in fields:
+                    field.board = self
+                    field.save()
         else:
             super(BingoBoard, self).save()
 
