@@ -25,21 +25,21 @@
 {% if boards.count > 0 %}
 <p>{% trans 'Current game:' %}<p>
 <ul>
-    {% with games.0 as game %}
+    {% with current_game as game %}
         <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</li>
     {% endwith %}
-    {% with boards=boards.all|slice:":10" total_boards=boards.count game=games.0 %}
+    {% with boards=boards.all|slice:":10" total_boards=boards.count game=current_game %}
         {% include "bingo/board_list.html" %}
     {% endwith %}
 </ul>
 {% endif %}
 
-{% if games.count > 0 %}
+{% if old_games.count > 0 %}
 <p>
     {% trans 'View boards from older games:' %}
 </p>
 <ul>
-    {% for game in games|slice:'0:10' %}
+    {% for game in old_games|slice:'0:10' %}
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
         {% with boards=game.bingoboard_set.all|slice:":10" total_boards=game.bingoboard_set.count %}
@@ -47,7 +47,7 @@
         {% endwith %}
     </li>
     {% endfor %}
-    {% if games|length > 10 %}
+    {% if old_games|length > 10 %}
     <li><a href="{% url 'games_list' %}">{% trans 'older games' %}</a></li>
     {% endif %}
 </ul>

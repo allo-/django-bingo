@@ -43,17 +43,31 @@ def _get_user_bingo_board(request):
 def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
     bingo_board = _get_user_bingo_board(request)
+
     create_form = CreateForm(prefix="create")
     reclaim_form = ReclaimForm(prefix="reclaim")
+
+    boards = BingoBoard.objects.filter(game=game)
+    old_games = Game.objects.filter(
+        site=get_current_site(request)
+    ).exclude(
+        # games without any boards created
+        bingoboard=None
+    ).exclude(
+        # games without game_id are hidden
+        game_id=None
+    ).order_by("-created")
+
+    if game is not None:
+        old_games = old_games.exclude(id=game.id)
+
     return render(request, "bingo/main.html", {
         'my_board': bingo_board,
         'create_form': create_form,
         'reclaim_form': reclaim_form,
-        'boards': BingoBoard.objects.filter(game=game),
-        'games': Game.objects.filter(
-            site=get_current_site(request)).exclude(bingoboard=None)
-        .exclude(game_id=None)
-        .order_by("-created"),
+        'boards': boards,
+        'current_game': game,
+        'old_games': old_games,
         })
 
 
