@@ -20,7 +20,7 @@ def _get_user_bingo_board(request):
     # try the board_id in the session
     if not session_board_id is None:
         try:
-            bingo_board = BingoBoard.objects.get(board_id=session_board_id,
+            bingo_board = BingoBoard.objects.get(id=session_board_id,
                                                  game=game)
             bingo_board.ip = ip
         except BingoBoard.DoesNotExist, e:
@@ -33,7 +33,7 @@ def _get_user_bingo_board(request):
     if bingo_board is None:
         try:
             bingo_board = BingoBoard.objects.get(game=game, ip=ip)
-            request.session['board_id'] = bingo_board.board_id
+            request.session['board_id'] = bingo_board.id
         except BingoBoard.DoesNotExist, e:
             pass
 
@@ -94,7 +94,7 @@ def reclaim_board(request):
         reclaim_form = ReclaimForm(request.POST, game=game, prefix="reclaim")
         if reclaim_form.is_valid():
             bingo_board = reclaim_form.cleaned_data['bingo_board']
-            request.session['board_id'] = bingo_board.board_id
+            request.session['board_id'] = bingo_board.id
             bingo_board.ip = ip
             bingo_board.save()
             return redirect(reverse(bingo, kwargs={'board_id':
