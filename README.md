@@ -1,7 +1,7 @@
 django-bingo
 ------------
 
-django-bingo is a bingo-app, for playing bingo games like "bullshit bingo", by listening together to some radio show and clicking the words, which were mentioned.
+django-bingo is a bingo app to play bingo games like "bullshit bingo" while listening together to some radio show and marking the words, which were mentioned.
 
 Dependencies
 ------------
@@ -27,7 +27,7 @@ Create a django project. Then add the following options to your settings.py
     * 'colorful'
 * ```FONT_PATH``` = '/path/to/font.ttf'
 
-include the bingo-app in your project urls.py, like this:
+Include the bingo-app in your project urls.py, like this:
 ```url(r'^', include('bingo.urls'))```
 
 You can use the Sites framework to add several different Bingo sites.
@@ -52,11 +52,13 @@ Settings
 
 The game uses the following settings:
 
-required:
+### django-bingo settings
+
+#### required
 
 * ```FONT_PATH``` the ttf font used to generate images.
 
-optional:
+#### optional
 
 * ```BORDER``` size of the field border in the images.
 * ```H_BOX_PADDING```, ```V_BOX_PADDING``` padding of the fields in the images.
@@ -66,9 +68,9 @@ optional:
 * ```NEUTRAL_WORD_COLOR``` word color of neutral fields
 * ```MIDDLE_FIELD_COLOR``` background color of middle fields
 * ```MIDDLE_WORD_COLOR``` word color of middle fields
-* no ```MARKED_FIELD_COLOR```, because this is chosen randomly with ```COLOR_FROM``` and ```COLOR_TO```
+* no ```MARKED_FIELD_COLOR```, because its chosen randomly from ```COLOR_FROM``` to ```COLOR_TO```
 * ```MARKED_WORD_COLOR``` word color of marked fields
-* no ```VOTED_FIELD_COLOR```, because this is chosen randomly with ```COLOR_FROM``` and ```COLOR_TO```
+* no ```VOTED_FIELD_COLOR```, because its chosen randomly from ```COLOR_FROM``` to ```COLOR_TO```
 * ```VOTES_WORD_COLOR``` word color of neutral fields
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
@@ -81,6 +83,10 @@ optional:
 * ```GAME_SOFT_TIMEOUT``` minutes of inactivity, after which the game will be be ended.
 * ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
 * ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.
+
+### django settings
+
+* ```SITE_ID``` id of the current site in the Sites-Framework
 
 Notes
 -----
