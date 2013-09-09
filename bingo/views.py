@@ -3,12 +3,16 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
+from django.conf import settings
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm
 
 from image import get_image
+
+
+GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
 
 
 def _get_user_bingo_board(request):
@@ -71,6 +75,7 @@ def main(request, reclaim_form=None, create_form=None):
         'boards': boards,
         'current_game': game,
         'old_games': old_games,
+        'can_start_game': not GAME_START_DISABLED,
         })
 
 

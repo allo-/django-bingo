@@ -7,19 +7,18 @@
 {% block content %}
 
 {% if not my_board %}
-{% trans 'You seem not to have a bingo board for the current game' %}
-<p></p>
-{% include "bingo/forms.html" %}
-
+    {% if can_start_game %}
+        {% trans 'You seem not to have a bingo board for the current game' %}
+        <p></p>
+        {% include "bingo/forms.html" %}
+    {% endif %}
 {% else %}
-
-<p>
+    <p>
     {% trans 'Go to my board' %}:
     <a href="{% url 'bingo.views.bingo' my_board.board_id %}">
         {% trans 'Board' %} #{{ my_board.board_id }}
     </a>
     </p>
-
 {% endif %}
 
 {% if boards.count > 0 %}
