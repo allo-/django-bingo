@@ -1,14 +1,20 @@
 {% load i18n %}
-{% trans 'reclaim your board:' %}
-<form class="reclaim" action="{% url 'bingo.views.reclaim_board' %}" method="post">
-    {{ reclaim_form.as_p }}
-    {% csrf_token %}
-    <input type="submit" value="{% trans 'go to my board' %}" />
-</form>
-<p></p>
-{% trans 'create a new board:' %}
-<form class="create" action="{% url 'bingo.views.create_board' %}" method="post">
-    {{ create_form.as_p }}
-    {% csrf_token %}
-    <input type="submit" value="{% trans 'create board' %}" />
-</form>
+<div class="cf">
+<div class="create_form">
+    {% trans 'create a new board:' %}
+    <form class="create_form" action="{% url 'bingo.views.create_board' %}" method="post">
+        {{ create_form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'create board' %}" />
+    </form>
+</div>
+
+<div class="reclaim_form">
+    {% trans 'reclaim your board:' %}
+    <form class="reclaim_form" action="{% url 'bingo.views.reclaim_board' %}" method="post">
+        {{ reclaim_form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'go to my board' %}" />
+    </form>
+</div>
+</div>

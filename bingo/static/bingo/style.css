@@ -63,15 +63,21 @@ li.word div.word {
 li.word form.voteform input {
     width: 2em;
 }
-form.reclaim, form.create {
+form.reclaim_form, form.create_form {
     border: 2px solid darkgreen;
     display: table;
     padding: 1ex;
 }
-form.reclaim p {
+div.reclaim_form, div.create_form {
+    float: left;
+}
+div.reclaim_form {
+    margin-left: 1ex;
+}
+form.reclaim_form p {
     margin: 0;
 }
-form.create p {
+form.create_form p {
     margin: 0;
 }
 ul.errorlist {
@@ -88,7 +94,8 @@ ul.errorlist {
 }
 
 ul.board_list {
-    list-style: square
+    list-style: square;
+    margin-bottom: 1ex;
 }
 span.board_list_entry {
     color: black;
@@ -111,4 +118,15 @@ ul.pagination li.inactive {
 }
 ul.pagination li a {
     text-decoration: none;
+}
+
+.cf:before, .cf:after {
+    content: " ";
+    display: table;
+}
+.cf:after {
+    clear: both;
+}
+.cf {
+    *zoom: 1;
 }
