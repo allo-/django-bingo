@@ -1,13 +1,17 @@
-import os, sys
+import os
+import sys
 from setuptools import setup
 from setuptools.command.install_lib import install_lib as _install_lib
+
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
+
 class install_lib(_install_lib):
     def run(self):
-        from django.core.management.commands.compilemessages import compile_messages
+        from django.core.management.commands.compilemessages \
+            import compile_messages
         os.chdir('bingo')
         compile_messages(sys.stderr)
         os.chdir("..")
