@@ -4,6 +4,7 @@ from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.cache import cache
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
@@ -181,6 +182,10 @@ def vote(request, ajax, board_id=None):
                 field.vote = False
             field.save()
             my_bingo_board.game.save()  # update last_used
+        vote_counts_word_cachename = \
+            'vote_counts_game={0:d}_word={1:d}'.format(
+                field.board.game.id, field.word.id)
+        cache.delete(vote_counts_word_cachename)
 
     # for all ajax requests, send updated field data
     if ajax:

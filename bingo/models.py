@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.db import models, transaction
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 
 from colorful.fields import RGBColorField
 
@@ -273,6 +274,51 @@ class BingoBoard(models.Model):
         """
         return self.last_used.strftime(BINGO_IMAGE_DATETIME_FORMAT)
 
+    def num_votes(self, field):
+        """
+            get the up/down votes for a given field of THIS BingoBoard
+            @param field: a BingoField object
+            @returns (up, down)
+        """
+
+        # map BingoField to Word, for one BingoBoard
+        # so the cached vote counts for Word can be used
+        field2word_cachename = "field2word_board=%{0}i".format(self.id)
+        field2word = cache.get(field2word_cachename) or {}
+
+        # create, if not cached
+        if field2word == {}:
+            for field in self.bingofield_set.all().select_related():
+                field2word[field.id] = field.word.id
+            cache.set(field2word_cachename, field2word, 60*60)
+
+        # get the Word.id for field
+        word_id = field2word[field.id]
+
+        # try to get it from cache
+        vote_counts_word_cachename = \
+            'vote_counts_game={0:d}_word={1:d}'.format(
+                self.game.id, word_id)
+        vote_counts_word = cache.get(vote_counts_word_cachename)
+
+        # else get it from database
+        if vote_counts_word is None:
+            # BingoFields for the current Game and the Word with word_id
+            up = BingoField.objects.filter(
+                board__game=self.game,
+                word=word_id,
+                vote=True).count()
+            down = BingoField.objects.filter(
+                board__game=self.game,
+                word=word_id,
+                vote=False).count()
+
+            # save up/down values to cache
+            vote_counts_word = (up, down)
+            cache.set(vote_counts_word_cachename, vote_counts_word)
+
+        return vote_counts_word  # (up, down)
+
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1} (site {2})").format(
             self.board_id,
@@ -301,10 +347,7 @@ class BingoField(models.Model):
         return self.position == 13
 
     def num_votes(self):
-        fields = BingoField.objects.filter(
-            board__game=self.board.game, word=self.word)
-        positive = fields.filter(vote=True).count()
-        negative = fields.filter(vote=False).count()
+        positive, negative = self.board.num_votes(self)
         return max(0, positive - negative)
 
     def clean(self):
