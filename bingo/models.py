@@ -64,9 +64,13 @@ def get_game(site, create=False):
 
     game = None
     games = Game.objects.filter(site=site).order_by("-created")
+    try:
+        game = games[0]
+    except IndexError:
+        game = None
 
     # no game, yet, or game expired
-    if (games.count() == 0 or games[0].is_expired()):
+    if game is None or game.is_expired():
         if create:
             if is_starttime():
                 game = Game(site=site)
@@ -74,6 +78,9 @@ def get_game(site, create=False):
             else:
                 raise TimeRangeError(
                     _(u"game start outside of the valid timerange"))
+        else:
+            game = None
+
     # game exists and its not after the GAME_END_TIME
     elif not is_after_endtime():
         game = games[0]
