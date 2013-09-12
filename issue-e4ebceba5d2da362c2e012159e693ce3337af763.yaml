@@ -1,0 +1,27 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Bingo Detection
+desc: |-
+  Detect when a board has a bingo.
+  
+  Options for implementation
+  - Just from the own votes
+  - Use all votes, to check if it is a valid bingo
+  - a moderator can decide, which words are valid
+  
+  This feature may encourage fake votes, so it should
+  be possible to disable it.
+type: :feature
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-12 22:36:17.365675 Z
+references: []
+
+id: e4ebceba5d2da362c2e012159e693ce3337af763
+log_events: 
+- - 2013-09-12 22:36:23.373926 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""

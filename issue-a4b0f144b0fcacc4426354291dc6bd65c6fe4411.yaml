@@ -1,0 +1,21 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: CSS-Themes
+desc: |-
+  Option to include an additional stylesheet.
+  - URL given in settings
+  - multiple URLs given in settings, which are displayed as a theme chooser.
+type: :feature
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-12 22:52:40.818863 Z
+references: []
+
+id: a4b0f144b0fcacc4426354291dc6bd65c6fe4411
+log_events: 
+- - 2013-09-12 22:52:42.922992 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""

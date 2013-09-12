@@ -1,0 +1,23 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Statistics
+desc: |-
+  Generate some nice statistics for the past games.
+  Examples:
+  - the popularity of a word in all games
+  - the number of players per game
+  - ...
+type: :feature
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-12 22:42:34.151147 Z
+references: []
+
+id: cd9b24211bdeed31228b16efe084bd10b63d467b
+log_events: 
+- - 2013-09-12 22:42:35.823044 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""

@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Useraccounts
+desc: |-
+  - Support for creating user accounts, which can be used to claim boards.
+  - Profile pages with the past boards of a user.
+type: :feature
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-12 22:44:44.141153 Z
+references: []
+
+id: 5ecd7ee8fc7b16f020b32eb5fba914d24c5cf5da
+log_events: 
+- - 2013-09-12 22:44:45.668961 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
