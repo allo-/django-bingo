@@ -4,6 +4,7 @@ body {
     height: 100%;
     margin: 0;
     background-image: url("background.png");
+    background-attachment: fixed;
 }
 div.header a {
     color: white;
