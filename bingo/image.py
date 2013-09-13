@@ -114,7 +114,8 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
 def get_image(bingo_board, marked=False, voted=False):
     font = ImageFont.truetype(FONTPATH, FONTSIZE)
 
-    all_bingo_fields = BingoField.objects.filter(board__game=bingo_board.game)
+    all_bingo_fields = BingoField.objects.filter(
+        board__game=bingo_board.game).select_related()
     bingo_fields = all_bingo_fields.filter(board=bingo_board).exclude(
         position=None).order_by("position")
 
@@ -141,16 +142,10 @@ def get_image(bingo_board, marked=False, voted=False):
     im = Image.new("RGB", (image_width, image_height), color=(255, 255, 255))
     draw = ImageDraw.Draw(im)
 
-    # get the words of the board. This does include words deactivated later,
-    # and does not include words added later
-    words = Word.objects.filter(bingofield__board=bingo_board)
-
     # count votes per word, find the maximum
     vote_counts = {}
-    for word in words:
-        bingofields_word = all_bingo_fields.filter(word=word)
-        vote_counts[word.id] = max(0, bingofields_word.filter(
-            vote=True).count() - bingofields_word.filter(vote=False).count())
+    for field in bingo_fields:
+        vote_counts[field.word.id] = field.num_votes()
 
     # draw the board
     for bingo_field in bingo_fields:
