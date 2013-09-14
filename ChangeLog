@@ -1,0 +1,5 @@
+django-bingo 1.1.0 (2013-09-14):
+	* performance: optimized queries by using select_related().
+	* performance: implemented a vote cache, which avoids a lot of queries.
+	* style: use "background-attachment: fixed" for the background image.
+	* pep8: urls.py is now pep8 compliant.
