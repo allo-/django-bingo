@@ -3,7 +3,8 @@ from django.conf.urls import patterns, include, url
 import views
 import generic
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url('^$', views.main),
     url('^bingo/reclaim/$', views.reclaim_board),
     url('^bingo/create/$', views.create_board),
