@@ -6,7 +6,7 @@ desc: |-
   - multiple URLs given in settings, which are displayed as a theme chooser.
 type: :feature
 component: django-bingo
-release: v1.1.0
+release: v1.2.0
 reporter: Alexander Schier <allo@laxu.de>
 status: :unstarted
 disposition: 
@@ -22,4 +22,8 @@ log_events:
 - - 2013-09-12 23:09:48.889924 Z
   - Alexander Schier <allo@laxu.de>
   - assigned to release v1.1.0 from unassigned
+  - ""
+- - 2013-09-14 09:51:06.039631 Z
+  - Alexander Schier <allo@laxu.de>
+  - assigned to release v1.2.0 from v1.1.0
   - ""

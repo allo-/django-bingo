@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Use thumbnails in the board list
+desc: Use thumbnails of the board images in the board list.
+type: :feature
+component: django-bingo
+release: v1.2.0
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-14 09:54:31.774312 Z
+references: []
+
+id: e6bb982052f7961bd28eaf9c0638f912c3ad1cf6
+log_events: 
+- - 2013-09-14 09:54:33.078279 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
