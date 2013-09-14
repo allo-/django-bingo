@@ -296,8 +296,8 @@ class BingoBoard(models.Model):
 
         # create, if not cached
         if field2word == {}:
-            for field in self.bingofield_set.all().select_related():
-                field2word[field.id] = field.word.id
+            for loop_field in self.bingofield_set.all().select_related():
+                field2word[loop_field.id] = loop_field.word.id
             cache.set(field2word_cachename, field2word, 60*60)
 
         # get the Word.id for field
