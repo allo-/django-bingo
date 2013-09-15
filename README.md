@@ -75,7 +75,9 @@ The game uses the following settings:
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
 * ```BINGO_IMAGE_DATETIME_FORMAT``` format for the datetime in the board images
+* ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached in seconds.
 * ```FONT_SIZE``` the font size in the images.
+* ```THUMBNAIL_WIDTH``` / ```THUMBNAIL_HEIGHT``` maximum width/height of the thumbnails.
 * ```GAME_START_DISABLED``` set to ```True```, to disable starting new games.
 * ```GAME_START_TIMES``` ```None``` for no restriction or ```((start hour, start minute), (end hour, end minute))``` for restricting the start time to a special time range (i.e. the broadcasting time of the radio show)
 * ```GAME_END_TIME``` ```None``` for no restriction or ```(end hour, end minute)``` for setting a time, after which the game is ended. The end time needs to be outside of the ```GAME_START_TIMES``` interval.

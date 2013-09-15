@@ -94,12 +94,26 @@ ul.errorlist {
     float: right;
 }
 
-ul.board_list {
-    list-style: square;
-    margin-bottom: 1ex;
+ul.board_list, ul.game_list {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.5ex;
 }
-span.board_list_entry {
-    color: black;
+ul.board_list li {
+    float: left;
+}
+ul.game_list > li {
+    margin-bottom: 2ex;
+}
+div.board_thumbnail_box {
+    display: inline-block;
+    margin-right: 0.6ex;
+    margin-bottom: 0.6ex;
+    padding: 0.5ex;
+    vertical-align: middle;
+    border-width: 0.3ex;
+    border-style: solid;
+    min-width: 200px;
 }
 
 ul.pagination {

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 21:40+0200\n"
-"PO-Revision-Date: 2013-09-05 21:41+0200\n"
+"POT-Creation-Date: 2013-09-14 00:22+0200\n"
+"PO-Revision-Date: 2013-09-14 00:23+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -95,16 +95,19 @@ msgid "BingoField: word={0}, (not on the board)"
 msgstr "BingoField: word={0} (nicht auf dem Brett)"
 
 #, python-brace-format
-msgid "board_{0}_voted.png"
-msgstr "brett_{0}_abgestimmt.png"
+msgid "board_{0}_voted"
+msgstr "brett_{0}_abgestimmt"
 
 #, python-brace-format
-msgid "board_{0}_marked.png"
-msgstr "brett_{0}_markiert.png"
+msgid "board_{0}_marked"
+msgstr "brett_{0}_markiert"
 
 #, python-brace-format
-msgid "board_{0}.png"
-msgstr "brett_{0}.png"
+msgid "board_{0}"
+msgstr "brett_{0}"
+
+msgid "thumbnail"
+msgstr "thumbnail"
 
 msgid "Board"
 msgstr "Brett"
@@ -136,17 +139,17 @@ msgid_plural "%(board_count)s other boards"
 msgstr[0] "%(board_count)s weiteres Brett"
 msgstr[1] "%(board_count)s weitere Bretter"
 
-msgid "reclaim your board:"
-msgstr "Brett wiederaktivieren:"
-
-msgid "go to my board"
-msgstr "Brett aufrufen"
-
 msgid "create a new board:"
 msgstr "Brett erstellen:"
 
 msgid "create board"
 msgstr "Brett erstellen"
+
+msgid "reclaim your board:"
+msgstr "Brett wiederaktivieren:"
+
+msgid "go to my board"
+msgstr "Brett aufrufen"
 
 msgid "Game #"
 msgstr "Spiel #"

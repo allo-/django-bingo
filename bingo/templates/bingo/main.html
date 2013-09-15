@@ -23,7 +23,7 @@
 
 {% if boards.count > 0 %}
 <p>{% trans 'Current game:' %}<p>
-<ul>
+<ul class="game_list">
     {% with current_game as game %}
         <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</li>
     {% endwith %}
@@ -37,7 +37,7 @@
 <p>
     {% trans 'View boards from older games:' %}
 </p>
-<ul>
+<ul class="game_list">
     {% for game in old_games|slice:'0:10' %}
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
