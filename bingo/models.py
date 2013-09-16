@@ -291,7 +291,7 @@ class BingoBoard(models.Model):
 
         # map BingoField to Word, for one BingoBoard
         # so the cached vote counts for Word can be used
-        field2word_cachename = "field2word_board=%{0}i".format(self.id)
+        field2word_cachename = "field2word_board={0:d}".format(self.id)
         field2word = cache.get(field2word_cachename) or {}
 
         # create, if not cached
