@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Option to disable board thumbnails
+desc: |-
+  Add an option to disable board thumbnails on the board list.
+  Maybe even disable the whole thumbnail view.
+type: :feature
+component: django-bingo
+release: v1.2.0
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-16 21:17:44.598342 Z
+references: []
+
+id: 60aab3d97316f55d8eabaffcb9515538e3e93398
+log_events: 
+- - 2013-09-16 21:17:48.934430 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
