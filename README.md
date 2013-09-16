@@ -75,7 +75,8 @@ The game uses the following settings:
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
 * ```BINGO_IMAGE_DATETIME_FORMAT``` format for the datetime in the board images
-* ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached in seconds.
+* ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached (seconds).
+* ```OLD_THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail from an old game is cached (seconds).
 * ```FONT_SIZE``` the font size in the images.
 * ```THUMBNAIL_WIDTH``` / ```THUMBNAIL_HEIGHT``` maximum width/height of the thumbnails.
 * ```GAME_START_DISABLED``` set to ```True```, to disable starting new games.
@@ -89,6 +90,16 @@ The game uses the following settings:
 ### django settings
 
 * ```SITE_ID``` id of the current site in the Sites-Framework
+* [```CACHE```](https://docs.djangoproject.com/en/1.5/topics/cache/#setting-up-the-cache)
+  You need to increase ```'OPTIONS': {'MAX_ENTRIES': XXXXX}``` to cache enough entries.
+  The cached entries can quickly add up to a large number of keys, while the stored data is rather small,
+  and having too little cache will rapidly increase the number of database queries.
+  You need at least:
+  * **word cache:** 1 entry per board currently viewed by users or visible on the front page.
+  * **thumbnail cache:** 1 entry per thumbnail visible on the front page or viewed on game pages.
+  * **vote cache:** 1 entry per word and board currently viewed by users or visible on front page.
+  * **game_expired:** 1 entry per game.
+  * **example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 50*100 + 10 = 5210 entries.
 
 Notes
 -----

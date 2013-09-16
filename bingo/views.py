@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
+from django.middleware.cache import CacheMiddleware
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
@@ -14,7 +14,14 @@ import image as image_module
 
 
 GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
-THUMBNAIL_CACHE_EXPIRY = getattr(settings, "THUMBNAIL_CACHE_EXPIRY", 5 * 60)
+THUMBNAIL_CACHE_EXPIRY = getattr(
+    settings,
+    "THUMBNAIL_CACHE_EXPIRY",
+    5 * 60)
+OLD_THUMBNAIL_CACHE_EXPIRY = getattr(
+    settings,
+    "OLD_THUMBNAIL_CACHE_EXPIRY",
+    24 * 60 * 60)
 
 
 def _get_user_bingo_board(request):
@@ -245,15 +252,37 @@ def image(request, board_id, marked=False, voted=False):
     return response
 
 
-@cache_page(THUMBNAIL_CACHE_EXPIRY)
 def thumbnail(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
+
+    # check if the board is from an expired game
+    game_expired_cachename = "game_expired__board={0:d}"
+    game_expired = cache.get(
+        game_expired_cachename.format(int(board_id)))
+    if game_expired is None:
+        game_expired = bingo_board.game.is_expired()
+        cache.set(
+            game_expired_cachename.format(int(board_id)),
+            game_expired, 60 * 60)
+
+    # when the game of the board is expired,
+    # the thumbnail can be cached longer.
+    if game_expired:
+        m = CacheMiddleware(cache_timeout=OLD_THUMBNAIL_CACHE_EXPIRY)
+    else:
+        m = CacheMiddleware(cache_timeout=THUMBNAIL_CACHE_EXPIRY)
+
+    response = m.process_request(request)
+    if response:  # cached
+        return response
+
     response = HttpResponse(mimetype="image/png")
     filename = get_image_name(board_id, marked, voted) + \
         "_" + _("thumbnail") + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
     im = image_module.get_thumbnail(bingo_board, marked, voted)
     im.save(response, "png")
-    return response
+
+    return m.process_response(request, response)
