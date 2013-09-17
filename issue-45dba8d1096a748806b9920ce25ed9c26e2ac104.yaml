@@ -1,0 +1,21 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "Word: remove is_active and make word an unique field"
+desc: |-
+  is_active is redundant to site: removing a site will disable the Word on that site.
+  Word.word can be unique, because multiple sites using the same Word
+  should use the same object.
+type: :task
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-17 21:22:06.945056 Z
+references: []
+
+id: 45dba8d1096a748806b9920ce25ed9c26e2ac104
+log_events: 
+- - 2013-09-17 21:22:08.377086 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
