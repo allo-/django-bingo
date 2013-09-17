@@ -19,4 +19,4 @@ log_events:
 - - 2013-09-16 21:19:24.898302 Z
   - Alexander Schier <allo@laxu.de>
   - closed with disposition fixed
-  - implemented in 1.2.0-dev
+  - implemented in [master ec9df64]
