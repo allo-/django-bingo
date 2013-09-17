@@ -99,7 +99,7 @@ ul.board_list, ul.game_list {
     padding: 0;
     margin-top: 0.5ex;
 }
-ul.board_list li {
+ul.board_list li.thumbnail {
     float: left;
 }
 ul.game_list > li {

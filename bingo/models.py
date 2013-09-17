@@ -30,6 +30,8 @@ BINGO_IMAGE_DATETIME_FORMAT = getattr(
 # he is counted as inactive
 USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
 
+THUMBNAILS_ENABLED = getattr(settings, "THUMBNAILS_ENABLED", True)
+
 
 class Word(models.Model):
     """
@@ -326,6 +328,9 @@ class BingoBoard(models.Model):
             cache.set(vote_counts_word_cachename, vote_counts_word)
 
         return vote_counts_word  # (up, down)
+
+    def thumbnails_enabled(self):
+        return THUMBNAILS_ENABLED
 
     def __unicode__(self):
         return _(u"BingoBoard #{0} created by {1} (site {2})").format(

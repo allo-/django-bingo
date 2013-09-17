@@ -75,6 +75,7 @@ The game uses the following settings:
 * ```VETO_FIELD_COLOR``` background color of veto fields
 * ```VETO_WORD_COLOR``` word color of veto fields
 * ```BINGO_IMAGE_DATETIME_FORMAT``` format for the datetime in the board images
+* ```THUMBNAILS_ENABLED``` show board thumbnails in the board list.
 * ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached (seconds).
 * ```OLD_THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail from an old game is cached (seconds).
 * ```FONT_SIZE``` the font size in the images.
@@ -99,7 +100,8 @@ The game uses the following settings:
   * **thumbnail cache:** 1 entry per thumbnail visible on the front page or viewed on game pages.
   * **vote cache:** 1 entry per word and board currently viewed by users or visible on front page.
   * **game_expired:** 1 entry per game.
-  * **example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 50*100 + 10 = 5210 entries.
+  * **Note:*** the "visible on the front page" is only relevant, when thumbnails are enabled.
+  * **Example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 50*100 + 10 = 5210 entries.
 
 Notes
 -----

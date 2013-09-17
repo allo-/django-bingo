@@ -1,19 +1,30 @@
 {% load i18n %}
 <ul class="board_list">
 {% for board in boards %}
+    {% if board.thumbnails_enabled %}
+        <li class="thumbnail">
+            <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
+                <a href="{% url 'bingo.views.bingo' board.board_id %}">
+                    <img src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" />
+                    <br />
+                    {% trans 'Board' %} #{{ board.board_id }}
+                </a>
+                {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+            </div>
+        </li>
+        {% if forloop.last %}
+        <p style="clear: both"></p>
+        {% endif %}
+    {% else %}
     <li>
-        <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
-            <a href="{% url 'bingo.views.bingo' board.board_id %}">
-                <img src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" />
-                <br />
-                {% trans 'Board' %} #{{ board.board_id }}
-            </a>
-            {% if board == my_board %}{% trans '(your board)' %}{% endif %}
-        </div>
+        <a href="{% url 'bingo.views.bingo' board.board_id %}">
+            {% trans 'Board' %} #{{ board.board_id }}
+        </a>
+        {% if board == my_board %}{% trans '(your board)' %}{% endif %}
     </li>
+    {% endif %}
 {% endfor %}
 {% if total_boards > 10 %}
-<p style="clear: both"></p>
 <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">
     {% blocktrans count total_boards|add:-10 as board_count %}{{ board_count }} other board{% plural %}{{ board_count }} other boards{% endblocktrans %}
 </a></li>
