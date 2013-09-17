@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Use a specific hasher instead of the default one
+desc: |-
+  Use a specific hasher instead of the default one, because the default may change.
+  This will be needed for claiming old boards to assign them to a user account.
+type: :task
+component: django-bingo
+release: v1.2.0
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-17 17:33:36.959622 Z
+references: []
+
+id: bbb993b71d59302dec930c306808bb6eaf64a8ac
+log_events: 
+- - 2013-09-17 17:33:39.647581 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
