@@ -6,10 +6,10 @@ desc: |-
   should use the same object.
 type: :task
 component: django-bingo
-release: 
+release: v1.2.0
 reporter: Alexander Schier <allo@laxu.de>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2013-09-17 21:22:06.945056 Z
 references: []
 
@@ -19,3 +19,11 @@ log_events:
   - Alexander Schier <allo@laxu.de>
   - created
   - ""
+- - 2013-09-18 17:16:56.238606 Z
+  - Alexander Schier <allo@laxu.de>
+  - assigned to release v1.2.0 from unassigned
+  - ""
+- - 2013-09-18 17:27:44.968839 Z
+  - Alexander Schier <allo@laxu.de>
+  - closed with disposition fixed
+  - implemented in [master a28f551]
