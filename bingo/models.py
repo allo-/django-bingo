@@ -38,8 +38,7 @@ class Word(models.Model):
         a word entry. Should not be deleted, but only disabled
         to preserve old BingoFields
     """
-    word = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
+    word = models.CharField(max_length=255, unique=True)
     is_middle = models.BooleanField(default=False)
     site = models.ManyToManyField(Site)
 
@@ -174,7 +173,7 @@ class Game(models.Model):
 
 
 def _get_random_words(site):
-    all_words = Word.objects.filter(site=site, is_active=True).order_by("?")
+    all_words = Word.objects.filter(site=site).order_by("?")
     middle_words = all_words.filter(site=site, is_middle=True).order_by("?")
     words = all_words.filter(is_middle=False)
     if middle_words.count() == 0:

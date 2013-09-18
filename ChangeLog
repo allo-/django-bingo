@@ -1,5 +1,8 @@
 django-bingo 1.2.0 ():
 	* show boards as thumbnails in the board list.
+	* removed is_active. to set a Word to inactive, just remove it from all
+	  sites.
+	* added "unique" constraint to field Word.word.
 
 django-bingo 1.1.0 (2013-09-14):
 	* performance: optimized queries by using select_related().
