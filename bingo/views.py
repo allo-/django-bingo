@@ -258,13 +258,14 @@ def thumbnail(request, board_id, marked=False, voted=False):
         game__site=get_current_site(request))
 
     # check if the board is from an expired game
-    game_expired_cachename = "game_expired__board={0:d}"
+    game_expired_cachename = "game_expired__board={0:d}".format(
+        int(bingo_board.id))
     game_expired = cache.get(
-        game_expired_cachename.format(int(board_id)))
+        game_expired_cachename)
     if game_expired is None:
         game_expired = bingo_board.game.is_expired()
         cache.set(
-            game_expired_cachename.format(int(board_id)),
+            game_expired_cachename,
             game_expired, 60 * 60)
 
     # when the game of the board is expired,
