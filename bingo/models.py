@@ -40,7 +40,7 @@ class Word(models.Model):
     """
     word = models.CharField(max_length=255, unique=True)
     is_middle = models.BooleanField(default=False)
-    site = models.ManyToManyField(Site)
+    site = models.ManyToManyField(Site, blank=True, null=True)
 
     class Meta:
         ordering = ("word",)
