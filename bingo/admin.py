@@ -16,9 +16,11 @@ def bingoboard_name(bingo_board):
 
 def word_sites(word):
     """
-        @returns: the sites, where a Word instance is active
+        @returns: the sites, where a Word instance is active,
+        truncated, so at most 5 sites are displayed
     """
-    return ", ".join(map(lambda site: site.domain, word.site.all()))
+    sites = map(lambda site: site.domain, word.site.all()[:5])
+    return ", ".join(sites if len(sites) <= 5 else sites+["[...]"])
 
 
 def game_id(game):
