@@ -3,6 +3,7 @@ django-bingo 1.2.0 ():
 	* removed is_active. to set a Word to inactive, just remove it from all
 	  sites.
 	* added "unique" constraint to field Word.word.
+	* improved admin interface, added some list-columns and list-filters
 
 django-bingo 1.1.0 (2013-09-14):
 	* performance: optimized queries by using select_related().
