@@ -27,3 +27,7 @@ log_events:
   - Alexander Schier <allo@laxu.de>
   - assigned to release v1.2.0 from v1.1.0
   - ""
+- - 2013-09-21 21:32:43.330246 Z
+  - Alexander Schier <allo@laxu.de>
+  - commented
+  - added support for one theme via THEME setting in [master adebdeb].
