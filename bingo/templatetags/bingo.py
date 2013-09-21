@@ -8,7 +8,7 @@ register = template.Library()
 
 ALLOWED_TEMPLATE_SETTINGS_ACCESS = getattr(
     settings, "ALLOWED_TEMPLATE_SETTINGS_ACCESS",
-    (,)
+    ("THEME",)
 )
 
 
