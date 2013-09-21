@@ -70,7 +70,7 @@ def get_game(site, create=False):
         game = None
 
     # no game, yet, or game expired
-    if game is None or game.is_expired():
+    if game is None or game.is_expired() or is_after_endtime():
         if create:
             if is_starttime():
                 game = Game(site=site)
