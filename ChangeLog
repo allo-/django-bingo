@@ -5,6 +5,9 @@ django-bingo 1.2.0 ():
 	* added "unique" constraint to field Word.word.
 	* improved admin interface, added some list-columns and list-filters
 
+django-bingo 1.1.1 (2013-09-21):
+	* fixed: GAME_END_TIME did not stop currently running games
+
 django-bingo 1.1.0 (2013-09-14):
 	* performance: optimized queries by using select_related().
 	* performance: implemented a vote cache, which avoids a lot of queries.
