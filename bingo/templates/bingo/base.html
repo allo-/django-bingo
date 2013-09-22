@@ -1,12 +1,11 @@
 <!DOCTYPE HTML>
 <html lang="en">
 {% load static from staticfiles %}
-{% load settings_value from bingo %}
 <head>
 	<meta charset="UTF-8">
     <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'bingo/style.css' %}" />
-    {% with "THEME"|settings_value as theme %}
+    {% with settings.THEME as theme %}
         {% if theme %}
             {% if theme|slice:":7" == "http://" or theme|slice:":8" == "https://" %}
                 <link rel="stylesheet" type="text/css" href="{{ theme }}" />
