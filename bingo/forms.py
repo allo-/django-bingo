@@ -73,3 +73,7 @@ class ReclaimForm(forms.Form):
                 _(u"No active board with this password."
                     " Try again, or create a new one."))
         return hashed_password
+
+
+class ChangeThemeForm(forms.Form):
+    theme = forms.CharField(required=False)

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-14 00:22+0200\n"
-"PO-Revision-Date: 2013-09-14 00:23+0200\n"
+"POT-Creation-Date: 2013-09-22 10:51+0200\n"
+"PO-Revision-Date: 2013-09-22 10:51+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -17,6 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
+
+msgid "Default"
+msgstr "Standard"
 
 msgid "Password (optional)"
 msgstr "Passwort (optional)"
@@ -189,6 +192,12 @@ msgstr "Bretter von älteren Spielen ansehen:"
 
 msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"
+
+msgid "Theme:"
+msgstr "Theme:"
+
+msgid "change"
+msgstr "ändern"
 
 #~ msgid "other boards"
 #~ msgstr "weitere Bretter"

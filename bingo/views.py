@@ -9,7 +9,7 @@ from django.middleware.cache import CacheMiddleware
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
-from forms import CreateForm, ReclaimForm
+from forms import CreateForm, ReclaimForm, ChangeThemeForm
 import image as image_module
 
 
@@ -287,3 +287,11 @@ def thumbnail(request, board_id, marked=False, voted=False):
     im.save(response, "png")
 
     return m.process_response(request, response)
+
+
+def change_theme(request):
+    if request.POST:
+        form = ChangeThemeForm(request.POST)
+        if form.is_valid():
+            request.session['theme'] = form.cleaned_data['theme']
+            return redirect(reverse('bingo.views.main'))

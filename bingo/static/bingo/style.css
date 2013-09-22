@@ -135,6 +135,10 @@ ul.pagination li a {
     text-decoration: none;
 }
 
+#theme_chooser {
+    float: right;
+}
+
 .cf:before, .cf:after {
     content: " ";
     display: table;

@@ -49,6 +49,7 @@ $(document).ready(function(){
         $(obj).append(vote_field);
         $(obj).append(veto_link);
     });
+
     if(bingo_board == my_board){
         $(".bingofield, .word").not(".middle").each(function(idx, obj){
             $(obj).addClass("clickable");

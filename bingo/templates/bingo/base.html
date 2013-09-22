@@ -5,15 +5,12 @@
 	<meta charset="UTF-8">
     <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'bingo/style.css' %}" />
-    {% with settings.THEME as theme %}
-        {% if theme %}
-            {% if theme|slice:":7" == "http://" or theme|slice:":8" == "https://" %}
-                <link rel="stylesheet" type="text/css" href="{{ theme }}" />
-            {% else %}
-                <link rel="stylesheet" type="text/css" href="{% static theme %}" />
-            {% endif %}
-        {% endif %}
-    {% endwith %}
+    {% if site_theme %}
+        <link rel="stylesheet" type="text/css" href="{{ site_theme }}" />
+    {% endif %}
+    {% if user_theme %}
+        <link rel="stylesheet" type="text/css" href="{{ user_theme }}" />
+    {% endif %}
     <style>
 {% block extra_style %}
 {% endblock %}
@@ -23,9 +20,12 @@
 </head>
 <body>
 {% block header %}
-<div class="header">
-    <h1><a href="{% url 'bingo.views.main' %}">Bingo</a> - {% block headline %}{% endblock %}</h1>
+<div class="header clf">
+    <h1><a href="{% url 'bingo.views.main' %}"{% block sitename %}>Bingo</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
 </div>
+{% if themes %}
+    {% include "bingo/theme_chooser.html" %}
+{% endif %}
 {% endblock %}
 {% block extra_content_top %}
 {% endblock %}
