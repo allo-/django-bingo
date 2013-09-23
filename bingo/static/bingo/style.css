@@ -6,6 +6,9 @@ body {
     background-image: url("background.png");
     background-attachment: fixed;
 }
+a {
+    text-decoration: none;
+}
 div.header a {
     color: white;
     text-decoration: none;
@@ -22,7 +25,7 @@ div.content {
     margin: 0;
     padding: 0.5ex;
 }
-td.bingofield {
+td.bingofield, li.word {
     background-color: white;
     vertical-align: top;
     border: thin solid black;
@@ -39,22 +42,20 @@ td.bingofield div.bingofield {
 .clickable {
     cursor: pointer;
 }
-td.bingofield.veto div.bingofield, li.word.veto {
+.veto {
     color: red;
-}
-ul.words {
-    padding: 0;
 }
 ul.words li.word form.voteform {
     display: inline;
     float: right;
 }
-li.word{
-    background-color: white;
-    float: left;
+ul.words {
+    padding: 0;
     list-style: none;
+}
+li.word{
+    float: left;
     width: 23em;
-    border: thin solid black;
     margin: 1px;
 }
 li.word div.word {
@@ -75,15 +76,11 @@ div.reclaim_form, div.create_form {
 div.reclaim_form {
     margin-left: 1ex;
 }
-form.reclaim_form p {
-    margin: 0;
-}
-form.create_form p {
+form.reclaim_form p, form.create_form p {
     margin: 0;
 }
 ul.errorlist {
     list-style: none;
-    padding: 0;
     margin: 0;
     padding: 0.5ex 1ex;
     background-color: red;
@@ -110,7 +107,6 @@ div.board_thumbnail_box {
     margin-right: 0.6ex;
     margin-bottom: 0.6ex;
     padding: 0.5ex;
-    vertical-align: middle;
     border-width: 0.3ex;
     border-style: solid;
     min-width: 200px;
