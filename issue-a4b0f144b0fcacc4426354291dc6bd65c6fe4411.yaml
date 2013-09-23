@@ -8,8 +8,8 @@ type: :feature
 component: django-bingo
 release: v1.2.0
 reporter: Alexander Schier <allo@laxu.de>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2013-09-12 22:52:40.818863 Z
 references: []
 
@@ -31,3 +31,7 @@ log_events:
   - Alexander Schier <allo@laxu.de>
   - commented
   - added support for one theme via THEME setting in [master adebdeb].
+- - 2013-09-22 08:57:12.117985 Z
+  - Alexander Schier <allo@laxu.de>
+  - closed with disposition fixed
+  - implemented in [master a18a4ce]
