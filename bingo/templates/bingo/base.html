@@ -23,10 +23,10 @@
 <div class="header clf">
     <h1><a href="{% url 'bingo.views.main' %}"{% block sitename %}>Bingo</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
 </div>
+{% endblock %}
 {% if themes %}
     {% include "bingo/theme_chooser.html" %}
 {% endif %}
-{% endblock %}
 {% block extra_content_top %}
 {% endblock %}
 <div class="content">
