@@ -5,7 +5,7 @@ $(document).ready(function(){
     $("form.voteform").each(function(idx, obj){
         $(obj).find("input[type=submit]").remove();
         var vote_field = $("<input>").attr("name", "vote").attr("type", "hidden");
-        var veto_link = $("<a>").attr("href", "#").addClass("veto_link").text("[-]");
+        var veto_link = $("<a>").attr("href", "#").addClass("veto").text("[-]");
 
         function ajax_submit(form){
             var data = {};

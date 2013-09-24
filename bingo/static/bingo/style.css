@@ -55,7 +55,7 @@ ul.words {
 }
 li.word{
     float: left;
-    width: 23em;
+    width: 24em;
     margin: 1px;
 }
 li.word div.word {
@@ -111,6 +111,15 @@ div.board_thumbnail_box {
     border-style: solid;
     min-width: 200px;
 }
+input[type=submit] {
+    margin: 5px 0px;
+}
+input.vote_button {
+    background-color: lightgrey;
+    color: black;
+    border: thin solid darkgrey;
+    margin: 1px;
+}
 
 ul.pagination {
     padding: 0;
@@ -118,17 +127,13 @@ ul.pagination {
 }
 ul.pagination li {
     margin: 0.5ex;
-    border: 2px solid #a0a0a0;
-    background-color: #c0d0c0;
-    padding: 0.5ex;
+    border: thin solid #606060;
+    background-color: #b0c0b0;
+    padding: 0.5ex 1ex;
     float: left;
-    font-weight: bold;
 }
 ul.pagination li.inactive {
     color: #808080;
-}
-ul.pagination li a {
-    text-decoration: none;
 }
 
 #theme_chooser {

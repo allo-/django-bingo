@@ -1,0 +1,21 @@
+body{
+    background: url("dark/background.png") #000020 fixed;
+    color: white;
+}
+a {
+    color: lightblue;
+}
+li.word, td.bingofield {
+    border: none;
+    color: black;
+}
+input{
+    background-color: #001000;
+    color: white;
+    border: thin solid grey;
+}
+
+ul.pagination li {
+    background-color: #002000;
+    border: thin solid darkgrey;
+}

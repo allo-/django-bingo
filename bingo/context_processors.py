@@ -2,8 +2,12 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-
 static_url = staticfiles_storage.url
+
+
+DEFAULT_THEMES = (
+    ('Dark', 'bingo/themes/dark.css'),
+)
 
 
 def settings_context(request):
@@ -22,7 +26,7 @@ def themes(request):
             not site_theme.startswith("https://"):
         site_theme = static_url(site_theme)
 
-    themes = list(getattr(settings, "THEMES", []))
+    themes = list(getattr(settings, "THEMES", DEFAULT_THEMES))
     if len(themes) > 0:
         themes = [(_("Default"), "")] + list(themes)
     else:
