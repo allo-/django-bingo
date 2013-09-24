@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Store Thumbnails in MEDIA_ROOT
+desc: |-
+  Store thumbnails of expired games in the media folder, because they do not change anyway.
+  Should ensure, that missing thumbnails are regenerated, even when MEDIA_URL is served statically.
+type: :feature
+component: django-bingo
+release: v1.3.0
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2013-09-24 22:39:41.275082 Z
+references: []
+
+id: f4305452b2bab97a486610b9acc02c036cdd5961
+log_events: 
+- - 2013-09-24 22:39:46.043278 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
