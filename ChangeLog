@@ -1,9 +1,13 @@
 django-bingo 1.2.0 ():
-	* show boards as thumbnails in the board list.
-	* removed is_active. to set a Word to inactive, just remove it from all
-	  sites.
-	* added "unique" constraint to field Word.word.
-	* improved admin interface, added some list-columns and list-filters
+	* new feature: show boards as thumbnails in the board list.
+	* changed: removed is_active. to set a Word to inactive, just remove it from all sites.
+	* changed: added "unique" constraint to field Word.word.
+	* improved: added some more list-columns and list-filters in the admin interface.
+	* new feature: implemented theme support
+	  * THEME is path for a site-theme
+	  * THEMES = (('name', 'path/to/file.css'), ...) are themes shown in a theme chooser
+	  * new dark theme included. use "bingo/themes/dark.css" as path.
+	* Note: you need to add TEMPLATE_CONTEXT_PROCESSORS to your config, see the README.
 
 django-bingo 1.1.1 (2013-09-21):
 	* fixed: GAME_END_TIME did not stop currently running games
