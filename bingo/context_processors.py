@@ -22,13 +22,18 @@ def themes(request):
     STATIC_ROOT = getattr(settings, "STATIC_ROOT", "")
 
     site_theme = getattr(settings, "THEME", "")
-    if not site_theme.startswith("http://") and \
-            not site_theme.startswith("https://"):
+    if site_theme != '' and not site_theme.startswith("http://") \
+            and not site_theme.startswith("https://"):
         site_theme = static_url(site_theme)
 
     themes = list(getattr(settings, "THEMES", DEFAULT_THEMES))
     if len(themes) > 0:
         themes = [(_("Default"), "")] + list(themes)
+        for i in xrange(len(themes)):
+            theme_name, theme_url = themes[i]
+            if theme_url != '' and not theme_url.startswith("http://") \
+                    and not theme_url.startswith("https://"):
+                themes[i] = (theme_name, static_url(theme_url))
     else:
         # if there is no theme list, the user cannot
         # reset the theme, so we remove it from session
@@ -37,9 +42,6 @@ def themes(request):
             del request.session['theme']
 
     user_theme = request.session.get('theme', '')
-    if user_theme != '' and not user_theme.startswith("http://") and \
-            not user_theme.startswith("https://"):
-        user_theme = static_url(user_theme)
 
     return {
         'site_theme': site_theme,

@@ -1,12 +1,10 @@
 {% load i18n %}
-{% with themes as themes %}
 <form action="{% url 'bingo.views.change_theme' %}" method="POST" id="theme_chooser">
     {% trans "Theme:" %} <select name="theme">
     {% for theme in themes %}
-    <option value="{{ theme.1 }}" {% if theme.1 == current_theme%}selected{% endif %}>{{ theme.0 }}</option>
+    <option value="{{ theme.1 }}" {% if theme.1 == user_theme %}selected{% endif %}>{{ theme.0 }}</option>
     {% endfor %}
 </select>
 {% csrf_token %}
 <input type="submit" value="{% trans 'change' %}" />
 </form>
-{% endwith %}
