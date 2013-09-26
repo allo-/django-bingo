@@ -1,7 +1,7 @@
 {% load i18n %}
-<div class="cf">
+<div class="cf" style="padding: 0 0 2ex 0">
 <div class="create_form">
-    {% trans 'create a new board:' %}
+    <span class="form_header">{% trans 'create a new board:' %}</span>
     <form class="create_form" action="{% url 'bingo.views.create_board' %}" method="post">
         {{ create_form.as_p }}
         {% csrf_token %}
@@ -10,7 +10,7 @@
 </div>
 
 <div class="reclaim_form">
-    {% trans 'reclaim your board:' %}
+    <span class="form_header">{% trans 'reclaim your board:' %}</span>
     <form class="reclaim_form" action="{% url 'bingo.views.reclaim_board' %}" method="post">
         {{ reclaim_form.as_p }}
         {% csrf_token %}

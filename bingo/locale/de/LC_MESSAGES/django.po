@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-22 10:51+0200\n"
-"PO-Revision-Date: 2013-09-22 10:51+0200\n"
+"POT-Creation-Date: 2013-09-26 20:19+0200\n"
+"PO-Revision-Date: 2013-09-26 20:19+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -178,14 +178,14 @@ msgstr "Startseite"
 msgid "start page"
 msgstr "Startseite"
 
-msgid "You seem not to have a bingo board for the current game"
-msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
-
-msgid "Go to my board"
-msgstr "Gehe zu meinem Brett"
-
 msgid "Current game:"
 msgstr "Aktuelles Spiel:"
+
+msgid "Your board:"
+msgstr "Dein Brett:"
+
+msgid "You seem not to have a bingo board for the current game"
+msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
@@ -198,6 +198,9 @@ msgstr "Theme:"
 
 msgid "change"
 msgstr "ändern"
+
+#~ msgid "Go to my board"
+#~ msgstr "Gehe zu meinem Brett"
 
 #~ msgid "other boards"
 #~ msgstr "weitere Bretter"

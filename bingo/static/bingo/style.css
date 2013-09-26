@@ -65,6 +65,13 @@ li.word div.word {
 li.word form.voteform input {
     width: 2em;
 }
+.gamelist_header {
+    font-weight: bold;
+    margin: 0;
+}
+span.form_header {
+    font-weight: bold;
+}
 form.reclaim_form, form.create_form {
     border: 2px solid darkgreen;
     display: table;
