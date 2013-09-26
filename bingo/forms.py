@@ -20,7 +20,7 @@ class CreateForm(forms.Form):
 
     def clean_password(self):
         if self.cleaned_data['password']:
-            hasher = get_hasher()
+            hasher = get_hasher(algorithm='sha1')
             hashed_password = hasher.encode(
                 self.cleaned_data['password'], SALT)
             return hashed_password
@@ -56,7 +56,7 @@ class ReclaimForm(forms.Form):
         super(ReclaimForm, self).__init__(data=data, *args, **kwargs)
 
     def clean_password(self):
-        hasher = get_hasher()
+        hasher = get_hasher(algorithm='sha1')
         hashed_password = hasher.encode(self.cleaned_data['password'],
                                         SALT)
         if not self.game or self.game.is_expired():
