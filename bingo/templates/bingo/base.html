@@ -27,13 +27,13 @@
 {% if themes %}
     {% include "bingo/theme_chooser.html" %}
 {% endif %}
-{% block extra_content_top %}
-{% endblock %}
 <div class="content">
+    {% block extra_content_top %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
+    {% block extra_content_bottom %}
+    {% endblock %}
 </div>
-{% block extra_content_bottom %}
-{% endblock %}
 </body>
 </html>
