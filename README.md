@@ -97,8 +97,8 @@ The game uses the following settings:
 
 ##### Themes
 
-* ```THEME``` relative or absolute URL to a theme. When it does not start with "/", "http://" or "https://", the ```STATIC_URL``` is prepended to the path.
-* ```THEMES``` A list of themes, which will be available via a theme chooser. Example: ```THEMES = (('dark', 'bingo/themes/dark.css'), ('some other theme', 'http://mysite/mytheme.css'))```
+* ```THEME``` relative or absolute URL to a theme. When the string does not start with "/", "http://" or "https://", the string is interpreted as a [static files path](https://docs.djangoproject.com/en/1.5/ref/contrib/staticfiles/). (Default: None)
+* ```THEMES``` A list of themes, which will be available via a theme chooser. Example: ```THEMES = (('dark', 'bingo/themes/dark.css'), ('some other theme', 'http://mysite/mytheme.css'))``` (Default: a "dark" theme. ```None``` will disable the theme chooser)
 
 ##### Other
 
