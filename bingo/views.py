@@ -89,9 +89,11 @@ def main(request, reclaim_form=None, create_form=None):
 
 
 def game(request, game_id):
+    bingo_board = _get_user_bingo_board(request)
     return render(request, "bingo/game.html", {
         'game': get_object_or_404(
             Game, site=get_current_site(request), game_id=game_id),
+        'my_board': bingo_board
     })
 
 
