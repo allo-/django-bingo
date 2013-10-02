@@ -1,5 +1,8 @@
 django-bingo 1.3.0 ():
 
+django-bingo 1.2.1 (2013-10-03):
+	* fix: each BingoBoard was missing one of the words, which are not on the board.
+
 django-bingo 1.2.0 (2013-09-27):
 	* new feature: show boards as thumbnails in the board list.
 	* changed: removed is_active. to set a Word to inactive, just remove it from all sites.

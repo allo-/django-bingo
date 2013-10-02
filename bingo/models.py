@@ -259,7 +259,10 @@ class BingoBoard(models.Model):
                 count += 1
         # create fields without position for every
         # active word, which is not on the board, too.
-        for word in words[25:]:
+        # the index is 24, because there are only 24
+        # non-middle words on the field
+        assert count == 24
+        for word in words[24:]:
             fields.append(BingoField(word=word, position=None))
 
         return fields
