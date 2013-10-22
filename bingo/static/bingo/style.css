@@ -100,8 +100,13 @@ ul.errorlist {
     color: white;
 }
 #num_users_table {
-    text-align: right;
     float: right;
+}
+#num_users_table th {
+    text-align: right;
+}
+#num_users_table td {
+    text-align: left;
 }
 
 ul.board_list, ul.game_list {
@@ -124,7 +129,7 @@ div.board_thumbnail_box {
     border-style: solid;
     min-width: 200px;
 }
-input{
+input {
     background-color: lightgrey;
     color: black;
     border: thin solid grey;

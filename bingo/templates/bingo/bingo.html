@@ -33,14 +33,26 @@ var my_board = "{{ my_board.id }}";
 <p></p>
 
 <table id="num_users_table">
+    {% if board.game.is_expired %}
+    <tr>
+        <th>{% trans 'Created:' %}</th>
+        <td id="created">{{ board.created}}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Last Used:' %}</th>
+        <td id="last_used">{{ board.last_used }}</td>
+    </tr>
+    {% endif %}
     <tr>
         <th>{% trans 'Total Users:' %}</th>
         <td id="num_users">{{ board.game.num_users }}</td>
     </tr>
+    {% if not board.game.is_expired %}
     <tr>
         <th>{% trans 'Active Users:' %}</th>
         <td id="num_active_users">{{ board.game.num_active_users }}</td>
     </tr>
+    {% endif %}
 </table>
 
 <table class="bingoboard" id="bingoboard">
