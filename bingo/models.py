@@ -284,7 +284,7 @@ class BingoBoard(models.Model):
         """
             get last_used field with BINGO_IMAGE_DATETIME_FORMAT formatting
         """
-        return self.last_used.strftime(BINGO_IMAGE_DATETIME_FORMAT)
+        return timezone.localtime(self.last_used).strftime(BINGO_IMAGE_DATETIME_FORMAT)
 
     def num_votes(self, field):
         """
