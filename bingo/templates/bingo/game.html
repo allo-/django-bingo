@@ -1,6 +1,11 @@
 {% extends 'bingo/base.html' %}
 {% load i18n %}
+{% load staticfiles %}
 {% block title %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
+{% block extra_head %}
+    {{ block.super }}
+    <script src="{% static 'bingo/js/board_list.js' %}"></script>
+{% endblock %}
 {% block headline %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
 {% block content %}
 {% with game.bingoboard_set.all as boards %}

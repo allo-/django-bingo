@@ -16,7 +16,6 @@ var ajax_vote_url = "{% url 'bingo.views.vote' ajax=True %}";
 var bingo_board = "{{ board.id }}";
 var my_board = "{{ my_board.id }}";
 </script>
-<script src="{% static 'js/jquery.js' %}"></script>
 {% if not board.game.is_expired %}
 <script src="{% static 'bingo/js/bingo.js' %}"></script>
 {% endif %}

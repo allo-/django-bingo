@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
     <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
+    <script src="{% static 'js/jquery.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'bingo/style.css' %}" />
     {% if site_theme %}
         <link rel="stylesheet" type="text/css" href="{{ site_theme }}" />
