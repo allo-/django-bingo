@@ -21,6 +21,8 @@ div.content {
     margin-bottom: 1ex;
     background-color: darkgreen;
     color: white;
+    white-space:nowrap;
+    overflow:hidden;
 }
 .header h1 {
     margin: 0;
