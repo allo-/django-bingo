@@ -11,6 +11,7 @@ import json
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm, ChangeThemeForm
 import image as image_module
+import times
 
 
 GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
@@ -179,7 +180,7 @@ def vote(request, ajax, board_id=None):
     field = None
 
     # post request: update field.vote
-    if "field_id" in request.POST:
+    if "field_id" in request.POST and times.is_after_votetime_start():
         field_id = request.POST.get("field_id", 0)
         field = get_object_or_404(BingoField, id=field_id)
         if field.board == my_bingo_board:

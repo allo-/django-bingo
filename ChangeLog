@@ -5,6 +5,10 @@ django-bingo 1.3.0 ():
 	* improved: title-text for board thumbnails with creation time. alt-text
 	  with board_id.
 	* improved: board thumbnails switch between voted / marked on mouseover.
+	* new: VOTE_TIME_START allows to set a time between GAME_START_TIMES[0]
+	  and GAME_END_TIME, after which voting will be activated. This can be
+	  used to allow board creation before the game starts, but disable early
+	  votes.
 
 django-bingo 1.2.1 (2013-10-03):
 	* fix: each BingoBoard was missing one of the words, which are not on the board.
