@@ -44,6 +44,9 @@ def get_times():
 
     return now, start_time_start, start_time_end, end_time
 
+def get_endtime():
+    return get_times()[3]
+
 
 def is_starttime():
     if GAME_START_TIMES is None:

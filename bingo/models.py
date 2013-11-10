@@ -11,7 +11,7 @@ from colorful.fields import RGBColorField
 
 from random import randint
 
-from times import is_starttime, is_after_endtime, get_times
+from times import is_starttime, is_after_endtime, get_endtime
 
 
 # Color ranges
@@ -115,7 +115,7 @@ class Game(models.Model):
 
     def end_time(self):
         hard_expiry = self.hard_expiry()
-        end_time = get_times()[3]
+        end_time = get_endtime()
         if hard_expiry is not None and end_time is not None:
             return min(end_time, hard_expiry)
         elif hard_expiry is None:
