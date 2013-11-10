@@ -42,24 +42,31 @@ def get_times():
         if start_time_end is not None and end_time < start_time_end:
             end_time = end_time + timezone.timedelta(1, 0)
 
-    return now, start_time_start, start_time_end, end_time
+    return {
+        'now': now,
+        'start_time_start': start_time_start,
+        'start_time_end': start_time_end,
+        'end_time': end_time
+    }
+
 
 def get_endtime():
-    return get_times()[3]
+    return get_times()['end_time']
 
 
 def is_starttime():
     if GAME_START_TIMES is None:
         return True
     else:
-        now, start_time_start, start_time_end, end_time = get_times()
-        return start_time_start < now < start_time_end
+        times = get_times()
+        return times['start_time_start'] \
+            < times['now'] \
+            < times['start_time_end']
 
 
 def is_after_endtime():
     if GAME_END_TIME is None or is_starttime():
         return False
     else:
-        now, start_time_start, start_time_end, end_time = get_times()
-        end = GAME_END_TIME
-        return end_time < now
+        times = get_times()
+        return times['end_time'] < times['now']
