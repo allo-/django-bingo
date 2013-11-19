@@ -24,6 +24,7 @@ def get_times():
     start_time_start = None
     start_time_end = None
     end_time = None
+    vote_start_time = None
     if GAME_START_TIMES:
         start, end = GAME_START_TIMES
         start_time_start = now.replace(
