@@ -95,7 +95,7 @@ def is_starttime():
 
 def is_after_votetime_start():
     """
-        returns True, if no VOTE_TIME_START is set,
+        returns True, if no VOTE_START_TIME is set,
         or the current time is after the start of vote
         time
     """
