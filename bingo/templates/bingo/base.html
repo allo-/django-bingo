@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 {% load static from staticfiles %}
+{% load i18n %}
 <head>
 	<meta charset="UTF-8">
     <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
@@ -20,21 +21,28 @@
 {% endblock %}
 </head>
 <body>
-{% block header %}
-<div class="header">
-    <h1><a href="{% url 'bingo.views.main' %}"{% block sitename %}>Bingo</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
+<div id="wrap" style="min-height: 100%">
+    {% block header %}
+    <div class="header">
+        <h1><a href="{% url 'bingo.views.main' %}"{% block sitename %}>Bingo</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
+    </div>
+    {% endblock %}
+    {% if themes %}
+        {% include "bingo/theme_chooser.html" %}
+    {% endif %}
+    <div class="content">
+        {% block extra_content_top %}
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block extra_content_bottom %}
+        {% endblock %}
+    </div>
 </div>
-{% endblock %}
-{% if themes %}
-    {% include "bingo/theme_chooser.html" %}
-{% endif %}
-<div class="content">
-    {% block extra_content_top %}
-    {% endblock %}
-    {% block content %}
-    {% endblock %}
-    {% block extra_content_bottom %}
-    {% endblock %}
+{% block footer %}
+<div class="footer">
+    <small>{% trans "powered by django-bingo" %}</small>
 </div>
+{% endblock footer %}
 </body>
 </html>

@@ -9,6 +9,7 @@ django-bingo 1.3.0 ():
 	  and GAME_END_TIME, after which voting will be activated. This can be
 	  used to allow board creation before the game starts, but disable early
 	  votes.
+	* new: added a footer.
 
 django-bingo 1.2.1 (2013-10-03):
 	* fix: each BingoBoard was missing one of the words, which are not on the board.

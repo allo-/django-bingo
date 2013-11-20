@@ -6,6 +6,19 @@ body {
     background: url("background.png") fixed;
     color: black;
 }
+#wrap {
+    min-height: 100%;
+}
+div.footer {
+    text-align: right;
+    clear: both;
+    margin-top: -1.5em;
+    height: 1em;
+    width: 100%;
+}
+div.footer small {
+    padding: 0 0.5em;
+}
 a {
     text-decoration: none;
     color: blue;
@@ -149,7 +162,6 @@ input.vote_button {
 ul.pagination {
     padding: 0;
     list-style: none;
-    background-color: lightgrey;
 }
 ul.pagination li {
     margin: 0.5ex;
