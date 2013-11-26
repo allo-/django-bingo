@@ -46,10 +46,23 @@ releases:
     - ""
 - !ditz.rubyforge.org,2008-03-06/release 
   name: v1.3.0
+  status: :released
+  release_time: 2013-11-26 18:48:08.578951 Z
+  log_events: 
+  - - 2013-09-24 22:31:27.086770 Z
+    - Alexander Schier <allo@laxu.de>
+    - created
+    - ""
+  - - 2013-11-26 18:48:08.578969 Z
+    - Alexander Schier <allo@laxu.de>
+    - released
+    - ""
+- !ditz.rubyforge.org,2008-03-06/release 
+  name: v1.4.0
   status: :unreleased
   release_time: 
   log_events: 
-  - - 2013-09-24 22:31:27.086770 Z
+  - - 2013-11-26 18:48:16.635268 Z
     - Alexander Schier <allo@laxu.de>
     - created
     - ""

@@ -8,7 +8,7 @@ desc: |-
   - ...
 type: :feature
 component: django-bingo
-release: v1.3.0
+release: 
 reporter: Alexander Schier <allo@laxu.de>
 status: :unstarted
 disposition: 
@@ -32,4 +32,8 @@ log_events:
 - - 2013-09-24 22:32:24.785101 Z
   - Alexander Schier <allo@laxu.de>
   - assigned to release v1.3.0 from v1.2.0
+  - ""
+- - 2013-11-26 18:47:36.897655 Z
+  - Alexander Schier <allo@laxu.de>
+  - unassigned from release v1.3.0
   - ""

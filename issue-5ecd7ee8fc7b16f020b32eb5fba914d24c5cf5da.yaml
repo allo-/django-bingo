@@ -5,7 +5,7 @@ desc: |-
   - Profile pages with the past boards of a user.
 type: :feature
 component: django-bingo
-release: v1.3.0
+release: 
 reporter: Alexander Schier <allo@laxu.de>
 status: :unstarted
 disposition: 
@@ -29,4 +29,8 @@ log_events:
 - - 2013-09-24 22:32:34.921403 Z
   - Alexander Schier <allo@laxu.de>
   - assigned to release v1.3.0 from v1.2.0
+  - ""
+- - 2013-11-26 18:47:44.017923 Z
+  - Alexander Schier <allo@laxu.de>
+  - unassigned from release v1.3.0
   - ""

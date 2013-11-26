@@ -5,7 +5,7 @@ desc: |-
   Should ensure, that missing thumbnails are regenerated, even when MEDIA_URL is served statically.
 type: :feature
 component: django-bingo
-release: v1.3.0
+release: 
 reporter: Alexander Schier <allo@laxu.de>
 status: :unstarted
 disposition: 
@@ -17,4 +17,8 @@ log_events:
 - - 2013-09-24 22:39:46.043278 Z
   - Alexander Schier <allo@laxu.de>
   - created
+  - ""
+- - 2013-11-26 18:47:48.298086 Z
+  - Alexander Schier <allo@laxu.de>
+  - unassigned from release v1.3.0
   - ""
