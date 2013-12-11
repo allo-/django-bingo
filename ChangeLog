@@ -1,4 +1,8 @@
 django-bingo 1.4.0 ():
+	Attention: when updating from an older version, you will need south to migrate the
+	database
+	* new: added a "description" field to Word model, which is shown as
+	  title="..." attribute on bingo fields.
 
 django-bingo 1.3.0 (2013-11-26):
 	* fix: mark "my board" on the game page, too.

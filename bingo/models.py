@@ -39,6 +39,7 @@ class Word(models.Model):
         to preserve old BingoFields
     """
     word = models.CharField(max_length=255, unique=True)
+    description = models.CharField(max_length=255, blank=True)
     is_middle = models.BooleanField(default=False)
     site = models.ManyToManyField(Site, blank=True, null=True)
 
@@ -284,7 +285,8 @@ class BingoBoard(models.Model):
         """
             get last_used field with BINGO_IMAGE_DATETIME_FORMAT formatting
         """
-        return timezone.localtime(self.last_used).strftime(BINGO_IMAGE_DATETIME_FORMAT)
+        return timezone.localtime(self.last_used).strftime(
+            BINGO_IMAGE_DATETIME_FORMAT)
 
     def num_votes(self, field):
         """

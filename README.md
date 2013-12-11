@@ -33,6 +33,11 @@ Include the bingo-app in your project urls.py, like this:
 You can use the Sites framework to add several different Bingo sites.
 Different Sites have different sets of Words, and they will generate a different set of Games, so the Bingos are independend from each other.
 
+Upgrading
+---------
+
+For upgrading from an older version install ```south``` and use ```manage.py migrate```
+
 Settings
 --------
 

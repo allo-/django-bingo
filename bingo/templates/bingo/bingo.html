@@ -59,7 +59,7 @@ var my_board = "{{ my_board.id }}";
     {% for field in fields_on_board %}
     <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}">
         {% if not field.is_middle %}{% include 'bingo/vote_form.html' %}{% endif %}
-        <div class="bingofield{% if field.is_middle %} middle{% endif %}">
+        <div class="bingofield{% if field.is_middle %} middle{% endif %}"{% if field.word.description %} title="{{ field.word.description }}"{% endif %}>
             {% comment %} for vertical alignment with the middle field, which has 3 lines {% endcomment %}
             {% if 11 <= field.position and not field.is_middle and field.position <= 15 %}
                 <br />
@@ -85,7 +85,7 @@ var my_board = "{{ my_board.id }}";
 
 <ul class="words">
     {% for field in all_word_fields %}
-    <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}">
+    <li class="word{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-field-id="{{ field.id }}"{% if field.word.description %} title="{{ field.word.description }}"{% endif %}>
         <div class="word">
             {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
         </div>
