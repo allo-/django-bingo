@@ -61,6 +61,10 @@
     {% for game in old_games|slice:'0:10' %}
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
+        {% if game.description %}
+            <br />
+            ({{ game.description }})
+        {% endif %}
         {% with boards=game.bingoboard_set.all|slice:":10" total_boards=game.bingoboard_set.count %}
             {% include "bingo/board_list.html" %}
         {% endwith %}
