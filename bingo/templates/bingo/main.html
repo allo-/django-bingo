@@ -21,13 +21,13 @@
 <ul class="game_list">
     <li>
         {% with current_game as game %}
-            <table>
+            <table class="current_game">
                 <tr>
                     <th>{% trans 'Current game:' %}</th>
                     <td><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</td>
                 </tr>
                 <tr>
-                    <th style="text-align: right">{% trans 'Your board:' %}</th>
+                    <th>{% trans 'Your board:' %}</th>
                     <td>
                         {% if my_board %}
                             <a href="{% url 'bingo.views.bingo' my_board.board_id %}">

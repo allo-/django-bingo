@@ -107,6 +107,9 @@ div.reclaim_form {
 form.reclaim_form p, form.create_form p {
     margin: 0;
 }
+table.create_form {
+    text-align: right;
+}
 ul.errorlist {
     list-style: none;
     margin: 0;
@@ -124,6 +127,9 @@ ul.errorlist {
     text-align: left;
 }
 
+table.current_game th {
+    text-align: right;
+}
 ul.board_list, ul.game_list {
     list-style: none;
     padding: 0;
