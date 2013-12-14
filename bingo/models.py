@@ -54,7 +54,7 @@ class TimeRangeError(Exception):
     pass
 
 
-def get_game(site, create=False):
+def get_game(site, description="", create=False):
     """
         get the current game, if its still active, else
         creates a new game, if the current time is inside the
@@ -75,7 +75,7 @@ def get_game(site, create=False):
     if game is None or game.is_expired() or is_after_endtime():
         if create:
             if is_starttime():
-                game = Game(site=site)
+                game = Game(site=site, description=description)
                 game.save()
             else:
                 raise TimeRangeError(
@@ -92,6 +92,7 @@ def get_game(site, create=False):
 
 class Game(models.Model):
     game_id = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True)
     site = models.ForeignKey(Site)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now=True)

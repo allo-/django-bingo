@@ -10,13 +10,30 @@ from times import is_starttime
 SALT = getattr(settings, "SALT", "hackme")
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
 
-GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
+GAME_START_DISABLED = getattr(
+    settings, "GAME_START_DISABLED", False)
+GAME_DESCRIPTION_DISABLED = getattr(
+    settings, "GAME_DESCRIPTION_DISABLED", False)
 
 
 class CreateForm(forms.Form):
     password = forms.CharField(label=_(u"Password (optional)"),
                                widget=forms.PasswordInput(),
                                required=False)
+
+    def __init__(self, *args, **kwargs):
+        game = kwargs.get('game')
+        # forms.Form throws an error on additional kwargs
+        if 'game' in kwargs:
+            del kwargs['game']
+        super(CreateForm, self).__init__(*args, **kwargs)
+
+        # add a game description field to the create form,
+        # when there is no active game.
+        if not GAME_DESCRIPTION_DISABLED and game is None:
+            self.fields['description'] = forms.CharField(
+                label=_(u'Game Description (optional)'),
+                required=False)
 
     def clean_password(self):
         if self.cleaned_data['password']:

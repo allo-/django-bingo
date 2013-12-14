@@ -38,6 +38,12 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if game.description %}
+                    <tr>
+                        <th>{% trans 'Game Description:' %}</th>
+                        <td>{{ game.description }}</td>
+                    </tr>
+                {% endif %}
             </table>
         {% endwith %}
         {% with boards=boards.all|slice:":10" total_boards=boards.count game=current_game %}

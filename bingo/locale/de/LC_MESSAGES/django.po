@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-20 20:31+0100\n"
-"PO-Revision-Date: 2013-11-20 20:31+0100\n"
+"POT-Creation-Date: 2013-12-14 13:59+0100\n"
+"PO-Revision-Date: 2013-12-14 14:00+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -23,6 +23,9 @@ msgstr "Standard"
 
 msgid "Password (optional)"
 msgstr "Passwort (optional)"
+
+msgid "Game Description (optional)"
+msgstr "Spielbeschreibung (optional)"
 
 msgid "Starting new games is disabled."
 msgstr "Das Starten neuer Spiele ist deaktiviert."
@@ -195,6 +198,9 @@ msgstr "Dein Brett:"
 
 msgid "You seem not to have a bingo board for the current game"
 msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
+
+msgid "Game Description:"
+msgstr "Spielbeschreibung:"
 
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"

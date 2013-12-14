@@ -61,7 +61,7 @@ def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
     bingo_board = _get_user_bingo_board(request)
 
-    create_form = CreateForm(prefix="create")
+    create_form = CreateForm(prefix="create", game=game)
     reclaim_form = ReclaimForm(prefix="reclaim")
 
     boards = BingoBoard.objects.filter(game=game)
@@ -118,7 +118,7 @@ def reclaim_board(request):
                                                    bingo_board.board_id}))
     else:
         reclaim_form = ReclaimForm(prefix="reclaim")
-    create_form = CreateForm(prefix="create")
+    create_form = CreateForm(prefix="create", game=game)
     return render(request,
                   "bingo/reclaim_board.html", {
                       'reclaim_form': reclaim_form,
@@ -128,17 +128,26 @@ def reclaim_board(request):
 
 def create_board(request):
     bingo_board = _get_user_bingo_board(request)
+    game = bingo_board.game if bingo_board is not None else None
     if bingo_board:
         bingo_board.game.save()  # update last_used
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     elif request.POST:
-        create_form = CreateForm(request.POST, prefix="create")
+        create_form = CreateForm(
+            request.POST,
+            prefix="create",
+            game=game)
+
         if create_form.is_valid():
             ip = request.META['REMOTE_ADDR']
-            game = get_game(site=get_current_site(request), create=True)
+            password = create_form.cleaned_data.get('password')
+            game_description = create_form.cleaned_data.get('description', '')
+            game = get_game(
+                site=get_current_site(request),
+                description=game_description,
+                create=True)
             game.save()  # update last_used
-            password = create_form.cleaned_data['password']
             bingo_board = BingoBoard(game=game, ip=ip, password=password)
             bingo_board.save()
             return redirect(reverse(bingo, kwargs={

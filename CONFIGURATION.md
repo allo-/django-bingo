@@ -48,6 +48,7 @@ django-bingo Configuration
 ### Other
 
 * ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.
+* ```GAME_DESCRIPTION_DISABLED``` disable the "Game Description" field for new Games.
 
 ## django settings
 
