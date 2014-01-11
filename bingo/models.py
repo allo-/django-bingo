@@ -162,6 +162,36 @@ class Game(models.Model):
         else:
             return self.num_users()
 
+    def num_votes_word(self, word_id):
+        """
+            get the (up, down) votes for a word
+
+            @param word_id: the id of the word
+            @returns (up, down) tuple with vote counts
+        """
+        # try to get it from cache
+        vote_counts_word_cachename = \
+            'vote_counts_game={0:d}_word={1:d}'.format(
+                self.id, word_id)
+        vote_counts_word = cache.get(vote_counts_word_cachename)
+
+        # else get it from database
+        if vote_counts_word is None:
+            # BingoFields for the current Game and the Word with word_id
+            up = BingoField.objects.filter(
+                board__game=self,
+                word=word_id,
+                vote=True).count()
+            down = BingoField.objects.filter(
+                board__game=self,
+                word=word_id,
+                vote=False).count()
+
+            # save up/down values to cache
+            vote_counts_word = (up, down)
+            cache.set(vote_counts_word_cachename, vote_counts_word)
+        return vote_counts_word  # (up, down)
+
     def save(self):
         if self.pk is None:
             games = Game.objects.filter(site=self.site)
@@ -310,29 +340,7 @@ class BingoBoard(models.Model):
         # get the Word.id for field
         word_id = field2word[field.id]
 
-        # try to get it from cache
-        vote_counts_word_cachename = \
-            'vote_counts_game={0:d}_word={1:d}'.format(
-                self.game.id, word_id)
-        vote_counts_word = cache.get(vote_counts_word_cachename)
-
-        # else get it from database
-        if vote_counts_word is None:
-            # BingoFields for the current Game and the Word with word_id
-            up = BingoField.objects.filter(
-                board__game=self.game,
-                word=word_id,
-                vote=True).count()
-            down = BingoField.objects.filter(
-                board__game=self.game,
-                word=word_id,
-                vote=False).count()
-
-            # save up/down values to cache
-            vote_counts_word = (up, down)
-            cache.set(vote_counts_word_cachename, vote_counts_word)
-
-        return vote_counts_word  # (up, down)
+        return self.game.num_votes_word(word_id)
 
     def thumbnails_enabled(self):
         return THUMBNAILS_ENABLED
