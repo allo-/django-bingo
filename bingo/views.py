@@ -202,10 +202,10 @@ def vote(request, ajax, board_id=None):
                 field.vote = False
             field.save()
             my_bingo_board.game.save()  # update last_used
-        vote_counts_word_cachename = \
+        vote_counts_cachename = \
             'vote_counts_game={0:d}'.format(
                 field.board.game.id)
-        cache.delete(vote_counts_word_cachename)
+        cache.delete(vote_counts_cachename)
 
     # for all ajax requests, send updated field data
     if ajax:

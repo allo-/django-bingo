@@ -172,7 +172,7 @@ class Game(models.Model):
 
         # try to get it from cache
         vote_counts_cachename = \
-            'vote_counts_up_game={0:d}'.format(
+            'vote_counts_game={0:d}'.format(
                 self.id)
         vote_counts = cache.get(vote_counts_cachename)
 
