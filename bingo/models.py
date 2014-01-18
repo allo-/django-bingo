@@ -169,28 +169,38 @@ class Game(models.Model):
             @param word_id: the id of the word
             @returns (up, down) tuple with vote counts
         """
+
         # try to get it from cache
-        vote_counts_word_cachename = \
-            'vote_counts_game={0:d}_word={1:d}'.format(
-                self.id, word_id)
-        vote_counts_word = cache.get(vote_counts_word_cachename)
+        vote_counts_cachename = \
+            'vote_counts_up_game={0:d}'.format(
+                self.id)
+        vote_counts = cache.get(vote_counts_cachename)
 
         # else get it from database
-        if vote_counts_word is None:
-            # BingoFields for the current Game and the Word with word_id
-            up = BingoField.objects.filter(
-                board__game=self,
-                word=word_id,
-                vote=True).count()
-            down = BingoField.objects.filter(
-                board__game=self,
-                word=word_id,
-                vote=False).count()
+        if vote_counts is None:
+            vote_counts_up = Word.objects.filter(
+                bingofield__vote=True, bingofield__board__game=self)\
+                .annotate(num=models.Count('bingofield'))
+            vote_counts_down = Word.objects.filter(
+                bingofield__vote=False, bingofield__board__game=self)\
+                .annotate(num=models.Count('bingofield'))
 
-            # save up/down values to cache
-            vote_counts_word = (up, down)
-            cache.set(vote_counts_word_cachename, vote_counts_word)
-        return vote_counts_word  # (up, down)
+            vote_counts_up = dict(
+                [(word.id, word.num) for word in vote_counts_up])
+            vote_counts_down = dict(
+                [(word.id, word.num) for word in vote_counts_down])
+
+            # words with no up or down vote
+            for word in Word.objects.filter(bingofield__board__game=self):
+                if not word.id in vote_counts_up:
+                    vote_counts_up[word.id] = 0
+                if not word.id in vote_counts_down:
+                    vote_counts_down[word.id] = 0
+
+            vote_counts = {'up': vote_counts_up, 'down': vote_counts_down}
+            cache.set(vote_counts_cachename, vote_counts)
+
+        return (vote_counts['up'][word_id], vote_counts['down'][word_id])
 
     def save(self):
         if self.pk is None:
