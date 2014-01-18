@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: update cache on vote instead of just invalidating?
+desc: |-
+  a vote could .update() the database and replace the cache item instead of
+  just invalidating the cache, so that the next query updates the votes from database.
+  pro: performance
+  con: data loaded from db after the cache is deleted is always consistent
+type: :task
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2014-01-18 20:08:21.554846 Z
+references: []
+
+id: 0391a21887a465761446e3c78c0e119768667920
+log_events: 
+- - 2014-01-18 20:08:22.962806 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
