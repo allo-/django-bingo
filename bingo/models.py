@@ -238,7 +238,16 @@ class BingoBoard(models.Model):
 
     class Meta:
         ordering = ("-board_id",)
-        unique_together = ("game", "board_id")
+
+    def clean(self):
+        try:
+            board = BingoBoard.objects.get(board_id=self.board_id, game__site=self.game.site)
+            # if its not an edit of the same BingoBoard
+            if board.pk != self.pk:
+                raise ValidationError(
+                    _(u"BingoBoard ID not unique for site {0}").format(self.game.site))
+        except BingoBoard.DoesNotExist:
+            return # everything okay
 
     def save(self):
         if self.ip is None and self.user is None:

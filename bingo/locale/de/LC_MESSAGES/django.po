@@ -1,14 +1,14 @@
 # German Translation for django-bingo.
 # Copyright (C) 2013
 # This file is distributed under the same license as the django-bingo package.
-# Alexander Schier <allo@laxu.de>, 2013.
+# Alexander Schier <allo@laxu.de>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-14 13:59+0100\n"
-"PO-Revision-Date: 2013-12-14 14:00+0100\n"
+"POT-Creation-Date: 2014-01-21 19:39+0100\n"
+"PO-Revision-Date: 2014-01-21 19:39+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -64,6 +64,10 @@ msgstr "Keine Mittelwörter in der Datenbank."
 
 msgid "Not enough (non-middle) words in database"
 msgstr "Nicht genug (nicht Mittel-)Wörter in der Datenbank."
+
+#, python-brace-format
+msgid "BingoBoard ID not unique for site {0}"
+msgstr "Doppelte BingoBoard ID auf Seite {0}"
 
 msgid "BingoBoard must have either an ip or an user"
 msgstr "Ein BingoBoard muss entweder eine IP oder einen Nutzer haben."
