@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
+from django.db import transaction
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.cache import cache
@@ -135,14 +136,15 @@ def create_board(request):
     elif request.POST:
         create_form = CreateForm(request.POST, prefix="create")
         if create_form.is_valid():
-            ip = request.META['REMOTE_ADDR']
-            game = get_game(site=get_current_site(request), create=True)
-            game.save()  # update last_used
-            password = create_form.cleaned_data['password']
-            bingo_board = BingoBoard(game=game, ip=ip, password=password)
-            bingo_board.save()
-            return redirect(reverse(bingo, kwargs={
-                'board_id': bingo_board.board_id}))
+            with transaction.commit_on_success():
+                ip = request.META['REMOTE_ADDR']
+                game = get_game(site=get_current_site(request), create=True)
+                game.save()  # update last_used
+                password = create_form.cleaned_data['password']
+                bingo_board = BingoBoard(game=game, ip=ip, password=password)
+                bingo_board.save()
+                return redirect(reverse(bingo, kwargs={
+                    'board_id': bingo_board.board_id}))
         else:
             reclaim_form = ReclaimForm(prefix="reclaim")
             return render(
