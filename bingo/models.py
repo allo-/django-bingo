@@ -353,14 +353,13 @@ class BingoBoard(models.Model):
         field2word = cache.get(field2word_cachename) or {}
 
         # create, if not cached
-        if field2word == {}:
+        if field2word == {} or field.id not in field2word:
             for loop_field in self.bingofield_set.all().select_related():
                 field2word[loop_field.id] = loop_field.word.id
             cache.set(field2word_cachename, field2word, 60*60)
 
         # get the Word.id for field
         word_id = field2word[field.id]
-
         return self.game.num_votes_word(word_id)
 
     def thumbnails_enabled(self):
