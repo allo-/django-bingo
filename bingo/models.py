@@ -176,8 +176,10 @@ class Game(models.Model):
                 self.id)
         vote_counts = cache.get(vote_counts_cachename)
 
-        # else get it from database
-        if vote_counts is None:
+        # vote counts not in cache or word not in the dict
+        if vote_counts is None or word_id not in vote_counts:
+
+            # querys for number of up / down votes
             vote_counts_up = Word.objects.filter(
                 bingofield__vote=True, bingofield__board__game=self)\
                 .annotate(num=models.Count('bingofield'))
@@ -185,22 +187,27 @@ class Game(models.Model):
                 bingofield__vote=False, bingofield__board__game=self)\
                 .annotate(num=models.Count('bingofield'))
 
+            # fetch all at once, so its only one query for up, one for down
             vote_counts_up = dict(
                 [(word.id, word.num) for word in vote_counts_up])
             vote_counts_down = dict(
                 [(word.id, word.num) for word in vote_counts_down])
 
+            vote_counts = {}
             # words with no up or down vote
             for word in Word.objects.filter(bingofield__board__game=self):
                 if not word.id in vote_counts_up:
                     vote_counts_up[word.id] = 0
                 if not word.id in vote_counts_down:
                     vote_counts_down[word.id] = 0
+                vote_counts[word.id] = {
+                    'up': vote_counts_up[word.id],
+                    'down': vote_counts_down[word.id],
+                }
 
-            vote_counts = {'up': vote_counts_up, 'down': vote_counts_down}
             cache.set(vote_counts_cachename, vote_counts)
 
-        return (vote_counts['up'][word_id], vote_counts['down'][word_id])
+        return (vote_counts[word_id]['up'], vote_counts[word_id]['down'])
 
     def save(self):
         if self.pk is None:
