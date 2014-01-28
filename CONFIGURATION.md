@@ -60,7 +60,7 @@ django-bingo Configuration
   You need at least:
   * **word cache:** 1 entry per board currently viewed by users or visible on the front page.
   * **thumbnail cache:** 1 entry per thumbnail visible on the front page or viewed on game pages.
-  * **vote cache:** 1 entry per word and board currently viewed by users or visible on front page.
+  * **vote cache:** 2 entries per game currently viewed by users or visible on front page.
   * **game_expired:** 1 entry per game.
   * **Note:*** the "visible on the front page" is only relevant, when thumbnails are enabled.
   * **Example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 50*100 + 10 = 5210 entries.

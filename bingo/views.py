@@ -144,7 +144,8 @@ def create_board(request):
             with transaction.commit_on_success():
                 ip = request.META['REMOTE_ADDR']
                 password = create_form.cleaned_data.get('password')
-                game_description = create_form.cleaned_data.get('description', '')
+                game_description = create_form.cleaned_data.get(
+                    'description', '')
                 game = get_game(
                     site=get_current_site(request),
                     description=game_description,
