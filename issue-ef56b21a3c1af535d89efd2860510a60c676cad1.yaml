@@ -1,0 +1,25 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: race conditions while creating games / boards
+desc: |-
+  When the server is slow, there are race conditions creating games and boards.
+  A board is protected by unique_together=[game, ip]/[game,user] in save(), but
+  there is a short delay between selecting boards for current user or ip and
+  creating a new one.
+  A game may be created twice, because the game_id is calculated in save(),
+  which leads to errors when selecting a game with .get(game_id=x), because two games
+  are returned.
+type: :bugfix
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2014-02-01 01:18:02.581474 Z
+references: []
+
+id: ef56b21a3c1af535d89efd2860510a60c676cad1
+log_events: 
+- - 2014-02-01 01:18:06.101547 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
