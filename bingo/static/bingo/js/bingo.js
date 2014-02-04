@@ -68,6 +68,9 @@ $(document).ready(function(){
 
     function update_numbers(data) {
         if(data != null) {
+            if(data["is_expired"]){
+                window.location.reload()
+            }
             $("#num_active_users").text(data["num_active_users"]);
             $("#num_users").text(data["num_users"]);
             $("[data-field-id]").each(function(idx, obj){
