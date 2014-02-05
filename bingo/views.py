@@ -8,7 +8,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.middleware.cache import CacheMiddleware
 import json
-from datetime import datetime
 
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm, ChangeThemeForm
@@ -55,7 +54,7 @@ def _get_user_bingo_board(request):
 
     if bingo_board is not None and not bingo_board.game.is_expired():
         BingoBoard.objects.filter(id=bingo_board.id).update(
-            last_used=datetime.now())
+            last_used=times.now())
 
     return bingo_board
 
@@ -105,7 +104,7 @@ def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)
     if game is not None:
-        Game.objects.filter(id=game.id).update(last_used=datetime.now())
+        Game.objects.filter(id=game.id).update(last_used=times.now())
     bingo_board = _get_user_bingo_board(request)
 
     if not bingo_board is None:
@@ -136,7 +135,7 @@ def create_board(request):
 
     if bingo_board:
         Game.objects.filter(bingo_board.game.id).update(
-            last_used=datetime.now())
+            last_used=times.now())
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     elif request.POST:
@@ -156,7 +155,7 @@ def create_board(request):
                     description=game_description,
                     create=True)
                 Game.objects.filter(id=game.id).update(
-                    last_used=datetime.now())
+                    last_used=times.now())
                 bingo_board = BingoBoard(game=game, ip=ip, password=password)
                 bingo_board.save()
                 return redirect(reverse(bingo, kwargs={
@@ -211,7 +210,7 @@ def vote(request, ajax, board_id=None):
                 field.vote = False
             field.save()
             Game.objects.filter(id=my_bingo_board.game.id).update(
-                last_used=datetime.now())
+                last_used=times.now())
         vote_counts_cachename = \
             'vote_counts_game={0:d}'.format(
                 field.board.game.id)

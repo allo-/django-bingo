@@ -18,8 +18,12 @@ GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
 VOTE_START_TIME = getattr(settings, "VOTE_START_TIME", None)
 
 
+def now():
+    return timezone.get_current_timezone().normalize(timezone.now())
+
+
 def get_times():
-    now = timezone.get_current_timezone().normalize(timezone.now())
+    time_now = now()
 
     start_time_start = None
     start_time_end = None
@@ -27,9 +31,9 @@ def get_times():
     vote_start_time = None
     if GAME_START_TIMES:
         start, end = GAME_START_TIMES
-        start_time_start = now.replace(
+        start_time_start = time_now.replace(
             hour=start[0], minute=start[1], second=0, microsecond=0)
-        start_time_end = now.replace(
+        start_time_end = time_now.replace(
             hour=end[0], minute=end[1], second=0, microsecond=0)
 
         # when the end of start time is "before" the start of start time,
@@ -39,7 +43,7 @@ def get_times():
 
     if GAME_END_TIME:
         end = GAME_END_TIME
-        end_time = now.replace(
+        end_time = time_now.replace(
             hour=end[0], minute=end[1], second=0, microsecond=0)
 
         # when the end time is "before" the end of starttime_end,
@@ -49,7 +53,7 @@ def get_times():
 
     if VOTE_START_TIME:
         vote_start = VOTE_START_TIME
-        vote_start_time = now.replace(
+        vote_start_time = time_now.replace(
             hour=vote_start[0], minute=vote_start[1], second=0, microsecond=0)
 
         # The vote time must come after the start of starttime.
@@ -66,7 +70,7 @@ def get_times():
         assert end_time > start_time_end
 
     return {
-        'now': now,
+        'now': time_now,
         'start_time_start': start_time_start,
         'start_time_end': start_time_end,
         'end_time': end_time,
