@@ -1,11 +1,16 @@
 django-bingo 1.4.0 ():
-	Attention: when updating from an older version, you will need south to migrate the
-	database
+	Attention: when updating from an older version, you will need south
+	to migrate the database.
 	* new: added a "description" field to Word model, which is shown as
 	  title="..." attribute on bingo fields.
 	* new: added a "description" field to Game model, which can be set when
 	  creating the first board of a game.
 	* improved: reduced querys to get the number of votes for a Word in a Game
+	* improved: the bingo page is reloaded after the game is expired, so it
+	  stops polling for new votes.
+	* improved: update the last_used timestamp with .update() instead of
+	  .save(), which avoids saving the whole object, when only the timestamp
+	  has changed.
 
 django-bingo 1.3.1 (2014-01-21):
        * fix: avoid creating duplicate BingoBoards / Games

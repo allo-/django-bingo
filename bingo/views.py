@@ -8,6 +8,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.middleware.cache import CacheMiddleware
 import json
+from datetime import datetime
 
 from models import Word, Game, BingoBoard, BingoField, get_game
 from forms import CreateForm, ReclaimForm, ChangeThemeForm
@@ -53,7 +54,8 @@ def _get_user_bingo_board(request):
             pass
 
     if bingo_board is not None and not bingo_board.game.is_expired():
-        bingo_board.save()  # update last_used
+        BingoBoard.objects.filter(id=bingo_board.id).update(
+            last_used=datetime.now())
 
     return bingo_board
 
@@ -103,8 +105,9 @@ def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
     game = get_game(site=get_current_site(request), create=False)
     if game is not None:
-        game.save()  # update last_used
+        Game.objects.filter(id=game.id).update(last_used=datetime.now())
     bingo_board = _get_user_bingo_board(request)
+
     if not bingo_board is None:
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
@@ -130,8 +133,10 @@ def reclaim_board(request):
 def create_board(request):
     bingo_board = _get_user_bingo_board(request)
     game = bingo_board.game if bingo_board is not None else None
+
     if bingo_board:
-        bingo_board.game.save()  # update last_used
+        Game.objects.filter(bingo_board.game.id).update(
+            last_used=datetime.now())
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
     elif request.POST:
@@ -150,7 +155,8 @@ def create_board(request):
                     site=get_current_site(request),
                     description=game_description,
                     create=True)
-                game.save()  # update last_used
+                Game.objects.filter(id=game.id).update(
+                    last_used=datetime.now())
                 bingo_board = BingoBoard(game=game, ip=ip, password=password)
                 bingo_board.save()
                 return redirect(reverse(bingo, kwargs={
@@ -204,7 +210,8 @@ def vote(request, ajax, board_id=None):
             elif vote == "-":
                 field.vote = False
             field.save()
-            my_bingo_board.game.save()  # update last_used
+            Game.objects.filter(id=my_bingo_board.game.id).update(
+                last_used=datetime.now())
         vote_counts_cachename = \
             'vote_counts_game={0:d}'.format(
                 field.board.game.id)
