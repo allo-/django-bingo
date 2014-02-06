@@ -9,6 +9,7 @@
 {% block headline %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
 {% block content %}
 {% with game.bingoboard_set.all as boards %}
+<div class="cf"></div>
     {% include "bingo/board_list.html" %}
 {% endwith %}
 {% endblock %}
