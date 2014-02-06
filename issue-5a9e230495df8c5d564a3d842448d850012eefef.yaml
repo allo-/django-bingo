@@ -1,0 +1,21 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: dynamic thumbnail-box min-width?
+desc: |-
+  the min-width of a thumbnail box should depend on the minimum width of
+  a thumbnail (of the current game), so the boxes are aligned neatly
+  independend from the maximum length of a word.
+type: :task
+component: django-bingo
+release: 
+reporter: Alexander Schier <allo@laxu.de>
+status: :unstarted
+disposition: 
+creation_time: 2014-02-06 22:00:50.998474 Z
+references: []
+
+id: 5a9e230495df8c5d564a3d842448d850012eefef
+log_events: 
+- - 2014-02-06 22:00:52.206430 Z
+  - Alexander Schier <allo@laxu.de>
+  - created
+  - ""
