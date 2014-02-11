@@ -318,4 +318,4 @@ def change_theme(request):
         form = ChangeThemeForm(request.POST)
         if form.is_valid():
             request.session['theme'] = form.cleaned_data['theme']
-            return redirect(reverse('bingo.views.main'))
+    return redirect(reverse('bingo.views.main'))
