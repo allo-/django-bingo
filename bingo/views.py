@@ -134,7 +134,7 @@ def create_board(request):
     game = bingo_board.game if bingo_board is not None else None
 
     if bingo_board:
-        Game.objects.filter(bingo_board.game.id).update(
+        Game.objects.filter(id=bingo_board.game.id).update(
             last_used=times.now())
         return redirect(reverse(bingo, kwargs={
             'board_id': bingo_board.board_id}))
