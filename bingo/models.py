@@ -95,7 +95,7 @@ class Game(models.Model):
     description = models.CharField(max_length=255, blank=True)
     site = models.ForeignKey(Site)
     created = models.DateTimeField(auto_now_add=True)
-    last_used = models.DateTimeField(auto_now=True)
+    last_used = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ("game_id", "site")
@@ -241,7 +241,7 @@ class BingoBoard(models.Model):
     user = models.ForeignKey(get_user_model(), blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    last_used = models.DateTimeField(auto_now=True)
+    last_used = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ("-board_id",)
