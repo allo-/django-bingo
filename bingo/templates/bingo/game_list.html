@@ -10,7 +10,7 @@
         <td><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a>
         </td>
         <td>({{ game.created }})</td>
-        <td>{% include "game_rating.html" %}</td>
+        <td>{% include "bingo/game_rating.html" %}</td>
     </tr>
 {% endfor %}
 </table>
