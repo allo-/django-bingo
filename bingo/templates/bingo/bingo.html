@@ -59,8 +59,9 @@ var my_board = "{{ my_board.id }}";
             <th style="vertical-align: top">{% trans 'Rate the Show:' %}</th>
         {% endif %}
         <td>
+            <span class="ratings">
             {% for star in "12345" %}
-            <span class="rating" data-rating="{{ star }}">
+            <span class="rating" data-rating="{{ star }}" data-active="{% if board.rating >= star|add:0 %}true{% else%}false{% endif %}">
                 {% if board.rating >= star|add:0 %}
                     &#9733;
                 {% else %}
@@ -68,8 +69,9 @@ var my_board = "{{ my_board.id }}";
                 {% endif %}
             </span>
             {% endfor %}
+            </span>
             {% if my_board == board %}
-            <form action="{% url "bingo.views.rate_game" %}" method="post">
+            <form action="{% url "bingo.views.rate_game" %}" method="post" id="rate_form">
                 {% csrf_token %}
                 {{ rate_form.rating }}
                 <input type="submit" value="rate" />

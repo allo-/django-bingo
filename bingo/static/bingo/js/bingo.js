@@ -2,29 +2,29 @@ $(document).ready(function(){
     // dummy, for when no ajax request was executed, yet
     var ajaxRequest = {"abort": function(){}};
 
+    function ajax_submit(form, url, success){
+        var data = {};
+        form.find("input, select").each(function(idx, obj){
+            form_field = $(obj);
+            data[form_field.attr("name")] = form_field.val();
+        })
+        ajaxRequest.abort(); // abort any running ajax requests
+        ajaxRequest = $.ajax(url, {
+            "type": "post",
+            "dataType": "json",
+            "data": data,
+            "success": success 
+        });
+    }
+
     $("form.voteform").each(function(idx, obj){
         $(obj).find("input[type=submit]").remove();
         var vote_field = $("<input>").attr("name", "vote").attr("type", "hidden");
         var veto_link = $("<a>").attr("href", "#").addClass("veto").text("[-]");
 
-        function ajax_submit(form){
-            var data = {};
-            form.find("input").each(function(idx, obj){
-                form_field = $(obj);
-                data[form_field.attr("name")] = form_field.val();
-            })
-            ajaxRequest.abort(); // abort any running ajax requests
-            ajaxRequest = $.ajax(ajax_vote_url + bingo_board + "/", {
-                "type": "post",
-                "dataType": "json",
-                "data": data,
-                "success":  update_numbers
-            });
-        }
-
         function vote(form, what){
             form.find("input[name=vote]").val(what);
-            ajax_submit(form);
+            ajax_submit(form, ajax_vote_url + bingo_board + "/", update_numbers);
             var field_id = $(obj).find("input[name='field_id']").val();
             var fields = $("[data-field-id=" + field_id + "]");
             mark_field(fields, what);
@@ -49,6 +49,41 @@ $(document).ready(function(){
         $(obj).append(vote_field);
         $(obj).append(veto_link);
     });
+
+    // ajax for rate form
+    $("#rate_form").hide();
+    $("span.rating").click(function(){
+        var form = $("#rate_form");
+        var rating = $(this).attr("data-rating")
+        $("span.rating").each(function(){
+            if($(this).attr("data-rating") <= rating){
+                $(this).attr("data-active", "true");
+            }else{
+                $(this).attr("data-active", "false");
+            }
+        })
+        $(form).find("option[value="+rating+"]").attr("selected", true);
+        ajax_submit(form, form.attr("action"), null);
+    });
+    $("span.rating").mouseover(function(){
+        var rating = $(this).attr("data-rating");
+        $("span.rating").each(function(){
+            if($(this).attr("data-rating") <= rating){
+                $(this).html("&#9733");
+            }else{
+                $(this).html("&#9734");
+            }
+        })
+    })
+    $("span.ratings").mouseout(function(){
+        $("span.rating").each(function(){
+            if($(this).attr("data-active") == "true"){
+                $(this).html("&#9733");
+            }else{
+                $(this).html("&#9734");
+            }
+        })
+    })
 
     if(bingo_board == my_board){
         $(".bingofield, .word").not(".middle").each(function(idx, obj){
