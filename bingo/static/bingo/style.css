@@ -194,3 +194,6 @@ ul.pagination li.inactive {
 .cf {
     *zoom: 1;
 }
+table.game_list td{
+    padding: 0 0.5ex;
+}

@@ -1,0 +1,11 @@
+{% for star in "12345" %}
+<span title="{{ game.rating }}/5">
+    <span class="rating" data-rating="{{ star }}">
+        {% if game.rating >= star|add:0 %}
+            &#9733;
+        {% else %}
+            &#9734;
+        {% endif %}
+    </span>
+    {% endfor %}
+</span>

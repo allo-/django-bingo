@@ -209,6 +209,10 @@ class Game(models.Model):
 
         return (vote_counts[word_id]['up'], vote_counts[word_id]['down'])
 
+    def rating(self):
+        return self.bingoboard_set.exclude(rating=None).aggregate(
+            rating=models.Avg('rating'))['rating']
+
     def save(self):
         if self.pk is None:
             games = Game.objects.filter(site=self.site)

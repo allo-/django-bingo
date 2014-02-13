@@ -63,6 +63,7 @@
     {% for game in old_games|slice:'0:10' %}
     <li>
         <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
+        {% include "game_rating.html" %}
         {% if game.description %}
             <br />
             ({{ game.description }})
