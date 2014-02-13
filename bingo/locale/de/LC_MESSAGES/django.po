@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 19:39+0100\n"
-"PO-Revision-Date: 2014-01-21 19:39+0100\n"
+"POT-Creation-Date: 2014-02-13 15:17+0100\n"
+"PO-Revision-Date: 2014-02-13 15:17+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -42,6 +42,9 @@ msgstr ""
 "Keine aktiven Bretter mit diesem Passwort. Versuche es noch einmal, oder "
 "erstelle ein Neues."
 
+msgid "n/a"
+msgstr "n/a"
+
 #, python-brace-format
 msgid ""
 "\n"
@@ -64,6 +67,13 @@ msgstr "Keine Mittelwörter in der Datenbank."
 
 msgid "Not enough (non-middle) words in database"
 msgstr "Nicht genug (nicht Mittel-)Wörter in der Datenbank."
+
+msgid "unrated"
+msgstr "nicht bewertet"
+
+#, python-brace-format
+msgid "{0} stars"
+msgstr "{0} Sterne"
 
 #, python-brace-format
 msgid "BingoBoard ID not unique for site {0}"
@@ -148,6 +158,12 @@ msgstr "Alle Teilnehmer:"
 
 msgid "Active Users:"
 msgstr "Aktive Teilnehmer:"
+
+msgid "Show Rating:"
+msgstr "Sendungsbewertung:"
+
+msgid "Rate the Show:"
+msgstr "Sendung bewerten:"
 
 msgid "(your board)"
 msgstr "(Dein Brett)"

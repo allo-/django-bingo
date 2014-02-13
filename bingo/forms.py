@@ -94,3 +94,8 @@ class ReclaimForm(forms.Form):
 
 class ChangeThemeForm(forms.Form):
     theme = forms.CharField(required=False)
+
+
+class RateGameForm(forms.Form):
+    rating = forms.ChoiceField(
+        choices=zip(["None"] + range(1, 6), [_("n/a")] + range(1, 6)))

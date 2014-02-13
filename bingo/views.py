@@ -10,7 +10,7 @@ from django.middleware.cache import CacheMiddleware
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
-from forms import CreateForm, ReclaimForm, ChangeThemeForm
+from forms import CreateForm, ReclaimForm, ChangeThemeForm, RateGameForm
 import image as image_module
 import times
 
@@ -189,6 +189,7 @@ def bingo(request, board_id=None):
         "board": bingo_board,
         "my_board": my_bingo_board,
         "all_word_fields": all_word_fields,
+        "rate_form": RateGameForm(),
         })
 
 
@@ -251,6 +252,21 @@ def vote(request, ajax, board_id=None):
                 reverse(bingo, kwargs={"board_id": field.board.board_id}))
         else:
             return redirect(reverse(main))
+
+
+def rate_game(request):
+    bingo_board = _get_user_bingo_board(request)
+    if bingo_board:
+        form = RateGameForm(request.POST)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            if rating == "None":
+                rating = None
+            BingoBoard.objects.filter(id=bingo_board.id).update(rating=rating)
+        return redirect(reverse(bingo, kwargs={
+            'board_id': bingo_board.board_id}))
+    else:
+        return redirect(reverse(main))
 
 
 def get_image_name(board_id, marked=False, voted=False):

@@ -9,6 +9,7 @@ urlpatterns = patterns(
     url('^bingo/reclaim/$', views.reclaim_board),
     url('^bingo/create/$', views.create_board),
     url('^bingo/vote/$', views.vote, {"ajax": False}),
+    url('^bingo/rate/$', views.rate_game),
     url('^ajax/vote/$', views.vote, {"ajax": True}),
     url('^ajax/vote/(?P<board_id>[0-9]*)/$', views.vote, {"ajax": True}),
     url('^bingo/(?P<board_id>[0-9]*)/$', views.bingo),

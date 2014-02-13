@@ -233,6 +233,16 @@ def _get_random_words(site):
     return list(words), middle
 
 
+RATINGS = (
+    (None, _("unrated")),
+    (1, _("{0} stars").format(1)),
+    (2, _("{0} stars").format(2)),
+    (3, _("{0} stars").format(3)),
+    (4, _("{0} stars").format(4)),
+    (5, _("{0} stars").format(5))
+)
+
+
 class BingoBoard(models.Model):
     board_id = models.IntegerField(blank=True, null=True)
     game = models.ForeignKey("Game")
@@ -242,6 +252,7 @@ class BingoBoard(models.Model):
     password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(choices=RATINGS, null=True, default=None)
 
     class Meta:
         ordering = ("-board_id",)
