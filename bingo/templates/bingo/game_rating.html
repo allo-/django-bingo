@@ -1,6 +1,6 @@
 {% load i18n %}
 {% for star in "12345" %}
-<span title="{% if game.rating %}{{ game.rating }}/5{% endif %} ({% blocktrans count count=game.num_ratings %}{{count}} rating{% plural %}{{count}} ratings{% endblocktrans %})">
+<span title="{% if game.rating %}{{ game.rating|floatformat:2 }}/5{% endif %} ({% blocktrans count count=game.num_ratings %}{{count}} rating{% plural %}{{count}} ratings{% endblocktrans %})">
     <span class="rating" data-rating="{{ star }}">
         {% with rating=game.rating|floatformat:0|add:0 %}
         {% if rating >= star|add:0 %}
