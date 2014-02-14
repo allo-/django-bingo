@@ -213,6 +213,10 @@ class Game(models.Model):
         return self.bingoboard_set.exclude(rating=None).aggregate(
             rating=models.Avg('rating'))['rating']
 
+    def num_ratings(self):
+        return self.bingoboard_set.exclude(rating=None).aggregate(
+            num=models.Count('rating'))['num']
+
     def save(self):
         if self.pk is None:
             games = Game.objects.filter(site=self.site)

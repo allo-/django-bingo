@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-13 23:34+0100\n"
-"PO-Revision-Date: 2014-02-13 15:17+0100\n"
+"POT-Creation-Date: 2014-02-14 01:30+0100\n"
+"PO-Revision-Date: 2014-02-14 01:30+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -203,6 +203,12 @@ msgstr "Seite"
 
 msgid "older games"
 msgstr "ältere Spiele"
+
+#, python-format
+msgid "%(count)s rating"
+msgid_plural "%(count)s ratings"
+msgstr[0] "%(count)s Bewertung"
+msgstr[1] "%(count)s Bewertungen"
 
 msgid "Startpage"
 msgstr "Startseite"
