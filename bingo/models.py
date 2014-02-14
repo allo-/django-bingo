@@ -211,7 +211,7 @@ class Game(models.Model):
 
     def rating(self):
         return self.bingoboard_set.exclude(rating=None).aggregate(
-            rating=models.Avg('rating'))['rating']
+            rating=models.Avg('rating'))['rating'] or 0
 
     def num_ratings(self):
         return self.bingoboard_set.exclude(rating=None).aggregate(
