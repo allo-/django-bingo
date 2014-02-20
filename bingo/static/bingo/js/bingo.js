@@ -51,39 +51,41 @@ $(document).ready(function(){
     });
 
     // ajax for rate form
-    $("#rate_form").hide();
-    $("span.rating").click(function(){
-        var form = $("#rate_form");
-        var rating = $(this).attr("data-rating")
-        $("span.rating").each(function(){
-            if($(this).attr("data-rating") <= rating){
-                $(this).attr("data-active", "true");
-            }else{
-                $(this).attr("data-active", "false");
-            }
+    if(document.getElementById("rate_form")){
+        $("#rate_form").hide();
+        $("span.rating").click(function(){
+            var form = $("#rate_form");
+            var rating = $(this).attr("data-rating")
+            $("span.rating").each(function(){
+                if($(this).attr("data-rating") <= rating){
+                    $(this).attr("data-active", "true");
+                }else{
+                    $(this).attr("data-active", "false");
+                }
+            })
+            $(form).find("option[value="+rating+"]").attr("selected", true);
+            ajax_submit(form, form.attr("action"), null);
+        }).addClass("clickable");
+        $("span.rating").mouseover(function(){
+            var rating = $(this).attr("data-rating");
+            $("span.rating").each(function(){
+                if($(this).attr("data-rating") <= rating){
+                    $(this).html("&#9733");
+                }else{
+                    $(this).html("&#9734");
+                }
+            })
         })
-        $(form).find("option[value="+rating+"]").attr("selected", true);
-        ajax_submit(form, form.attr("action"), null);
-    });
-    $("span.rating").mouseover(function(){
-        var rating = $(this).attr("data-rating");
-        $("span.rating").each(function(){
-            if($(this).attr("data-rating") <= rating){
-                $(this).html("&#9733");
-            }else{
-                $(this).html("&#9734");
-            }
+        $("span.ratings").mouseout(function(){
+            $("span.rating").each(function(){
+                if($(this).attr("data-active") == "true"){
+                    $(this).html("&#9733");
+                }else{
+                    $(this).html("&#9734");
+                }
+            })
         })
-    })
-    $("span.ratings").mouseout(function(){
-        $("span.rating").each(function(){
-            if($(this).attr("data-active") == "true"){
-                $(this).html("&#9733");
-            }else{
-                $(this).html("&#9734");
-            }
-        })
-    })
+    }
 
     if(bingo_board == my_board){
         $(".bingofield, .word").not(".middle").each(function(idx, obj){

@@ -197,6 +197,3 @@ ul.pagination li.inactive {
 table.game_list td {
     padding: 0 0.5ex;
 }
-span.ratings {
-    cursor: pointer;
-}
