@@ -1,3 +1,6 @@
+django-bingo 1.3.2 ():
+       * added: MANIFEST.in to include package_data in source distributions
+
 django-bingo 1.3.1 (2014-01-21):
        * fix: avoid creating duplicate BingoBoards / Games
 
