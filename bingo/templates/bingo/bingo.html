@@ -69,9 +69,11 @@ var my_board = "{{ my_board.id }}";
                 {% endif %}
             </span>
             {% endfor %}
+            {% if my_board == board %}
             <span class="clearrating" data-rating="None" style="display: none">
                 &#10007;
             </span>
+            {% endif %}
             </span>
             {% if my_board == board %}
             <form action="{% url "bingo.views.rate_game" %}" method="post" id="rate_form">
