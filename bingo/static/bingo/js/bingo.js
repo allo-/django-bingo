@@ -83,6 +83,9 @@ $(document).ready(function(){
         // hover
         $("span.clearrating").mouseover(function(){
             $(this).html("&#10008");
+            $("span.rating").each(function(){
+                $(this).html("&#9734");
+            });
         }).mouseout(function(){
             $(this).html("&#10007");
         // unset display: none (hidden for users without JS), mark as clickable
