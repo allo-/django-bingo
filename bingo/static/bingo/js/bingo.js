@@ -31,7 +31,11 @@ $(document).ready(function(){
         }
 
         veto_link.click(function(){
-            vote($(obj), "-");
+            if($(obj).parent().hasClass("veto")){
+                vote($(obj), "0");
+            } else {
+                vote($(obj), "-");
+            }
             return false;
         });
 
