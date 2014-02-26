@@ -53,11 +53,11 @@ $(document).ready(function(){
     // ajax for rate form
     if(document.getElementById("rate_form")){
         $("#rate_form").hide();
-        $("span.rating").click(function(){
+        $("span.rating, span.clearrating").click(function(){
             var form = $("#rate_form");
             var rating = $(this).attr("data-rating")
             $("span.rating").each(function(){
-                if($(this).attr("data-rating") <= rating){
+                if(rating != "None" && $(this).attr("data-rating") <= rating){
                     $(this).attr("data-active", "true");
                 }else{
                     $(this).attr("data-active", "false");
@@ -75,8 +75,16 @@ $(document).ready(function(){
                     $(this).html("&#9734");
                 }
             })
-        })
-        $("span.ratings").mouseout(function(){
+        });
+        // hover
+        $("span.clearrating").mouseover(function(){
+            $(this).html("&#10008");
+        }).mouseout(function(){
+            $(this).html("&#10007");
+        // unset display: none (hidden for users without JS), mark as clickable
+        }).css("display", "").addClass("clickable");
+
+        $("span.ratings").bind("mouseout click", function(){
             $("span.rating").each(function(){
                 if($(this).attr("data-active") == "true"){
                     $(this).html("&#9733");
