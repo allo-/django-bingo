@@ -1,2 +1,2 @@
 recursive-include bingo *.html *.js *.css *.po *.png
-include  AUTHORS ChangeLog LICENSE MANIFEST.in README.md requirements.txt setup.py
+include AUTHORS ChangeLog LICENSE MANIFEST.in README.md requirements.txt setup.py CONFIGURATION.md
