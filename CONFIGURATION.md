@@ -63,5 +63,5 @@ django-bingo Configuration
   * **vote cache:** 2 entries per game currently viewed by users or visible on front page.
   * **game_expired:** 1 entry per game.
   * **Note:*** the "visible on the front page" is only relevant, when thumbnails are enabled.
-  * **Example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 50*100 + 10 = 5210 entries.
+  * **Example:** 50 words, 10 games visible, each with 10 boards: 100 + 100 + 2*100 + 10 = 410 entries.
 * ```TEMPLATE_CONTEXT_PROCESSORS```: add the [default context_processors](https://docs.djangoproject.com/en/1.5/ref/settings/#template-context-processors), then add "bingo.context_processors.bingo" to the list.
