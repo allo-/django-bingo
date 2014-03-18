@@ -264,6 +264,8 @@ class BingoBoard(models.Model):
 
     class Meta:
         ordering = ("-board_id",)
+        # board_id, game__site is not possible
+        unique_together = ("board_id", "game")
 
     def clean(self):
         try:
