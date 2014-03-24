@@ -1,4 +1,5 @@
 django-bingo 1.5.0 ():
+	* improved: header row and number of players row on game list page.
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south

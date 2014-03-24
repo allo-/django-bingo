@@ -5,11 +5,18 @@
 {% block content %}
 {% trans "Game archive:" %}
 <table class="game_list">
+    <tr style="text-align: left">
+        <th>{% trans "game" %}</th>
+        <th>{% trans "date" %}</th>
+        <th>{% trans "players" %}</th>
+        <th>{% trans "rating" %}</th>
+    </tr>
 {% for game in object_list %}
     <tr>
         <td><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a>
         </td>
-        <td>({{ game.created }})</td>
+        <td>{{ game.created }}</td>
+        <td>{{ game.num_users }}</td>
         <td>{% include "bingo/game_rating.html" %}</td>
     </tr>
 {% endfor %}

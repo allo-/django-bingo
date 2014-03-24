@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-14 01:30+0100\n"
-"PO-Revision-Date: 2014-02-14 01:30+0100\n"
+"POT-Creation-Date: 2014-03-24 15:50+0100\n"
+"PO-Revision-Date: 2014-03-24 15:51+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -194,6 +194,18 @@ msgstr "Alte Spiele"
 
 msgid "Game archive:"
 msgstr "Spielarchiv:"
+
+msgid "game"
+msgstr "Spiel"
+
+msgid "date"
+msgstr "Datum"
+
+msgid "players"
+msgstr "Mitspieler"
+
+msgid "rating"
+msgstr "Bewertung"
 
 msgid "newer games"
 msgstr "neuere Spiele"
