@@ -291,8 +291,12 @@ class BingoBoard(models.Model):
                 if game_boards.filter(user=self.user).count() > 0:
                     raise ValidationError(
                         _(u"game and user must be unique_together"))
-            if not self.ip is None:
-                if game_boards.filter(ip=self.ip).count() > 0:
+            # ip only needs to be unique for anonymous users
+            # to check if the ip is relevant:
+            # - check the current board does not have an user
+            # - filter for existing boards from this ip only with user=None
+            if not self.ip is None and not self.user:
+                if game_boards.filter(ip=self.ip, user=None).count() > 0:
                     raise ValidationError(
                         _(u"game and ip must be unique_together"))
 

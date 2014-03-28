@@ -11,6 +11,10 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+<div style="margin-bottom: 1em;float: right" class="cf"><b>{% trans "logged in as:" %}</b> {{ user.username }}</div>
+{% endif %}
+
 {% if not my_board %}
     {% if can_start_game %}
         {% include "bingo/forms.html" %}

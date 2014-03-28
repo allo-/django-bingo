@@ -30,6 +30,7 @@ def _get_user_bingo_board(request):
     bingo_board = None
     game = get_game(site=get_current_site(request), create=False)
     session_board_id = request.session.get('board_id', None)
+    user = request.user if request.user.is_authenticated() else None
     ip = request.META['REMOTE_ADDR']
 
     # try the board_id in the session
@@ -44,17 +45,25 @@ def _get_user_bingo_board(request):
         except BingoBoard.MultipleObjectsReturned:
             pass
 
+    if user:
+        try:
+            bingo_board = BingoBoard.objects.get(game=game, user=user)
+        except BingoBoard.DoesNotExist, e:
+            pass
+
     # no board_id in the session, try the ip
     if bingo_board is None:
         try:
-            bingo_board = BingoBoard.objects.get(game=game, ip=ip)
-            request.session['board_id'] = bingo_board.id
+            # user=None is required, to prevent anonymous users from
+            # getting the board of a authenticated user on the same ip.
+            bingo_board = BingoBoard.objects.get(game=game, ip=ip, user=None)
         except BingoBoard.DoesNotExist, e:
             pass
 
     if bingo_board is not None and not bingo_board.game.is_expired():
         BingoBoard.objects.filter(id=bingo_board.id).update(
             last_used=times.now())
+        request.session['board_id'] = bingo_board.id
 
     return bingo_board
 
@@ -156,7 +165,15 @@ def create_board(request):
                     create=True)
                 Game.objects.filter(id=game.id).update(
                     last_used=times.now())
-                bingo_board = BingoBoard(game=game, ip=ip, password=password)
+
+                # if the user is logged in, associate the board with the user,
+                # and ignore the password (so no other user can claim the board)
+                user = request.user if request.user.is_authenticated() else None
+                if user:
+                    password = None
+
+                bingo_board = BingoBoard(
+                    game=game, user=user, ip=ip, password=password)
                 bingo_board.save()
                 return redirect(reverse(bingo, kwargs={
                     'board_id': bingo_board.board_id}))

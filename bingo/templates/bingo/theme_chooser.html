@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="">
+<div class="cf">
 <form action="{% url 'bingo.views.change_theme' %}" method="POST" id="theme_chooser">
     {% trans "Theme:" %} <select name="theme">
     {% for theme in themes %}
