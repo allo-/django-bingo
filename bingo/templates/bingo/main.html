@@ -9,8 +9,7 @@
 {% endblock %}
 {% block headline %}{% trans "start page" %}{% endblock %}
 
-{% block content %}
-
+{% block extra_content_top %}
 <div style="margin-bottom: 1em;float: right" class="cf">
 {% if user.is_authenticated %}
     <b>{% trans "logged in as:" %}</b>
@@ -22,7 +21,12 @@
     /
     <a href="{% url "registration_register" %}?next={% url "bingo.views.main" %}">{% trans "register" %}</a>
 {% endif %}
+{{ block.super }}
 </div>
+
+{% endblock %}
+
+{% block content %}
 
 {% if not my_board %}
     {% if can_start_game %}
