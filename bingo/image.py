@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 
-from PIL import Image, ImageDraw, ImageFont, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 from models import Word, BingoField
 
