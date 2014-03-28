@@ -3,3 +3,4 @@ django-jquery==1.9.1
 django-colorful==0.1.3
 pytz==2013b
 pillow
+django-registration==1.0
