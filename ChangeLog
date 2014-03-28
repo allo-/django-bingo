@@ -1,7 +1,8 @@
 django-bingo 1.5.0 ():
 	* improved: header row and number of players row on game list page.
-	* added: support for user profiles, with the user's bingo boards
-	  associated to his account.
+	* added: support for User profiles, with the User's BingoBoards
+	  associated to the account. Old BingoBoards can be claimed, if they have
+	  a password, which is unique for the old Game.
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south

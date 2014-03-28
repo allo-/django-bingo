@@ -11,7 +11,8 @@ from django.contrib.auth.models import User
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
-from forms import CreateForm, ReclaimForm, ChangeThemeForm, RateGameForm
+from forms import CreateForm, ClaimForm, ReclaimForm
+from forms import ChangeThemeForm, RateGameForm
 import image as image_module
 import times
 
@@ -109,9 +110,14 @@ def game(request, game_id):
         'my_board': bingo_board
     })
 
+
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    return render(request, "bingo/profile.html", {'profile_user': user})
+    form = ClaimForm(request.POST or None, user=user)
+    form.is_valid()
+    return render(request, "bingo/profile.html",
+                  {'profile_user': user, 'claim_form': form})
+
 
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
@@ -145,6 +151,7 @@ def reclaim_board(request):
 def create_board(request):
     bingo_board = _get_user_bingo_board(request)
     game = bingo_board.game if bingo_board is not None else None
+    user = request.user
 
     if bingo_board:
         Game.objects.filter(id=bingo_board.game.id).update(
@@ -170,9 +177,10 @@ def create_board(request):
                 Game.objects.filter(id=game.id).update(
                     last_used=times.now())
 
-                # if the user is logged in, associate the board with the user,
-                # and ignore the password (so no other user can claim the board)
-                user = request.user if request.user.is_authenticated() else None
+                # if the user is logged in, associate the board with
+                # the user, and ignore the password
+                # (so no other user can claim the board)
+                user = user if user.is_authenticated() else None
                 if user:
                     password = None
 

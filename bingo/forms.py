@@ -66,6 +66,10 @@ class CreateForm(forms.Form):
 
 
 class ReclaimForm(forms.Form):
+    """
+        Reclaim a board for the current game using the password.
+        Works only for anonymous users.
+    """
     password = forms.CharField(widget=forms.PasswordInput())
 
     def __init__(self, data=None, game=None, *args, **kwargs):
@@ -80,7 +84,8 @@ class ReclaimForm(forms.Form):
             raise forms.ValidationError(
                 _("The game is expired, please create a new board."))
         bingo_boards = BingoBoard.objects.filter(game=self.game,
-                                                 password=hashed_password)
+                                                 password=hashed_password,
+                                                 user=None)
         if bingo_boards.count() > 0:
             # if two users have the same password,
             # just return the first board.
@@ -89,6 +94,45 @@ class ReclaimForm(forms.Form):
             raise forms.ValidationError(
                 _(u"No active board with this password."
                     " Try again, or create a new one."))
+        return hashed_password
+
+
+class ClaimForm(forms.Form):
+    """
+        Reclaim all old boards with the given password and assign them to
+        a the user
+    """
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def __init__(self, data=None, user=None, *args, **kwargs):
+        self.user = user
+        super(ClaimForm, self).__init__(data=data, *args, **kwargs)
+
+    def clean_password(self):
+        hasher = get_hasher(algorithm='sha1')
+        hashed_password = hasher.encode(self.cleaned_data['password'],
+                                        SALT)
+
+        bingo_boards = BingoBoard.objects.filter(
+            password=hashed_password).select_related()
+
+        # check, that no User gets two BingoBoards from the same Game,
+        # just because another User used the same password.
+        # Games, which contain two BingoBoards with the given password
+        # are filtered, so these BingoBoards cannot be claimed by anyone.
+        game_ids = set()
+        duplicate_game_ids = set()
+        for board in bingo_boards:
+            if board.game.id in game_ids:
+                duplicate_game_ids.add(board.game.id)
+            else:
+                game_ids.add(board.game.id)
+
+        # filter for user=None to prevent stealing already claimed boards
+        bingo_boards.exclude(
+            game__id__in=duplicate_game_ids).filter(
+            user=None).update(user=self.user)
+
         return hashed_password
 
 
