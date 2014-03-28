@@ -25,10 +25,16 @@ Create a django project. Then add the following options to your settings.py
     * 'bingo'
     * 'jquery'
     * 'colorful'
+    * 'registration'
 * ```FONT_PATH``` = '/path/to/font.ttf'
 
 Include the bingo-app in your project urls.py, like this:
 ```url(r'^', include('bingo.urls'))```
+Include the ```registration``` app like this:
+```url(r'^accounts/', include('registration.backends.simple.urls'))```
+
+Registration is only tested with the ```simple``` backend.
+You can use other ```django-registration``` backends, but you will need to add additional templates and views.
 
 You can use the Sites framework to add several different Bingo sites.
 Different Sites have different sets of Words, and they will generate a different set of Games, so the Bingos are independend from each other.

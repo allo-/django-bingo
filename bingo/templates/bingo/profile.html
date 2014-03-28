@@ -1,0 +1,28 @@
+{% extends 'bingo/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}{% trans 'user profile:' %} {{ profile_user.username }}{% endblock %}
+{% block extra_head %}
+    {{ block.super }}
+    <script src="{% static 'bingo/js/board_list.js' %}"></script>
+{% endblock %}
+{% block headline %}{% trans 'user profile:' %} {{ profile_user.username }}{% endblock %}
+{% block content %}
+<h3>
+{% if user == profile_user %}
+    {% trans "Your bingo boards" %}
+{% else %}
+    {% blocktrans %}
+    {{ profile_user }}'s bingo boards
+    {% endblocktrans %}
+{% endif %}
+</h3>
+{% with profile_user.bingoboard_set.all as boards %}
+    {% include "bingo/board_list.html" %}
+{% endwith %}
+
+{% if user == profile_user %}
+<h3>{% trans "Claim other boards" %}</h3>
+{% trans "If you have have created boards with a password, you can add them to your profile:" %}
+{% endif %}
+{% endblock %}

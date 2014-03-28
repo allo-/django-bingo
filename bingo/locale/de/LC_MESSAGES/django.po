@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-28 18:31+0100\n"
-"PO-Revision-Date: 2014-03-28 18:31+0100\n"
+"POT-Creation-Date: 2014-03-28 19:54+0100\n"
+"PO-Revision-Date: 2014-03-28 19:56+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -231,6 +231,15 @@ msgstr "Startseite"
 msgid "logged in as:"
 msgstr "Angemeldet als:"
 
+msgid "logout"
+msgstr "Logout"
+
+msgid "login"
+msgstr "Login"
+
+msgid "register"
+msgstr "Registrieren"
+
 msgid "Current game:"
 msgstr "Aktuelles Spiel:"
 
@@ -246,6 +255,29 @@ msgstr "Spielbeschreibung:"
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
 
+msgid "user profile:"
+msgstr "Benutzerprofil:"
+
+msgid "Your bingo boards"
+msgstr "Deine Bingobretter"
+
+#, python-format
+msgid ""
+"\n"
+"    %(profile_user)s's bingo boards\n"
+"    "
+msgstr "\n%(profile_user)ss Bingobretter"
+
+msgid "Claim other boards"
+msgstr "Andere Bretter hinzufügen"
+
+msgid ""
+"If you have have created boards with a password, you can add them to your "
+"profile:"
+msgstr ""
+"Wenn du Bingobretter mit einem Passwort erstellt hast, kannst du sie zu "
+"deinem Profil hinzufügen:"
+
 msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"
 
@@ -255,11 +287,20 @@ msgstr "Theme:"
 msgid "change"
 msgstr "ändern"
 
+msgid "Login"
+msgstr "Login"
+
+msgid "logged out"
+msgstr "Ausgelogged"
+
+msgid "You are now logged out."
+msgstr "Du bist jetzt ausgelogged."
+
+msgid "Register"
+msgstr "Registrieren"
+
 #~ msgid "Go to my board"
 #~ msgstr "Gehe zu meinem Brett"
-
-#~ msgid "other boards"
-#~ msgstr "weitere Bretter"
 
 #~ msgid "more ..."
 #~ msgstr "mehr ..."

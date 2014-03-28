@@ -1,0 +1,13 @@
+{% extends 'bingo/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}{% trans 'Statistics' %}{% endblock %}
+{% block headline %}{% trans 'Statistics' %}{% endblock %}
+{% block content %}
+{% for month_rating in month_ratings %}
+    {{ month_rating.0|date:"b Y" }}
+    {% with month_rating.1 as rating %}
+        {% include "bingo/rating_display.html" %}
+    {% endwith %}
+{% endfor %}
+{% endblock %}

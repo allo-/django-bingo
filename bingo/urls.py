@@ -23,5 +23,6 @@ urlpatterns = patterns(
     url('^image/(?P<board_id>[0-9]*)/marked/$', views.image, {"marked": True}),
     url('^image/(?P<board_id>[0-9]*)/voted/$', views.image, {"voted": True}),
     url('^image/(?P<board_id>[0-9]*)/$', views.image),
+    url('^users/(?P<username>[0-9a-zA-Z]*)$', views.profile),
     url('^change_theme/$', views.change_theme),
 )

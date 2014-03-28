@@ -1,0 +1,9 @@
+{% for star in "12345" %}
+<span class="rating" data-rating="{{ star }}" data-active="{% if rating >= star|add:0 %}true{% else%}false{% endif %}">
+    {% if rating >= star|add:0 %}
+        &#9733;
+    {% else %}
+        &#9734;
+    {% endif %}
+</span>
+{% endfor %}

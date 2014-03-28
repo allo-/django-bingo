@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.core.cache import cache
 from django.middleware.cache import CacheMiddleware
+from django.contrib.auth.models import User
 import json
 
 from models import Word, Game, BingoBoard, BingoField, get_game
@@ -108,6 +109,9 @@ def game(request, game_id):
         'my_board': bingo_board
     })
 
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, "bingo/profile.html", {'profile_user': user})
 
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
