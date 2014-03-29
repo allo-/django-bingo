@@ -70,6 +70,17 @@ def _get_user_bingo_board(request):
     return bingo_board
 
 
+def _get_image_name(board_id, marked=False, voted=False):
+    if voted:
+        filename = _("board_{0}_voted").format(board_id)
+    elif marked:
+        filename = _("board_{0}_marked").format(board_id)
+    else:
+        filename = _("board_{0}").format(board_id)
+
+    return filename
+
+
 def main(request, reclaim_form=None, create_form=None):
     game = get_game(site=get_current_site(request), create=False)
     bingo_board = _get_user_bingo_board(request)
@@ -298,23 +309,12 @@ def rate_game(request):
         return redirect(reverse(main))
 
 
-def get_image_name(board_id, marked=False, voted=False):
-    if voted:
-        filename = _("board_{0}_voted").format(board_id)
-    elif marked:
-        filename = _("board_{0}_marked").format(board_id)
-    else:
-        filename = _("board_{0}").format(board_id)
-
-    return filename
-
-
 def image(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
     response = HttpResponse(mimetype="image/png")
-    filename = get_image_name(board_id, marked, voted) + ".png"
+    filename = _get_image_name(board_id, marked, voted) + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
     im = image_module.get_image(bingo_board, marked, voted)
     im.save(response, "png")
@@ -349,7 +349,7 @@ def thumbnail(request, board_id, marked=False, voted=False):
         return response
 
     response = HttpResponse(mimetype="image/png")
-    filename = get_image_name(board_id, marked, voted) + \
+    filename = _get_image_name(board_id, marked, voted) + \
         "_" + _("thumbnail") + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
     im = image_module.get_thumbnail(bingo_board, marked, voted)
