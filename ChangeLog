@@ -4,6 +4,8 @@ django-bingo 1.5.0 ():
 	  associated to the account. Old BingoBoards can be claimed, if they have
 	  a password, which is unique for the old Game.
 	* fixed: corrected url regex for numbers, not to match ""
+	* fixed: off by one error, causing the bottom/right lines to be 1px to
+	  thin.
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south

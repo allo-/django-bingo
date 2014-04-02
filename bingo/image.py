@@ -176,10 +176,13 @@ def get_image(bingo_board, marked=False, voted=False):
         # draw a border. if its more than 1px, its extended
         # by drawing smaller boxes inside
         for offset in xrange(BORDER):
+            # -1 on the right/bottom corner is needed, because the line is
+            # drawn below/right of the pixel, both for the
+            # top/left and bottom/right corners
             draw.rectangle((
                 (box_left + offset, box_top + offset),
-                (box_left + field_width - offset,
-                    box_top + field_height - offset)),
+                (box_left + field_width - offset - 1,
+                    box_top + field_height - offset - 1)),
                 fill=field_color,
                 outline=border_color
             )
