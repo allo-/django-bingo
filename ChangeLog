@@ -3,6 +3,7 @@ django-bingo 1.5.0 ():
 	* added: support for User profiles, with the User's BingoBoards
 	  associated to the account. Old BingoBoards can be claimed, if they have
 	  a password, which is unique for the old Game.
+	* fixed: corrected url regex for numbers, not to match ""
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south
