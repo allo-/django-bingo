@@ -233,65 +233,91 @@ def bingo(request, board_id=None):
         })
 
 
+class VoteException(Exception):
+    """
+        something went wrong voting on a field.
+        (i.e. the field does not belong to the user's board)
+    """
+    pass
+
+
+def _post_vote(user_bingo_board, field, vote):
+    """
+        change vote on a field
+        @param user_bingo_board: the user's bingo board or None
+        @param field: the BingoField to vote on
+        @param vote: the vote property from the HTTP POST
+        @raises: VoteException: if user_bingo_board is None or
+        the field does not belong to the user's bingo board.
+        @raises Http404: If the BingoField does not exist.
+    """
+
+    if field.board != user_bingo_board:
+        raise VoteException(
+            "the voted field does not belong to the user's BingoBoard")
+
+    if vote == "0":
+        field.vote = None
+    elif vote == "+":
+        field.vote = True
+    elif vote == "-":
+        field.vote = False
+    field.save()
+
+    # update last_used with current timestamp
+    Game.objects.filter(id=user_bingo_board.game.id).update(
+        last_used=times.now())
+
+    # invalidate vote cache
+    vote_counts_cachename = 'vote_counts_game={0:d}'.format(
+        field.board.game.id)
+    cache.delete(vote_counts_cachename)
+
+
 def vote(request, ajax, board_id=None):
-    my_bingo_board = _get_user_bingo_board(request)
+    user_bingo_board = _get_user_bingo_board(request)
     field = None
 
     # post request: update field.vote
     if "field_id" in request.POST and times.is_after_votetime_start():
         field_id = request.POST.get("field_id", 0)
         field = get_object_or_404(BingoField, id=field_id)
-        if field.board == my_bingo_board:
-            vote = request.POST.get("vote", "0")
-            if vote == "0":
-                field.vote = None
-            elif vote == "+":
-                field.vote = True
-            elif vote == "-":
-                field.vote = False
-            field.save()
-            Game.objects.filter(id=my_bingo_board.game.id).update(
-                last_used=times.now())
-        vote_counts_cachename = \
-            'vote_counts_game={0:d}'.format(
-                field.board.game.id)
-        cache.delete(vote_counts_cachename)
+        vote = request.POST.get("vote", "0")
+        try:
+            _post_vote(user_bingo_board, field, vote)
+        except VoteException:
+            pass  # ignore the vote
 
-    # for all ajax requests, send updated field data
-    if ajax:
-        # board_id set: get vote updates for a specific board
-        if board_id is not None:
-            bingo_board = get_object_or_404(
-                BingoBoard, id=board_id)
-        # board_id not set: get the votes for the user's board
-        elif my_bingo_board is not None:
-            bingo_board = my_bingo_board
-        # view called without needed parameters.
-        else:
-            # Set data to {} to prevent an AttributeError
-            return HttpResponse(json.dumps({}), mimetype="application/json")
-
-        data = {
-            'num_users': bingo_board.game.num_users(),
-            'num_active_users': bingo_board.game.num_active_users(),
-            'is_expired': bingo_board.game.is_expired()
-        }
-
-        for field in bingo_board.bingofield_set.all():
-            if field.vote is None:
-                vote = "0"
-            elif field.vote:
-                vote = "+"
-            else:
-                vote = "-"
-            data[field.id] = (vote, field.num_votes())
-        return HttpResponse(json.dumps(data), mimetype="application/json")
-    else:
+    # form submitted without ajax, redirect back to the bingo page
+    if not ajax:
         if field:
             return redirect(
                 reverse(bingo, kwargs={"board_id": field.board.board_id}))
         else:
             return redirect(reverse(main))
+
+    # page submitted with ajax, return vote data as json
+    if board_id is not None:  # board id given in the url
+        bingo_board = get_object_or_404(BingoBoard, id=board_id)
+    elif user_bingo_board is not None:  # user's bingo board
+        bingo_board = user_bingo_board
+    else:  # missing the needed parameters
+        # Set data to {} to prevent an AttributeError
+        return HttpResponse(json.dumps({}), mimetype="application/json")
+
+    # add data about the game
+    data = {
+        'num_users': bingo_board.game.num_users(),
+        'num_active_users': bingo_board.game.num_active_users(),
+        'is_expired': bingo_board.game.is_expired(),
+    }
+
+    for field in bingo_board.bingofield_set.all():
+        # None="0", "+"=vote, "-"=veto
+        vote = "0" if field.vote is None else "+" if field.vote else "-"
+        data[field.id] = (vote, field.num_votes())
+
+    return HttpResponse(json.dumps(data), mimetype="application/json")
 
 
 def rate_game(request):
