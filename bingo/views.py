@@ -303,7 +303,7 @@ def vote(request, ajax, board_id=None):
         bingo_board = user_bingo_board
     else:  # missing the needed parameters
         # Set data to {} to prevent an AttributeError
-        return HttpResponse(json.dumps({}), mimetype="application/json")
+        return HttpResponse(json.dumps({}), content_type="application/json")
 
     # add data about the game
     data = {
@@ -317,7 +317,7 @@ def vote(request, ajax, board_id=None):
         vote = "0" if field.vote is None else "+" if field.vote else "-"
         data[field.id] = (vote, field.num_votes())
 
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 def rate_game(request):
@@ -339,7 +339,7 @@ def image(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
-    response = HttpResponse(mimetype="image/png")
+    response = HttpResponse(content_type="image/png")
     filename = _get_image_name(board_id, marked, voted) + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
     im = image_module.get_image(bingo_board, marked, voted)
@@ -374,7 +374,7 @@ def thumbnail(request, board_id, marked=False, voted=False):
     if response:  # cached
         return response
 
-    response = HttpResponse(mimetype="image/png")
+    response = HttpResponse(content_type="image/png")
     filename = _get_image_name(board_id, marked, voted) + \
         "_" + _("thumbnail") + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
