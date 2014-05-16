@@ -1,6 +1,7 @@
 $(document).ready(function(){
     // dummy, for when no ajax request was executed, yet
     var ajaxRequest = {"abort": function(){}};
+    var interval = null;
 
     function ajax_submit(form, url, success){
         var data = {};
@@ -143,5 +144,58 @@ $(document).ready(function(){
         }
     }
 
-    setInterval(update_numbers, 10000)
+    if(polling_interval == 0){
+        // sane default
+        polling_interval = 10;
+    }
+
+    // enabled and the browser supports server-sent events
+    if(use_sse && !!EventSource) {
+        var source = new EventSource(sse_url);
+
+        // votes
+        source.addEventListener("word_votes", function(e){
+            var data = JSON.parse(e.data);
+            var objs = $("[data-word-id="+data['word_id']+"]");
+            var vote_count = data['vote_count'];
+            $(objs).find("span.votes").text(vote_count);
+        }, false);
+
+        source.addEventListener("field_vote", function(e){
+            var data = JSON.parse(e.data);
+            var objs = $("[data-field-id="+data['field_id']+"]");
+            var vote = data['vote'];
+            mark_field(objs, vote);
+        }, false);
+
+        // number of users (boards)
+        source.addEventListener("num_users", function(e){
+            var data = JSON.parse(e.data);
+            $('#num_users').text(data['num_users'])
+        }, false);
+
+        source.addEventListener("num_active_users", function(e){
+            var data = JSON.parse(e.data);
+            $('#num_active_users').text(data['num_active_users'])
+        }, false);
+
+        source.addEventListener("open", function(e){
+            if(interval){
+                clearInterval(interval)
+            }
+            // 0 disables polling
+            if(polling_interval_sse != 0){
+                interval = setInterval(update_numbers, polling_interval_sse * 1000);
+            }
+        });
+        source.addEventListener("error", function(e){
+            if(interval){
+                clearInterval(interval)
+            }
+            // use normal polling without server-sent
+            interval = setInterval(update_numbers, polling_interval * 1000);
+        });
+    } else {
+        interval = setInterval(update_numbers, polling_interval * 1000);
+    }
 })

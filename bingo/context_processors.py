@@ -51,8 +51,16 @@ def themes(request):
 
 
 def bingo(request):
+    sse_url = getattr(settings, "SSE_URL", None)
+    use_sse = True if hasattr(settings, "USE_SSE") and sse_url else False
+    polling_interval = getattr(settings, "POLLING_INTERVAL", 10)
+    polling_interval_sse = getattr(settings, "POLLING_INTERVAL", 120)
     items = {
         'settings': settings_context(request),
+        'use_sse': use_sse,
+        'sse_url': sse_url,
+        'polling_interval': polling_interval,
+        'polling_interval_sse': polling_interval_sse,
     }
     for key, value in themes(request).items():
         items[key] = value

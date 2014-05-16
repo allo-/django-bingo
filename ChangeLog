@@ -6,6 +6,10 @@ django-bingo 1.5.0 ():
 	* fixed: corrected url regex for numbers, not to match ""
 	* fixed: off by one error, causing the bottom/right lines to be 1px to
 	  thin.
+	* added: optionally use server-sent events for less polling (needs a redis
+	  database)
+	* improved: added POLLING_INTERVAL / POLLING_INTERVAL_SSE settings to
+	  configure how often updated votes / user numbers should be fetched
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south

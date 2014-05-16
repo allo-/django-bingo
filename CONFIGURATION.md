@@ -10,9 +10,12 @@ django-bingo Configuration
 * ```GAME_HARD_TIMEOUT``` minutes after the game will be ended, i.e. the duration of the radio show)
 * ```GAME_SOFT_TIMEOUT``` minutes of inactivity, after which the game will be be ended.
 * ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
+* ```POLLING_INTERVAL``` how often to poll for new votes.
+* ```POLLING_INTERVAL_SSE``` how often to poll for new votes, when server-sent events are used. ```0``` disables polling, when server-sent events are used.
 
 #### Notes
 * At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` must be set, even when ```GAME_END_TIME``` is set. When both are ```None```, the game never ends and no new game can be created on the next day.
+* You may want to set ```POLLING_INTERVAL_SSE``` to a smaller (but bigger than 0) value than ```USER_ACTIVE_TIMEOUT```, to mark users as active, who still have their boards open, but did not vote for ```USER_ACTIVE_TIMEOUT``` minutes.
 
 ### Image style
 
@@ -39,6 +42,19 @@ django-bingo Configuration
 * ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached (seconds).
 * ```OLD_THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail from an old game is cached (seconds).
 * ```THUMBNAIL_WIDTH``` / ```THUMBNAIL_HEIGHT``` maximum width/height of the thumbnails.
+
+### Server-sent Events
+
+With [server-sent events](http://www.html5rocks.com/en/tutorials/eventsource/basics/), the game needs less polling for vote numbers and the numbers are displayed almost instantly. You need a [Redis](http://redis.io/) database and you have to run a second process to deliver the events.
+
+Configuration:
+
+* install python modules ```sse```, ```flask``` and ```redis```
+* deploy bin/django-bingo-serversent.py somewhere. you can set the ```SITE_ID``` of your bingo instance via the environment variable ```SITE_ID```. You need to use some async server, such as ```gunicorn``` with ```gevent``` workers.
+  * At the moment you need to edit the script to change the redis server address. Depending on your deployment you may need to change the ```@application.route("/")``` to the path in your url as well.
+* set ```USE_SSE``` to ```True```
+* set ```SSE_URL``` to the url, where the server can be reached.
+* ```REDIS_HOST``` and ```REDIS_PORT``` can be used to specify the address of your redis instance for the django app.
 
 ### Themes
 

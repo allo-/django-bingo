@@ -29,6 +29,7 @@ setup(name='django-bingo',
                               'static/bingo/*.*',
                               'static/bingo/js/*.*',
                               'locale/*/LC_MESSAGES/*.*']},
+      scripts=['bingo/bin/django-bingo-serversent.py'],
       include_package_data=True,
       install_requires=required,
       classifiers=[

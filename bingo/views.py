@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext as _
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.conf import settings
 from django.core.cache import cache
 from django.middleware.cache import CacheMiddleware
@@ -26,6 +26,18 @@ OLD_THUMBNAIL_CACHE_EXPIRY = getattr(
     settings,
     "OLD_THUMBNAIL_CACHE_EXPIRY",
     24 * 60 * 60)
+USE_SSE = hasattr(settings, "SSE_URL")
+
+if USE_SSE:
+    REDIS_HOST = getattr(settings, "REDIS_HOST", None)
+    REDIS_PORT = getattr(settings, "REDIS_PORT", None)
+    from redis import Redis
+    kwargs = {}
+    if REDIS_HOST:
+        kwargs['host'] = REDIS_HOST
+    if REDIS_PORT:
+        kwargs['port'] = REDIS_PORT
+    redis = Redis(**kwargs)
 
 
 def _get_user_bingo_board(request):
@@ -79,6 +91,19 @@ def _get_image_name(board_id, marked=False, voted=False):
         filename = _("board_{0}").format(board_id)
 
     return filename
+
+
+def _publish_num_users(site_id, num_users=None, num_active_users=None):
+    if num_users is not None:
+        redis.publish("num_users", json.dumps({
+            'site_id': site_id,
+            'num_users': num_users,
+        }))
+    if num_active_users is not None:
+        redis.publish("num_active_users", json.dumps({
+            'site_id': site_id,
+            'num_active_users': num_active_users,
+        }))
 
 
 def main(request, reclaim_form=None, create_form=None):
@@ -198,6 +223,11 @@ def create_board(request):
                 bingo_board = BingoBoard(
                     game=game, user=user, ip=ip, password=password)
                 bingo_board.save()
+
+                if USE_SSE:
+                    _publish_num_users(game.site.id, game.num_users(),
+                                       game.num_active_users())
+
                 return redirect(reverse(bingo, kwargs={
                     'board_id': bingo_board.board_id}))
         else:
@@ -265,13 +295,28 @@ def _post_vote(user_bingo_board, field, vote):
     field.save()
 
     # update last_used with current timestamp
-    Game.objects.filter(id=user_bingo_board.game.id).update(
+    game = user_bingo_board.game
+    Game.objects.filter(id=game.id).update(
         last_used=times.now())
 
     # invalidate vote cache
     vote_counts_cachename = 'vote_counts_game={0:d}'.format(
         field.board.game.id)
     cache.delete(vote_counts_cachename)
+
+    # publish the new vote counts for server-sent events
+    if USE_SSE:
+        votes = field.num_votes()
+        redis.publish("word_votes", json.dumps({
+            'site_id': game.site.id,
+            'word_id': field.word.id,
+            'vote_count': votes,
+        }))
+        redis.publish("field_vote", json.dumps({
+            'site_id': game.site.id,
+            'field_id': field.id,
+            'vote': vote,
+        }))
 
 
 def vote(request, ajax, board_id=None):
@@ -306,11 +351,28 @@ def vote(request, ajax, board_id=None):
         return HttpResponse(json.dumps({}), content_type="application/json")
 
     # add data about the game
+    game = bingo_board.game
+    num_users = game.num_users()
+    num_active_users = game.num_active_users()
     data = {
-        'num_users': bingo_board.game.num_users(),
-        'num_active_users': bingo_board.game.num_active_users(),
+        'num_users': num_users,
+        'num_active_users': num_active_users,
         'is_expired': bingo_board.game.is_expired(),
     }
+
+    # send user number, if changed
+    if USE_SSE:
+        old_num_users = cache.get(
+            "num_users__site={0:d}".format(game.site.id))
+        old_num_active_users = cache.get(
+            "num_active_users__site={0:d}".format(game.site.id))
+
+        if old_num_users != num_users:
+            cache.set("num_users", num_users)
+            _publish_num_users(game.site.id, num_users=num_users)
+        if old_num_active_users != num_active_users:
+            cache.set("num_active_users", num_active_users)
+            _publish_num_users(game.site.id, num_active_users=num_active_users)
 
     for field in bingo_board.bingofield_set.all():
         # None="0", "+"=vote, "-"=veto
