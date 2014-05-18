@@ -94,9 +94,9 @@ var polling_interval_sse = {{ polling_interval_sse }};
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields_on_board %}
-    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-word-id="{{ field.word.id }}" data-field-id="{{ field.id }}">
+    <td class="bingofield{% if field.is_middle %} middle{% endif %}{% if field.vote == True %} active{% elif field.vote == False %} veto{% endif %}" data-word-id="{{ field.word.id }}" data-field-id="{{ field.id }}"{% if field.word.description %} title="{{ field.word.description }}"{% endif %}>
         {% if not field.is_middle %}{% include 'bingo/vote_form.html' %}{% endif %}
-        <div class="bingofield{% if field.is_middle %} middle{% endif %}"{% if field.word.description %} title="{{ field.word.description }}"{% endif %}>
+        <div class="bingofield{% if field.is_middle %} middle{% endif %}">
             {% comment %} for vertical alignment with the middle field, which has 3 lines {% endcomment %}
             {% if 11 <= field.position and not field.is_middle and field.position <= 15 %}
                 <br />
