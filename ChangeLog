@@ -10,6 +10,7 @@ django-bingo 1.5.0 ():
 	  database)
 	* improved: added POLLING_INTERVAL / POLLING_INTERVAL_SSE settings to
 	  configure how often updated votes / user numbers should be fetched
+	* improved: show title text below the board, if javascript is enabled
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south

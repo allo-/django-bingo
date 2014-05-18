@@ -20,6 +20,7 @@ var sse_url = "{{ sse_url }}";
 var polling_interval = {{ polling_interval }};
 var polling_interval_sse = {{ polling_interval_sse }};
 </script>
+<script src="{% static 'bingo/js/titletext.js' %}"></script>
 {% if not board.game.is_expired %}
 <script src="{% static 'bingo/js/bingo.js' %}"></script>
 {% endif %}
@@ -118,6 +119,7 @@ var polling_interval_sse = {{ polling_interval_sse }};
     {% endif %}
     {% endfor %}
 </table>
+<div id="titletext">&nbsp;</div>
 
 <ul class="words">
     {% for field in all_word_fields %}
