@@ -49,7 +49,7 @@ With [server-sent events](http://www.html5rocks.com/en/tutorials/eventsource/bas
 
 Configuration:
 
-* install python modules ```sse```, ```flask``` and ```redis```
+* install python modules ```sse```, ```flask```, ```redis``` and ```gevent```.
 * deploy bin/django-bingo-serversent.py somewhere. you can set the ```SITE_ID``` of your bingo instance via the environment variable ```SITE_ID```. You need to use some async server, such as ```gunicorn``` with ```gevent``` workers.
   * At the moment you need to edit the script to change the redis server address. Depending on your deployment you may need to change the ```@application.route("/")``` to the path in your url as well.
 * set ```USE_SSE``` to ```True```
