@@ -260,7 +260,8 @@ class BingoBoard(models.Model):
     password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(choices=RATINGS, null=True, default=None)
+    rating = models.IntegerField(choices=RATINGS, null=True, blank=True,
+        default=None)
 
     class Meta:
         ordering = ("-board_id",)
