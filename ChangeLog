@@ -1,12 +1,12 @@
 django-bingo 1.5.0 ():
 	* improved: header row and number of players row on game list page.
-	* added: support for User profiles, with the User's BingoBoards
+	* new: support for User profiles, with the User's BingoBoards
 	  associated to the account. Old BingoBoards can be claimed, if they have
 	  a password, which is unique for the old Game.
 	* fixed: corrected url regex for numbers, not to match ""
 	* fixed: off by one error, causing the bottom/right lines to be 1px to
 	  thin.
-	* added: optionally use server-sent events for less polling (needs a redis
+	* new: optionally use server-sent events for less polling (needs a redis
 	  database)
 	* improved: added POLLING_INTERVAL / POLLING_INTERVAL_SSE settings to
 	  configure how often updated votes / user numbers should be fetched
