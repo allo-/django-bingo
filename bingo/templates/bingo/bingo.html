@@ -19,6 +19,7 @@ var use_sse = {{ use_sse|lower }};
 var sse_url = "{{ sse_url }}";
 var polling_interval = {{ polling_interval }};
 var polling_interval_sse = {{ polling_interval_sse }};
+var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ field.word.word|lower }}";{% endif %}{% endfor %}
 </script>
 <script src="{% static 'bingo/js/titletext.js' %}"></script>
 {% if not board.game.is_expired %}
