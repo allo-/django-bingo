@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.db import models, transaction
 from django.contrib.sites.models import Site
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 
 from colorful.fields import RGBColorField
 
@@ -99,6 +100,9 @@ class Game(models.Model):
 
     class Meta:
         unique_together = ("game_id", "site")
+
+    def get_absolute_url(self):
+        return reverse('bingo.views.game', kwargs={"game_id": self.game_id})
 
     def __unicode__(self):
         return _(u"Game #{0} created at {1} (site {2})").format(
@@ -267,6 +271,9 @@ class BingoBoard(models.Model):
         ordering = ("-board_id",)
         # board_id, game__site is not possible
         unique_together = ("board_id", "game")
+
+    def get_absolute_url(self):
+        return reverse('bingo.views.bingo', kwargs={"board_id": self.board_id})
 
     def clean(self):
         try:
