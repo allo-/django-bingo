@@ -1,5 +1,5 @@
 django-bingo 1.5.0 ():
-	* improved: header row and number of players row on game list page.
+	* improved: header row and number of players column on game list page.
 	* new: support for User profiles, with the User's BingoBoards
 	  associated to the account. Old BingoBoards can be claimed, if they have
 	  a password, which is unique for the old Game.
@@ -14,6 +14,7 @@ django-bingo 1.5.0 ():
 	* new: the bingo page has now a variable middleword set.
 	* improved: Game and BingoBoard now have ``get_absolute_url``, which
 	  provides i.e links to the game/bingo page in the admin interface.
+	* improved: style fixes ("veto" title tag)
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south
