@@ -10,6 +10,7 @@
         <th>{% trans "date" %}</th>
         <th>{% trans "players" %}</th>
         <th>{% trans "rating" %}</th>
+        <th style="text-align: left">{% trans "description" %}</th>
     </tr>
 {% for game in object_list %}
     <tr>
@@ -18,6 +19,7 @@
         <td>{{ game.created }}</td>
         <td>{{ game.num_users }}</td>
         <td>{% include "bingo/game_rating.html" %}</td>
+        <td style="text-align: left">{% if game.description %}{{ game.description }}{% else %}&mdash;{% endif %}</td>
     </tr>
 {% endfor %}
 </table>

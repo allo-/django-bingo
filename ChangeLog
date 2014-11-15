@@ -15,6 +15,7 @@ django-bingo 1.5.0 ():
 	* improved: Game and BingoBoard now have ``get_absolute_url``, which
 	  provides i.e links to the game/bingo page in the admin interface.
 	* improved: style fixes ("veto" title tag)
+	* improved: added game descriptions to the game list page.
 
 django-bingo 1.4.0 (2014-02-27):
 	Attention: when updating from an older version, you will need south
