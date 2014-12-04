@@ -9,7 +9,7 @@ li.word, td.bingofield {
     border: thin solid black;
     color: black;
 }
-input{
+input, select {
     background-color: lightgrey;
     color: black;
     border: thin solid grey;
