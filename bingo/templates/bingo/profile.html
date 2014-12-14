@@ -17,9 +17,7 @@
     {% endblocktrans %}
 {% endif %}
 </h3>
-{% with profile_user.bingoboard_set.all as boards %}
-    {% include "bingo/board_list.html" %}
-{% endwith %}
+{% include "bingo/board_list.html" %}
 
 {% if user == profile_user %}
 <h3>{% trans "Claim other boards" %}</h3>
