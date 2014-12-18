@@ -1,4 +1,4 @@
-django-bingo 1.5.0 ():
+django-bingo 1.5.0 (2014-12-18):
 	* improved: header row and number of players column on game list page.
 	* new: support for User profiles, with the User's BingoBoards
 	  associated to the account. Old BingoBoards can be claimed, if they have
@@ -35,7 +35,7 @@ django-bingo 1.4.0 (2014-02-27):
 	* new: option to rate the show (not the board!)
 	* improved: [-] veto buttons are now toggle buttons (veto/neutral)
 
-django-bingo 1.3.2 ():
+django-bingo 1.3.2 (2014-02-20):
        * added: MANIFEST.in to include package_data in source distributions
 
 django-bingo 1.3.1 (2014-01-21):
