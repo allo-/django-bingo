@@ -49,7 +49,7 @@ Settings
 
 #### required settings
 
-* ```TEMPLATE_CONTEXT_PROCESSORS```: add the [default context_processors](https://docs.djangoproject.com/en/1.5/ref/settings/#template-context-processors), 
+* ```TEMPLATE_CONTEXT_PROCESSORS```: add the [default context_processors](https://docs.djangoproject.com/en/1.5/ref/settings/#template-context-processors),  and then the django-bingo context_processor ```bingo.context_processors.bingo```.
 * ```FONT_PATH``` the ttf font used to generate images.
 * at least one of
     * ```GAME_HARD_TIMEOUT``` time after which a game is stopped
