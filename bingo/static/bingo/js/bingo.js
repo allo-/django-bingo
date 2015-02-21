@@ -22,6 +22,8 @@ $(document).ready(function(){
         $(obj).find("input[type=submit]").remove();
         var vote_field = $("<input>").attr("name", "vote").attr("type", "hidden");
         var veto_link = $("<a>").attr("href", "#").attr("title", "veto").addClass("veto").text("[-]");
+        $(veto_link).bind("mouseover", function(ev) {$(this).text("[Veto]")});
+        $(veto_link).bind("mouseout", function(ev) {$(this).text("[-]")});
 
         function vote(form, what){
             form.find("input[name=vote]").val(what);
