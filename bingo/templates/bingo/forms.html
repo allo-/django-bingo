@@ -1,22 +1,26 @@
 {% load i18n %}
 <div class="cf" style="padding: 0 0 2ex 0">
 <div class="create_form">
-    <span class="form_header">{% trans 'create a new board:' %}</span>
-    <form class="create_form" action="{% url 'bingo.views.create_board' %}" method="post">
+    <fieldset class="create_form">
+    <legend class="form_header">{% trans 'create a new board:' %}</legend>
+    <form action="{% url 'bingo.views.create_board' %}" method="post">
         <table class="create_form">
         {{ create_form.as_table }}
         {% csrf_token %}
         </table>
         <input type="submit" value="{% trans 'create board' %}" />
     </form>
+    </fieldset>
 </div>
 
 <div class="reclaim_form">
-    <span class="form_header">{% trans 'reclaim your board:' %}</span>
+    <fieldset class="reclaim_form">
+    <legend class="form_header">{% trans 'reclaim your board:' %}</legend>
     <form class="reclaim_form" action="{% url 'bingo.views.reclaim_board' %}" method="post">
         {{ reclaim_form.as_p }}
         {% csrf_token %}
         <input type="submit" value="{% trans 'go to my board' %}" />
     </form>
+    </fieldset>
 </div>
 </div>

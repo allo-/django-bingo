@@ -93,7 +93,7 @@ li.word form.voteform input {
 span.form_header {
     font-weight: bold;
 }
-form.reclaim_form, form.create_form {
+fieldset.reclaim_form, fieldset.create_form {
     border: 2px solid darkgreen;
     display: table;
     padding: 1ex;
