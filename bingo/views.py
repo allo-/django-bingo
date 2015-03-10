@@ -369,10 +369,12 @@ def vote(request, ajax, board_id=None):
             "num_active_users__site={0:d}".format(game.site.id))
 
         if old_num_users != num_users:
-            cache.set("num_users", num_users)
+            cache.set("num_users__site={0:d}".format(game.site.id),
+                num_users)
             _publish_num_users(game.site.id, num_users=num_users)
         if old_num_active_users != num_active_users:
-            cache.set("num_active_users", num_active_users)
+            cache.set("num_active_users__site={0:d}".format(game.site.id),
+                num_active_users)
             _publish_num_users(game.site.id, num_active_users=num_active_users)
 
     for field in bingo_board.bingofield_set.all():
@@ -429,9 +431,11 @@ def thumbnail(request, board_id, marked=False, voted=False):
     # when the game of the board is expired,
     # the thumbnail can be cached longer.
     if game_expired:
-        m = CacheMiddleware(cache_timeout=OLD_THUMBNAIL_CACHE_EXPIRY)
+        m = CacheMiddleware(cache_timeout=OLD_THUMBNAIL_CACHE_EXPIRY,
+            key_prefix="site_id={0:d}".format(get_current_site(request).id))
     else:
-        m = CacheMiddleware(cache_timeout=THUMBNAIL_CACHE_EXPIRY)
+        m = CacheMiddleware(cache_timeout=THUMBNAIL_CACHE_EXPIRY,
+            key_prefix="site_id={0:d}".format(get_current_site(request).id))
 
     response = m.process_request(request)
     if response:  # cached
