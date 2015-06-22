@@ -207,6 +207,9 @@ msgstr "Mitspieler"
 msgid "rating"
 msgstr "Bewertung"
 
+msgid "description"
+msgstr "Spielbeschreibung"
+
 msgid "newer games"
 msgstr "neuere Spiele"
 
