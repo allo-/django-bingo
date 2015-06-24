@@ -1,7 +1,8 @@
-django-bingo 1.6.0 ():
+django-bingo 1.5.1 (2015-06-25):
 	* improved: change veto link from [-] to [Veto] on mouseover.
 	* improved: use fieldset on forms.
 	* fixed: image cache works correct with different sites now.
+	* improved: added missing translations
 
 django-bingo 1.5.0 (2014-12-18):
 	* improved: header row and number of players column on game list page.
