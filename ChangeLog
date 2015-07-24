@@ -1,4 +1,5 @@
 django-bingo 1.6.0 ():
+	* new: Show game description above the bingo board.
 
 django-bingo 1.5.1 (2015-06-25):
 	* improved: change veto link from [-] to [Veto] on mouseover.

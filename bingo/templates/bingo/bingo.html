@@ -92,6 +92,9 @@ var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ f
     </tr>
 </table>
 
+{% if board.game.description %}
+<b>{% trans 'Game Description:' %}</b> {{ board.game.description }}
+{% endif %}
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields_on_board %}
