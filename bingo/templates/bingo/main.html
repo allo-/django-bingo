@@ -21,9 +21,8 @@
     /
     <a href="{% url "registration_register" %}?next={% url "bingo.views.main" %}">{% trans "register" %}</a>
 {% endif %}
-{{ block.super }}
 </div>
-
+{{ block.super }}
 {% endblock %}
 
 {% block content %}
