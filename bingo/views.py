@@ -16,6 +16,8 @@ from forms import ChangeThemeForm, RateGameForm
 import image as image_module
 import times
 
+import logging
+logger = logging.getLogger(__name__)
 
 GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
 THUMBNAIL_CACHE_EXPIRY = getattr(
@@ -31,13 +33,18 @@ USE_SSE = hasattr(settings, "SSE_URL")
 if USE_SSE:
     REDIS_HOST = getattr(settings, "REDIS_HOST", None)
     REDIS_PORT = getattr(settings, "REDIS_PORT", None)
-    from redis import Redis
-    kwargs = {}
-    if REDIS_HOST:
-        kwargs['host'] = REDIS_HOST
-    if REDIS_PORT:
-        kwargs['port'] = REDIS_PORT
-    redis = Redis(**kwargs)
+    try:
+        from redis import Redis
+        kwargs = {}
+        if REDIS_HOST:
+            kwargs['host'] = REDIS_HOST
+        if REDIS_PORT:
+            kwargs['port'] = REDIS_PORT
+        redis = Redis(**kwargs)
+    except ImportError:
+        logger.warning(
+            "USE_SSE is set, but no redis module found. Disabling SSE")
+        USE_SSE = False
 
 
 def _get_user_bingo_board(request):

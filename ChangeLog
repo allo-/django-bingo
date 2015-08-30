@@ -1,5 +1,6 @@
 django-bingo 1.6.0 ():
 	* new: Show game description above the bingo board.
+	* fix: Disable USE_SSE, if no redis module is found, but USE_SSE is set.
 
 django-bingo 1.5.1 (2015-06-25):
 	* improved: change veto link from [-] to [Veto] on mouseover.
