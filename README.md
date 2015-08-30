@@ -42,7 +42,9 @@ Different Sites have different sets of Words, and they will generate a different
 Upgrading
 ---------
 
-For upgrading from an older version install ```south``` and use ```manage.py migrate```
+For upgrading from an older version you may need to use ```manage.py migrate```, if the database scheme was changed.
+
+When upgrading from versions prior to 1.4, upgrade first using ``south`` and ```django 1.6```. Then upgrade to the current version using the django migrations.
 
 Settings
 --------

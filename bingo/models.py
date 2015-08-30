@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -260,7 +260,7 @@ class BingoBoard(models.Model):
     game = models.ForeignKey("Game")
     color = RGBColorField()
     ip = models.IPAddressField(blank=True, null=True)
-    user = models.ForeignKey(get_user_model(), blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(auto_now_add=True)
