@@ -42,7 +42,7 @@ class Word(models.Model):
     word = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=255, blank=True)
     is_middle = models.BooleanField(default=False)
-    site = models.ManyToManyField(Site, blank=True, null=True)
+    site = models.ManyToManyField(Site, blank=True)
 
     class Meta:
         ordering = ("word",)
@@ -259,7 +259,7 @@ class BingoBoard(models.Model):
     board_id = models.IntegerField(blank=True, null=True)
     game = models.ForeignKey("Game")
     color = RGBColorField()
-    ip = models.IPAddressField(blank=True, null=True)
+    ip = models.GenericIPAddressField(blank=True, null=True)
     user = models.ForeignKey(User, blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -319,7 +319,7 @@ class BingoBoard(models.Model):
             fields = self.create_bingofields()
 
             # then create a board_id
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 bingo_boards = BingoBoard.objects.filter(
                     game__site=self.game.site)
                 current_id = bingo_boards.aggregate(

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils.translation import ugettext as _
 from django.db import transaction
 from django.http import HttpResponse, StreamingHttpResponse
@@ -209,7 +209,7 @@ def create_board(request):
             game=game)
 
         if create_form.is_valid():
-            with transaction.commit_on_success():
+            with transaction.atomic():
                 ip = request.META['REMOTE_ADDR']
                 password = create_form.cleaned_data.get('password')
                 game_description = create_form.cleaned_data.get(
