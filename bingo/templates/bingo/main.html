@@ -63,7 +63,7 @@
             </table>
         {% endwith %}
         {% with all_boards=boards.all %}
-        {% with boards=all_boards.all|slice:":10" total_boards=all_boards.count game=current_game %}
+        {% with boards=all_boards.all|slice:":12" total_boards=all_boards.count game=current_game %}
             {% include "bingo/board_list.html" %}
         {% endwith %}
         {% endwith %}
@@ -85,7 +85,7 @@
             ({{ game.description }})
         {% endif %}
         {% with all_boards=game.bingoboard_set.all %}
-        {% with boards=all_boards.all|slice:":10" total_boards=all_boards.count %}
+        {% with boards=all_boards.all|slice:":12" total_boards=all_boards.count %}
             {% include "bingo/board_list.html" %}
         {% endwith %}
         {% endwith %}

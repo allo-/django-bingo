@@ -2,6 +2,8 @@ django-bingo 1.6.0 ():
 	* new: Show game description above the bingo board.
 	* fix: Disable USE_SSE, if no redis module is found, but USE_SSE is set.
 	* improved: Adapted to Django 1.8
+	* improved: show 12 boards per game on the front page, so they are aligned
+	  for different window sizes with 2, 3, 4, 6 or 12 boards per row.
 
 django-bingo 1.5.1 (2015-06-25):
 	* improved: change veto link from [-] to [Veto] on mouseover.
