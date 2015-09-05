@@ -1,4 +1,4 @@
-django-bingo 1.6.0 ():
+django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.
 	* fix: Disable USE_SSE, if no redis module is found, but USE_SSE is set.
 	* improved: Adapted to Django 1.8
