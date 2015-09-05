@@ -2,6 +2,7 @@ from django.db.models import Count, Max
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils import timezone
+import math
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -204,8 +205,16 @@ def get_image(bingo_board, marked=False, voted=False):
 
 def get_thumbnail(bingo_board, marked=False, voted=False,
                   thumbnail_width=THUMBNAIL_WIDTH,
-                  thumbnail_height=THUMBNAIL_HEIGHT):
+                  thumbnail_height=THUMBNAIL_HEIGHT, square=False):
     im = get_image(bingo_board, marked, voted)
     im.thumbnail(
         size=(thumbnail_width, thumbnail_height), resample=Image.ANTIALIAS)
+    if square:
+        long_side = max(im.size[0], im.size[1])
+        left_padding = int(math.floor((long_side - im.size[0]) / 2.0))
+        right_padding = int(math.ceil((long_side - im.size[0]) / 2.0))
+        top_padding = int(math.floor((long_side - im.size[1]) / 2.0))
+        bottom_padding = int(math.ceil((long_side - im.size[1]) / 2.0))
+        im = im.crop((-left_padding, -top_padding,
+                     im.size[0] + right_padding, im.size[1] + bottom_padding))
     return im

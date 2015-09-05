@@ -423,6 +423,7 @@ def thumbnail(request, board_id, marked=False, voted=False):
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
         game__site=get_current_site(request))
+    square = bool(request.GET.get("square"))
 
     # check if the board is from an expired game
     game_expired_cachename = "game_expired__board={0:d}".format(
@@ -452,7 +453,7 @@ def thumbnail(request, board_id, marked=False, voted=False):
     filename = _get_image_name(board_id, marked, voted) + \
         "_" + _("thumbnail") + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
-    im = image_module.get_thumbnail(bingo_board, marked, voted)
+    im = image_module.get_thumbnail(bingo_board, marked, voted, square=square)
     im.save(response, "png")
 
     return m.process_response(request, response)
