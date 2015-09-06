@@ -30,12 +30,23 @@ var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ f
 {% block headline %}{% trans "Board" %} #{{ board.board_id }}{% endblock %}
 
 {% block content %}
+<span>
+Link:
+<input type="text" value="{{ absolute_uri }}" style="width: 35ex" onclick="this.select()" />
+</span>
+<span style="margin-left: 3ex">
 {% trans "Images:" %}
-<a href="{% url 'bingo.views.image' board_id=board.board_id %}">{% trans "empty" %}</a>
-<a href="{% url 'bingo.views.image' marked=True board_id=board.board_id %}">{% trans "marked" %}</a>
+<a href="{% url 'bingo.views.image' board_id=board.board_id %}">{% trans "empty" %}</a> /
+<a href="{% url 'bingo.views.image' marked=True board_id=board.board_id %}">{% trans "marked" %}</a> /
 <a href="{% url 'bingo.views.image' voted=True board_id=board.board_id %}">{% trans "voted" %}</a>
+</span>
+{% if tweet_text %}
+<span style="margin-left: 3ex">
+Twitter:
+<a class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{ tweet_text|urlencode }}&url={{ absolute_uri|urlencode }}&hashtags={{ tweet_hashtags|urlencode }}">{% trans 'Tweet' %}</a>
+</span>
+{% endif %}
 
-<p></p>
 
 <table id="num_users_table">
     {% if board.game.is_expired %}

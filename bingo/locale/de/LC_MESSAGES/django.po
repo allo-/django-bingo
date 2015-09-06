@@ -1,14 +1,14 @@
 # German Translation for django-bingo.
 # Copyright (C) 2013
 # This file is distributed under the same license as the django-bingo package.
-# Alexander Schier <allo@laxu.de>, 2013, 2014.
+# Alexander Schier <allo@laxu.de>, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-28 21:57+0100\n"
-"PO-Revision-Date: 2014-03-28 21:58+0100\n"
+"POT-Creation-Date: 2015-09-06 18:41+0200\n"
+"PO-Revision-Date: 2015-09-06 18:42+0200\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
 "Language: \n"
@@ -114,21 +114,6 @@ msgstr " [Mitte]"
 msgid "BingoField: word={0}, (not on the board)"
 msgstr "BingoField: word={0} (nicht auf dem Brett)"
 
-#, python-brace-format
-msgid "board_{0}_voted"
-msgstr "brett_{0}_abgestimmt"
-
-#, python-brace-format
-msgid "board_{0}_marked"
-msgstr "brett_{0}_markiert"
-
-#, python-brace-format
-msgid "board_{0}"
-msgstr "brett_{0}"
-
-msgid "thumbnail"
-msgstr "thumbnail"
-
 msgid "powered by django-bingo"
 msgstr "powered by django-bingo"
 
@@ -147,6 +132,9 @@ msgstr "markiert"
 msgid "voted"
 msgstr "abgestimmt"
 
+msgid "Tweet"
+msgstr "Tweet"
+
 msgid "Created:"
 msgstr "Erstellt:"
 
@@ -164,6 +152,9 @@ msgstr "Sendungsbewertung:"
 
 msgid "Rate the Show:"
 msgstr "Sendung bewerten:"
+
+msgid "Game Description:"
+msgstr "Spielbeschreibung:"
 
 msgid "(your board)"
 msgstr "(Dein Brett)"
@@ -252,9 +243,6 @@ msgstr "Dein Brett:"
 msgid "You seem not to have a bingo board for the current game"
 msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
-msgid "Game Description:"
-msgstr "Spielbeschreibung:"
-
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
 
@@ -290,7 +278,7 @@ msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Statistiken"
 
 msgid "Theme:"
 msgstr "Theme:"
@@ -309,6 +297,25 @@ msgstr "Du bist jetzt ausgelogged."
 
 msgid "Register"
 msgstr "Registrieren"
+
+msgctxt "tweet text"
+msgid "My bingo board:"
+msgstr "Mein Bingobrett:"
+
+#, python-brace-format
+msgid "board_{0}_voted"
+msgstr "brett_{0}_abgestimmt"
+
+#, python-brace-format
+msgid "board_{0}_marked"
+msgstr "brett_{0}_markiert"
+
+#, python-brace-format
+msgid "board_{0}"
+msgstr "brett_{0}"
+
+msgid "thumbnail"
+msgstr "thumbnail"
 
 #~ msgid "Go to my board"
 #~ msgstr "Gehe zu meinem Brett"

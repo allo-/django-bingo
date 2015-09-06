@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, pgettext_lazy
 from django.db import transaction
 from django.http import HttpResponse, StreamingHttpResponse
 from django.conf import settings
@@ -29,6 +29,10 @@ OLD_THUMBNAIL_CACHE_EXPIRY = getattr(
     "OLD_THUMBNAIL_CACHE_EXPIRY",
     24 * 60 * 60)
 USE_SSE = hasattr(settings, "SSE_URL")
+TWEETBUTTON_TEXT = getattr(
+    settings, "TWEETBUTTON_TEXT",
+    pgettext_lazy("tweet text", "My bingo board:"))
+TWEETBUTTON_HASHTAGS = getattr(settings, "TWEETBUTTON_HASHTAGS", "bingo")
 
 if USE_SSE:
     REDIS_HOST = getattr(settings, "REDIS_HOST", None)
@@ -268,6 +272,8 @@ def bingo(request, board_id=None):
         "my_board": my_bingo_board,
         "all_word_fields": all_word_fields,
         "rate_form": RateGameForm(),
+        "tweet_text": TWEETBUTTON_TEXT,
+        "tweet_hashtags": TWEETBUTTON_HASHTAGS
         })
 
 

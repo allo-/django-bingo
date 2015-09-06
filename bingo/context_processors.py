@@ -55,12 +55,14 @@ def bingo(request):
     use_sse = True if hasattr(settings, "USE_SSE") and sse_url else False
     polling_interval = getattr(settings, "POLLING_INTERVAL", 10)
     polling_interval_sse = getattr(settings, "POLLING_INTERVAL", 120)
+    absolute_uri = request.build_absolute_uri()
     items = {
         'settings': settings_context(request),
         'use_sse': use_sse,
         'sse_url': sse_url,
         'polling_interval': polling_interval,
         'polling_interval_sse': polling_interval_sse,
+        'absolute_uri': absolute_uri,
     }
     for key, value in themes(request).items():
         items[key] = value
