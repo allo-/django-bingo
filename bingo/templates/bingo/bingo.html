@@ -31,19 +31,24 @@ var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ f
 
 {% block content %}
 <span>
-Link:
+<b>Link:</b>
 <input type="text" value="{{ absolute_uri }}" style="width: 35ex" onclick="this.select()" />
 </span>
 <span style="margin-left: 3ex">
-{% trans "Images:" %}
+<b>{% trans "Images:" %}</b>
 <a href="{% url 'bingo.views.image' board_id=board.board_id %}">{% trans "empty" %}</a> /
 <a href="{% url 'bingo.views.image' marked=True board_id=board.board_id %}">{% trans "marked" %}</a> /
 <a href="{% url 'bingo.views.image' voted=True board_id=board.board_id %}">{% trans "voted" %}</a>
 </span>
 {% if tweet_text %}
 <span style="margin-left: 3ex">
-Twitter:
+<b>Twitter:</b>
 <a class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{ tweet_text|urlencode }}&url={{ absolute_uri|urlencode }}&hashtags={{ tweet_hashtags|urlencode }}">{% trans 'Tweet' %}</a>
+</span>
+{% endif %}
+<span style="margin-left: 3ex">
+{% if board.game.description %}
+<b>{% trans 'Game Description:' %}</b> {{ board.game.description }}
 </span>
 {% endif %}
 
@@ -103,9 +108,6 @@ Twitter:
     </tr>
 </table>
 
-{% if board.game.description %}
-<b>{% trans 'Game Description:' %}</b> {{ board.game.description }}
-{% endif %}
 <table class="bingoboard" id="bingoboard">
     <tr>
     {% for field in fields_on_board %}
