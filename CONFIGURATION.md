@@ -58,7 +58,7 @@ Configuration:
 
 ### Themes
 
-* ```THEME``` relative or absolute URL to a theme. When the string does not start with "/", "http://" or "https://", the string is interpreted as a [static files path](https://docs.djangoproject.com/en/1.5/ref/contrib/staticfiles/). (Default: None)
+* ```THEME``` relative or absolute URL to a theme. When the string does not start with "/", "http://" or "https://", the string is interpreted as a [static files path](https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/). (Default: None)
 * ```THEMES``` A list of themes, which will be available via a theme chooser. Example: ```THEMES = (('dark', 'bingo/themes/dark.css'), ('some other theme', 'http://mysite/mytheme.css'))``` (Default: a "dark" theme. ```None``` will disable the theme chooser)
 
 ### Other
@@ -71,7 +71,7 @@ Configuration:
 ## django settings
 
 * ```SITE_ID``` id of the current site in the Sites-Framework
-* [```CACHE```](https://docs.djangoproject.com/en/1.5/topics/cache/#setting-up-the-cache)
+* [```CACHE```](https://docs.djangoproject.com/en/1.8/topics/cache/#setting-up-the-cache)
   You need to increase ```'OPTIONS': {'MAX_ENTRIES': XXXXX}``` to cache enough entries.
   The cached entries can quickly add up to a large number of keys, while the stored data is rather small,
   and having too little cache will rapidly increase the number of database queries.
