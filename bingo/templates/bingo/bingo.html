@@ -46,8 +46,8 @@ var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ f
 <a class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{ tweet_text|urlencode }}&url={{ absolute_uri|urlencode }}&hashtags={{ tweet_hashtags|urlencode }}">{% trans 'Tweet' %}</a>
 </span>
 {% endif %}
-<span style="margin-left: 3ex">
 {% if board.game.description %}
+<span style="margin-left: 3ex">
 <b>{% trans 'Game Description:' %}</b> {{ board.game.description }}
 </span>
 {% endif %}
@@ -57,11 +57,11 @@ var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ f
     {% if board.game.is_expired %}
     <tr>
         <th>{% trans 'Created:' %}</th>
-        <td id="created">{{ board.created}}</td>
+        <td id="created">{{ board.created|date:"SHORT_DATETIME_FORMAT" }}</td>
     </tr>
     <tr>
         <th>{% trans 'Last Used:' %}</th>
-        <td id="last_used">{{ board.last_used }}</td>
+        <td id="last_used">{{ board.last_used|date:"SHORT_DATETIME_FORMAT" }}</td>
     </tr>
     {% endif %}
     <tr>
