@@ -67,6 +67,7 @@ Configuration:
 * ```GAME_DESCRIPTION_DISABLED``` disable the "Game Description" field for new Games.
 * ```TWEETBUTTON_TEXT``` the text for the "Tweet" link. Use ```""``` to disable the twitter link.
 * ```TWEETBUTTON_HASHTAGS``` (comma separated) twitter hashtags, which should be added to the tweet. Example: ```"bingo,coolradioshow"```
+* ```TWITTERCARD_ACCOUNT``` if set to a twitter account (including the ```@```) for your game, the meta-tags for a [Twitter Card](https://dev.twitter.com/cards/overview) will be added to the bingo page. Default: ```""``` (disabled).
 
 ## django settings
 

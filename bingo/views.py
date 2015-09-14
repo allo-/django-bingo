@@ -33,6 +33,7 @@ TWEETBUTTON_TEXT = getattr(
     settings, "TWEETBUTTON_TEXT",
     pgettext_lazy("tweet text", "My bingo board:"))
 TWEETBUTTON_HASHTAGS = getattr(settings, "TWEETBUTTON_HASHTAGS", "bingo")
+TWITTERCARD_ACCOUNT = getattr(settings, "TWITTERCARD_ACCOUNT", "")
 
 if USE_SSE:
     REDIS_HOST = getattr(settings, "REDIS_HOST", None)
@@ -263,17 +264,20 @@ def bingo(request, board_id=None):
     )
     my_bingo_board = _get_user_bingo_board(request)
     fields_on_board = bingo_board.get_board_fields().select_related()
+    middle_field = fields_on_board.filter(position=13)[0]
     all_word_fields = bingo_board.get_all_word_fields().order_by(
         "word__word").select_related()
 
     return render(request, "bingo/bingo.html", {
         "fields_on_board": fields_on_board,
+        "middle_field": middle_field,
         "board": bingo_board,
         "my_board": my_bingo_board,
         "all_word_fields": all_word_fields,
         "rate_form": RateGameForm(),
         "tweet_text": TWEETBUTTON_TEXT,
-        "tweet_hashtags": TWEETBUTTON_HASHTAGS
+        "tweet_hashtags": TWEETBUTTON_HASHTAGS,
+        "twittercard_account": TWITTERCARD_ACCOUNT,
         })
 
 

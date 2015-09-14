@@ -56,6 +56,8 @@ def bingo(request):
     polling_interval = getattr(settings, "POLLING_INTERVAL", 10)
     polling_interval_sse = getattr(settings, "POLLING_INTERVAL", 120)
     absolute_uri = request.build_absolute_uri()
+    host = request.get_host()
+    scheme = request.scheme
     items = {
         'settings': settings_context(request),
         'use_sse': use_sse,
@@ -63,6 +65,8 @@ def bingo(request):
         'polling_interval': polling_interval,
         'polling_interval_sse': polling_interval_sse,
         'absolute_uri': absolute_uri,
+        'http_host': host,
+        'http_scheme': scheme,
     }
     for key, value in themes(request).items():
         items[key] = value

@@ -10,6 +10,31 @@
 {% endblock %}
 {% block extra_head %}
 {{ block.super }}
+{% block twittercard %}
+{% if twittercard_account %}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="{{ twittercard_account }}" />
+<meta name="twitter:title" content="{% spaceless %}
+    {% block twittercard_title %}
+        {% blocktrans with board_id=board.board_id middle_word=middle_field.word.word %}Bingo Board #{{ board_id }} ({{ middle_word }}){% endblocktrans %}
+    {% endblock %}
+{% endspaceless %}" />
+<meta name="twitter:description" content="{% spaceless %}
+    {% if board.game.description %}
+        {% block twittercard_description_with_topic %}
+            {% blocktrans with game_id=board.game.game_id date=board.game.created.date description=board.game.description %}Game #{{ game_id }} (Topic: {{ description }}) from {{ date }}.{% endblocktrans %}
+        {% endblock %}
+    {% else %}
+        {% block twittercard_description %}
+            {% blocktrans with game_id=board.game.game_id date=board.game.created.date %}Game #{{ game_id }} from {{ date }}.{% endblocktrans %}
+        {% endblock %}
+    {% endif %}
+{% endspaceless %}" />
+<meta name="twitter:image" content="{{ http_scheme }}://{{ http_host }}{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}?square=1" />
+{% endif %}
+{% endblock %}
+
+
 <script>
 var vote_url = "{% url 'bingo.views.vote' ajax=False %}";
 var ajax_vote_url = "{% url 'bingo.views.vote' ajax=True %}";
@@ -19,7 +44,7 @@ var use_sse = {{ use_sse|lower }};
 var sse_url = "{{ sse_url }}";
 var polling_interval = {{ polling_interval }};
 var polling_interval_sse = {{ polling_interval_sse }};
-var middleword = {% for field in fields_on_board %}{% if field.is_middle %}"{{ field.word.word|lower }}";{% endif %}{% endfor %}
+var middleword = "{{ middle_field.word.word|lower }}";
 </script>
 <script src="{% static 'bingo/js/titletext.js' %}"></script>
 {% if not board.game.is_expired %}
