@@ -2,6 +2,8 @@ from django.db.models import Count, Max
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils import timezone
+from django.core.urlresolvers import reverse
+import views
 import math
 
 from PIL import Image, ImageDraw, ImageFont
@@ -115,7 +117,7 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
     return field_color, word_color, border_color
 
 
-def get_image(bingo_board, marked=False, voted=False):
+def get_image(host, bingo_board, marked=False, voted=False):
     font = ImageFont.truetype(FONTPATH, FONTSIZE)
 
     all_bingo_fields = BingoField.objects.filter(
@@ -199,14 +201,24 @@ def get_image(bingo_board, marked=False, voted=False):
                 line, font=font, fill=word_color
             )
             h_offset += text.line_heights[idx]
+        
+	# add a watermark in the lower right
+    text = host + reverse(views.bingo, kwargs={'board_id': bingo_board.board_id})
+    font = ImageFont.truetype(FONTPATH, 12)
+    line_width, line_height = draw.textsize(text, font=font)
+    draw.text(
+        (image_width -5 - line_width,
+        image_height -3 - line_height),
+        text, font=font, fill=word_color
+    )
 
     return im
 
 
-def get_thumbnail(bingo_board, marked=False, voted=False,
+def get_thumbnail(host, bingo_board, marked=False, voted=False,
                   thumbnail_width=THUMBNAIL_WIDTH,
                   thumbnail_height=THUMBNAIL_HEIGHT, square=False):
-    im = get_image(bingo_board, marked, voted)
+    im = get_image(host, bingo_board, marked, voted)
     im.thumbnail(
         size=(thumbnail_width, thumbnail_height), resample=Image.ANTIALIAS)
     if square:

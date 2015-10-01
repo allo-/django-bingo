@@ -424,7 +424,7 @@ def image(request, board_id, marked=False, voted=False):
     response = HttpResponse(content_type="image/png")
     filename = _get_image_name(board_id, marked, voted) + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
-    im = image_module.get_image(bingo_board, marked, voted)
+    im = image_module.get_image(request.get_host(), bingo_board, marked, voted)
     im.save(response, "png")
     return response
 
@@ -463,7 +463,7 @@ def thumbnail(request, board_id, marked=False, voted=False):
     filename = _get_image_name(board_id, marked, voted) + \
         "_" + _("thumbnail") + ".png"
     response['Content-Disposition'] = 'filename={0}'.format(filename)
-    im = image_module.get_thumbnail(bingo_board, marked, voted, square=square)
+    im = image_module.get_thumbnail(request.get_host(), bingo_board, marked, voted, square=square)
     im.save(response, "png")
 
     return m.process_response(request, response)
