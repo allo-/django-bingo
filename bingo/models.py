@@ -366,6 +366,9 @@ class BingoBoard(models.Model):
     def get_all_word_fields(self):
         return self.bingofield_set.filter(word__is_middle=False)
 
+    def get_middle_field(self):
+        return self.bingofield_set.filter(word__is_middle=True)[0]
+
     def get_created(self):
         """
             get created field with BINGO_IMAGE_DATETIME_FORMAT formatting

@@ -7,7 +7,7 @@
                 <a href="{% url 'bingo.views.bingo' board.board_id %}">
                     <img class="thumbnail" src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
                     <br />
-                    {% trans 'Board' %} #{{ board.board_id }}
+                    {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
                 </a>
                 {% if board == my_board %}{% trans '(your board)' %}{% endif %}
             </div>
@@ -18,7 +18,7 @@
     {% else %}
     <li>
         <a href="{% url 'bingo.views.bingo' board.board_id %}">
-            {% trans 'Board' %} #{{ board.board_id }}
+            {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
         </a>
         {% if board == my_board %}{% trans '(your board)' %}{% endif %}
     </li>
