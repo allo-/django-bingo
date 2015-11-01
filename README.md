@@ -8,11 +8,18 @@ Dependencies
 
 Python packages:
 
-* django 1.5
+* django 1.8
 * django-jquery 1.9.1
 * django-colorful 0.1.3
 * pytz 2013b
 * pillow 2.1.0
+
+For SSE:
+
+* sse 1.2
+* redis 2.10.3
+* flask 0.10.1
+* gevent 1.0.2
 
 Other: a ttf-file as font for the image-export.
 
