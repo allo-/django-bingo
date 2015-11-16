@@ -10,14 +10,6 @@ DEFAULT_THEMES = (
 )
 
 
-def settings_context(request):
-    """
-        returns a dict with whitelisted settings
-    """
-    return {
-    }
-
-
 def themes(request):
     STATIC_ROOT = getattr(settings, "STATIC_ROOT", "")
 
@@ -59,7 +51,6 @@ def bingo(request):
     host = request.get_host()
     scheme = request.scheme
     items = {
-        'settings': settings_context(request),
         'use_sse': use_sse,
         'sse_url': sse_url,
         'polling_interval': polling_interval,
