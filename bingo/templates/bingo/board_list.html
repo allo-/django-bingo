@@ -1,5 +1,16 @@
 {% load i18n %}
 <ul class="board_list">
+{% if total_boards and game.is_expired %}{# total_boards is only set on the overview page #}
+<li>
+    <b>{% trans "Topics:" %}</b>
+    {% for wordvote in game.words_with_votes %}
+        {% if wordvote.percent > 80 %}
+            {% if not forloop.first %}&bull;{% endif %}
+            <span>{{ wordvote.word }}</span>
+        {% endif %}
+    {% endfor %}
+</li>
+{% endif %}
 {% for board in boards %}
     {% if board.thumbnails_enabled %}
         <li class="thumbnail">

@@ -12,4 +12,15 @@
 <div class="cf"></div>
     {% include "bingo/board_list.html" %}
 {% endwith %}
+<div style="text-align: center">
+<div style="width: 60em;text-align: center;margin: 0 auto;">
+    {% for wordvote in game.words_with_votes %}
+    {% if wordvote.percent > 50 %}
+        <span style="padding: 1ex;font-size: {{ wordvote.percent|add:40|stringformat:"f"}}%{% if wordvote.percent > 80 %};font-weight: bold{% endif %}">
+        {{ wordvote.word }}({{ wordvote.votes }})
+        </span>
+    {% endif %}
+    {% endfor %}
+</div>
+</div>
 {% endblock %}

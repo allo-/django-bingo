@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
 from django.db import models, transaction
+from django.db.models import Count
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -212,6 +213,20 @@ class Game(models.Model):
             cache.set(vote_counts_cachename, vote_counts)
 
         return (vote_counts[word_id]['up'], vote_counts[word_id]['down'])
+
+    def words_with_votes(self):
+        """
+            returns a list with words ordered by the number of votes
+            annotated with the number of votes in the "votes" property.
+        """
+        result = Word.objects.filter(bingofield__board__game__id=self.id,
+                            bingofield__vote=True,
+                            is_middle=False).annotate(
+                            votes=Count("bingofield__vote")
+                            ).order_by("-votes").values()
+        for item in result:
+            item['percent'] = float(item['votes']) / result[0]['votes'] * 100
+        return result
 
     def rating(self):
         return self.bingoboard_set.exclude(rating=None).aggregate(
