@@ -29,6 +29,10 @@
     {% endblock %}
 {% endblock %}
 {% block headline %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
+{% block extra_content_top %}
+{% include "bingo/profilelinks.html" %}
+{{ block.super }}
+{% endblock %}
 {% block content %}
 {% with game.bingoboard_set.all as boards %}
 <div class="cf"></div>

@@ -1,0 +1,13 @@
+{% load i18n %}
+<div style="margin-bottom: 1em;float: right" class="cf">
+{% if user.is_authenticated %}
+    <b>{% trans "logged in as:" %}</b>
+    <a href="{% url "bingo.views.profile" username=user.username %}">{{ user.username }}</a>
+    <br />
+    <a href="{% url "auth_logout" %}?next={% url "bingo.views.main" %}">{% trans "logout" %}</a>
+{% else %}
+    <a href="{% url "auth_login" %}?next={% url "bingo.views.main" %}">{% trans "login" %}</a>
+    /
+    <a href="{% url "registration_register" %}?next={% url "bingo.views.main" %}">{% trans "register" %}</a>
+{% endif %}
+</div>
