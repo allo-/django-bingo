@@ -15,6 +15,7 @@
     {% if board.thumbnails_enabled %}
         <li class="thumbnail">
             <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
+                {% if show_board_created_date %}{{ board.created.date }}<br />{% endif %}
                 <a href="{% url 'bingo.views.bingo' board.board_id %}">
                     <img class="thumbnail" src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
                     <br />
