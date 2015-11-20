@@ -155,7 +155,8 @@ def game(request, game_id):
     return render(request, "bingo/game.html", {
         'game': get_object_or_404(
             Game, site=get_current_site(request), game_id=game_id),
-        'my_board': bingo_board
+        'my_board': bingo_board,
+        "twittercard_account": TWITTERCARD_ACCOUNT,
     })
 
 

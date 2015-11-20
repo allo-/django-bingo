@@ -5,6 +5,28 @@
 {% block extra_head %}
     {{ block.super }}
     <script src="{% static 'bingo/js/board_list.js' %}"></script>
+{% block twittercard %}
+    {% if twittercard_account %}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="{{ twittercard_account }}" />
+        <meta name="twitter:title" content="{% spaceless %}
+            {% block twittercard_title %}
+                {% blocktrans with game_id=game.game_id %}Bingo Game #{{ game_id }}{% endblocktrans %}
+            {% endblock %}
+        {% endspaceless %}" />
+        <meta name="twitter:description" content="{% spaceless %}
+            {% if board.game.description %}
+                {% block twittercard_description_with_topic %}
+                    {% blocktrans with game_id=game.game_id date=game.created.date description=board.game.description %}Game #{{ game_id }} (Topic: {{ description }}) from {{ date }}.{% endblocktrans %}
+                {% endblock %}
+            {% else %}
+                {% block twittercard_description %}
+                    {% blocktrans with game_id=game.game_id date=game.created.date %}Game #{{ game_id }} from {{ date }}.{% endblocktrans %}
+                {% endblock %}
+            {% endif %}
+        {% endspaceless %}" />
+    {% endif %}
+    {% endblock %}
 {% endblock %}
 {% block headline %}{% trans 'Game #' %}{{ game.game_id }}{% endblock %}
 {% block content %}

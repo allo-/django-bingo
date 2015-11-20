@@ -3,6 +3,7 @@ django-bingo 1.7.0 ():
 	* new: Meta tags for a "Twitter Card", which shows a board thumbnail and
 	       game metadata inside tweets with a board link.
 	* new: Tag Cloud on the main page and the game page.
+	* new: Twitter Card for the Game page (page with all boards of a game).
 
 django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.
