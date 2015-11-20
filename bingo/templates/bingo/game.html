@@ -36,7 +36,12 @@
 {% block content %}
 {% with game.bingoboard_set.all as boards %}
 <div class="cf"></div>
-    {% include "bingo/board_list.html" %}
+
+{% if not my_board and not game.is_expired %}
+    {% include "bingo/forms.html" %}
+{% endif %}
+
+{% include "bingo/board_list.html" %}
 {% endwith %}
 <div style="text-align: center">
 <div style="width: 60em;text-align: center;margin: 0 auto;">
