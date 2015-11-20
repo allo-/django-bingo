@@ -195,6 +195,10 @@ msgstr "Brett aufrufen"
 msgid "Game #"
 msgstr "Spiel #"
 
+#, python-format
+msgid "Bingo Game #%(game_id)s"
+msgstr "Bingo Spiel #%(game_id)s"
+
 msgid "Old Games"
 msgstr "Alte Spiele"
 
