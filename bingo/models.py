@@ -34,6 +34,15 @@ USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
 
 THUMBNAILS_ENABLED = getattr(settings, "THUMBNAILS_ENABLED", True)
 
+WORD_TYPE_TOPIC = 1
+WORD_TYPE_MIDDLE = 2
+WORD_TYPE_META = 3
+WORD_TYPES = (
+    (WORD_TYPE_TOPIC, 'Topic'),
+    (WORD_TYPE_MIDDLE, 'Middle'),
+    (WORD_TYPE_META, 'Meta'),
+)
+
 
 class Word(models.Model):
     """
@@ -42,7 +51,7 @@ class Word(models.Model):
     """
     word = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=255, blank=True)
-    is_middle = models.BooleanField(default=False)
+    type = models.PositiveSmallIntegerField(choices=WORD_TYPES)
     site = models.ManyToManyField(Site, blank=True)
 
     class Meta:
@@ -214,19 +223,26 @@ class Game(models.Model):
 
         return (vote_counts[word_id]['up'], vote_counts[word_id]['down'])
 
-    def words_with_votes(self):
+    def words_with_votes(self, only_topics=True):
         """
             returns a list with words ordered by the number of votes
             annotated with the number of votes in the "votes" property.
         """
         result = Word.objects.filter(bingofield__board__game__id=self.id,
-                            bingofield__vote=True,
-                            is_middle=False).annotate(
-                            votes=Count("bingofield__vote")
-                            ).order_by("-votes").values()
+            bingofield__vote=True).exclude(type=WORD_TYPE_MIDDLE)
+
+        if only_topics:
+            result = result.exclude(bingofield__word__type=WORD_TYPE_META)
+
+        result = result.annotate(
+            votes=Count("bingofield__vote")).order_by("-votes").values()
+
         for item in result:
             item['percent'] = float(item['votes']) / result[0]['votes'] * 100
         return result
+
+    def all_words_with_votes(self):
+        return self.words_with_votes(only_topics=False)
 
     def rating(self):
         return self.bingoboard_set.exclude(rating=None).aggregate(
@@ -250,8 +266,8 @@ class Game(models.Model):
 
 def _get_random_words(site):
     all_words = Word.objects.filter(site=site).order_by("?")
-    middle_words = all_words.filter(site=site, is_middle=True).order_by("?")
-    words = all_words.filter(is_middle=False)
+    middle_words = all_words.filter(site=site, type=WORD_TYPE_MIDDLE).order_by("?")
+    words = all_words.exclude(type=WORD_TYPE_MIDDLE)
     if middle_words.count() == 0:
         raise ValidationError(_(u"No middle words in database"))
     middle = middle_words[0]
@@ -379,10 +395,10 @@ class BingoBoard(models.Model):
         return self.bingofield_set.exclude(position=None).order_by("position")
 
     def get_all_word_fields(self):
-        return self.bingofield_set.filter(word__is_middle=False)
+        return self.bingofield_set.exclude(word__type=WORD_TYPE_MIDDLE)
 
     def get_middle_field(self):
-        return self.bingofield_set.filter(word__is_middle=True)[0]
+        return self.bingofield_set.filter(word__type=WORD_TYPE_MIDDLE)[0]
 
     def get_created(self):
         """

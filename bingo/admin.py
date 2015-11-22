@@ -44,8 +44,8 @@ word_sites.short_description = "Sites"
 
 
 class WordAdmin(admin.ModelAdmin):
-    list_filter = ("site", "site", "is_middle")
-    list_display = ("word", word_sites, "is_middle")
+    list_filter = ("site", "site", "type")
+    list_display = ("word", word_sites, "type")
     search_fields = ("word", )
 
     class Meta:
