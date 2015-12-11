@@ -310,11 +310,11 @@ def _post_vote(user_bingo_board, field, vote):
             "the voted field does not belong to the user's BingoBoard")
 
     if vote == "0":
-        field.vote = None
+        field.vote = 0
     elif vote == "+":
-        field.vote = True
+        field.vote = +1
     elif vote == "-":
-        field.vote = False
+        field.vote = -1
     field.save()
 
     # update last_used with current timestamp
@@ -401,7 +401,14 @@ def vote(request, ajax, board_id=None):
 
     for field in bingo_board.bingofield_set.all():
         # None="0", "+"=vote, "-"=veto
-        vote = "0" if field.vote is None else "+" if field.vote else "-"
+        if field.vote == -1:
+            vote = "-"
+        elif field.vote == 0:
+            vote="0"
+        elif field.vote == 1:
+            vote = "+"
+        else:
+            assert False
         data[field.id] = (vote, field.num_votes())
 
     return HttpResponse(json.dumps(data), content_type="application/json")

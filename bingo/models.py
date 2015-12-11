@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils import timezone
 from django.db import models, transaction
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -176,68 +176,23 @@ class Game(models.Model):
         else:
             return self.num_users()
 
-    def num_votes_word(self, word_id):
-        """
-            get the (up, down) votes for a word
-
-            @param word_id: the id of the word
-            @returns (up, down) tuple with vote counts
-        """
-
-        # try to get it from cache
-        vote_counts_cachename = \
-            'vote_counts_game={0:d}'.format(
-                self.id)
-        vote_counts = cache.get(vote_counts_cachename)
-
-        # vote counts not in cache or word not in the dict
-        if vote_counts is None or word_id not in vote_counts:
-
-            # querys for number of up / down votes
-            vote_counts_up = Word.objects.filter(
-                bingofield__vote=True, bingofield__board__game=self)\
-                .annotate(num=models.Count('bingofield'))
-            vote_counts_down = Word.objects.filter(
-                bingofield__vote=False, bingofield__board__game=self)\
-                .annotate(num=models.Count('bingofield'))
-
-            # fetch all at once, so its only one query for up, one for down
-            vote_counts_up = dict(
-                [(word.id, word.num) for word in vote_counts_up])
-            vote_counts_down = dict(
-                [(word.id, word.num) for word in vote_counts_down])
-
-            vote_counts = {}
-            # words with no up or down vote
-            for word in Word.objects.filter(bingofield__board__game=self):
-                if not word.id in vote_counts_up:
-                    vote_counts_up[word.id] = 0
-                if not word.id in vote_counts_down:
-                    vote_counts_down[word.id] = 0
-                vote_counts[word.id] = {
-                    'up': vote_counts_up[word.id],
-                    'down': vote_counts_down[word.id],
-                }
-
-            cache.set(vote_counts_cachename, vote_counts)
-
-        return (vote_counts[word_id]['up'], vote_counts[word_id]['down'])
-
     def words_with_votes(self, only_topics=True):
         """
             returns a list with words ordered by the number of votes
             annotated with the number of votes in the "votes" property.
         """
-        result = Word.objects.filter(bingofield__board__game__id=self.id,
-            bingofield__vote=True).exclude(type=WORD_TYPE_MIDDLE)
+        result = Word.objects.filter(
+            bingofield__board__game__id=self.id).exclude(
+            type=WORD_TYPE_MIDDLE).exclude(bingofield__vote=0)
 
         if only_topics:
             result = result.exclude(bingofield__word__type=WORD_TYPE_META)
 
         result = result.annotate(
-            votes=Count("bingofield__vote")).order_by("-votes").values()
+            votes=Sum("bingofield__vote")).order_by("-votes").values()
 
         for item in result:
+            item['votes'] = max(0, item['votes'])
             item['percent'] = float(item['votes']) / result[0]['votes'] * 100
         return result
 
@@ -414,28 +369,6 @@ class BingoBoard(models.Model):
         return timezone.localtime(self.last_used).strftime(
             BINGO_IMAGE_DATETIME_FORMAT)
 
-    def num_votes(self, field):
-        """
-            get the up/down votes for a given field of THIS BingoBoard
-            @param field: a BingoField object
-            @returns (up, down)
-        """
-
-        # map BingoField to Word, for one BingoBoard
-        # so the cached vote counts for Word can be used
-        field2word_cachename = "field2word_board={0:d}".format(self.id)
-        field2word = cache.get(field2word_cachename) or {}
-
-        # create, if not cached
-        if field2word == {} or field.id not in field2word:
-            for loop_field in self.bingofield_set.all().select_related():
-                field2word[loop_field.id] = loop_field.word.id
-            cache.set(field2word_cachename, field2word, 60*60)
-
-        # get the Word.id for field
-        word_id = field2word[field.id]
-        return self.game.num_votes_word(word_id)
-
     def thumbnails_enabled(self):
         return THUMBNAILS_ENABLED
 
@@ -458,7 +391,7 @@ class BingoField(models.Model):
     position = models.SmallIntegerField(
         validators=[position_validator],
         blank=True, null=True, default=None)
-    vote = models.NullBooleanField(default=None)
+    vote = models.SmallIntegerField(default=0)
 
     class Meta:
         ordering = ("board", "-position")
@@ -467,8 +400,19 @@ class BingoField(models.Model):
         return self.position == 13
 
     def num_votes(self):
-        positive, negative = self.board.num_votes(self)
-        return max(0, positive - negative)
+        vote_counts_cachename = 'vote_counts_game={0:d}'.format(
+            self.board.game.id)
+        vote_counts = cache.get(vote_counts_cachename, None)
+        if not vote_counts:
+            votes = Word.objects.filter(
+                bingofield__board__game=self.board.game).annotate(
+                votes=Sum('bingofield__vote')).values("id", "votes")
+
+            vote_counts = {}
+            for vote in votes:
+                vote_counts[vote['id']] = vote['votes']
+            cache.set(vote_counts_cachename, vote_counts)
+        return max(0, vote_counts[self.word.id])
 
     def clean(self):
         if self.is_middle() and not self.word.is_middle:
