@@ -400,11 +400,13 @@ class BingoField(models.Model):
         return self.position == 13
 
     def num_votes(self):
+        if self.word.type == WORD_TYPE_MIDDLE:
+            return 0
         vote_counts_cachename = 'vote_counts_game={0:d}'.format(
             self.board.game.id)
         vote_counts = cache.get(vote_counts_cachename, None)
-        if not vote_counts:
-            votes = Word.objects.filter(
+        if not vote_counts or not self.word.id in vote_counts:
+            votes = Word.objects.exclude(type=WORD_TYPE_MIDDLE).filter(
                 bingofield__board__game=self.board.game).annotate(
                 votes=Sum('bingofield__vote')).values("id", "votes")
 
@@ -412,7 +414,7 @@ class BingoField(models.Model):
             for vote in votes:
                 vote_counts[vote['id']] = vote['votes']
             cache.set(vote_counts_cachename, vote_counts)
-        return max(0, vote_counts[self.word.id])
+        return max(0, vote_counts.get(self.word.id, 0))
 
     def clean(self):
         if self.is_middle() and not self.word.is_middle:
