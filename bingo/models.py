@@ -424,7 +424,7 @@ class BingoField(models.Model):
             raise ValidationError(_(
                 u"The BingoField has middle position, "
                 u"but the word is no middle word"))
-        elif not self.is_middle() and self.word.is_middle:
+        elif not self.is_middle() and self.type == WORD_TYPE_MIDDLE:
             raise ValidationError(_(
                 u"The BingoField is not in the middle, "
                 u"but the word is a middle word"))
