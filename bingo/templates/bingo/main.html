@@ -32,12 +32,21 @@
                     <td><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</td>
                 </tr>
                 <tr>
-                    <th>{% trans 'Your board:' %}</th>
-                    <td>
+                    <td colspan="2">
                         {% if my_board %}
-                            <a href="{% url 'bingo.views.bingo' my_board.board_id %}">
-                                {% trans 'Board' %} #{{ my_board.board_id }}
-                            </a>
+                            {% with my_board as board %}
+                                <div class="thumbnail">
+                                    <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
+                                        {% if show_board_created_date %}{{ board.created }}<br />{% endif %}
+                                        <a href="{% url 'bingo.views.bingo' board.board_id %}">
+                                            <img class="thumbnail" src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
+                                            <br />
+                                            {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
+                                        </a>
+                                        {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+                                    </div>
+                                </div>
+                            {% endwith %}
                         {% else %}
                             {% trans 'You seem not to have a bingo board for the current game' %}
                         {% endif %}
