@@ -82,25 +82,22 @@ def get_colors(bingo_field, vote_counts, colormode=COLOR_MODE_BLANK):
 
     # convert from #rrggbb to decimal (r, g, b)
     marked_field_color = (
-        int(marked_field_color[:2], 16),
+        int(marked_field_color[0:2], 16),
         int(marked_field_color[2:4], 16),
         int(marked_field_color[4:6], 16),
     )
-    # veto fields
-    veto_field_color = (255, 255, 255)
-    veto_word_color = (255, 0, 0)
     # border
-    border_color = (0, 0, 0)
+    border_color = (0, 0, 0) #TODO: make this configurable
 
     field_color = NEUTRAL_FIELD_COLOR
     word_color = NEUTRAL_WORD_COLOR
     if bingo_field.is_middle():
         field_color = MIDDLE_FIELD_COLOR
         word_color = MIDDLE_WORD_COLOR
-    elif colormode == COLOR_MODE_MARKED and bingo_field.vote:
+    elif colormode == COLOR_MODE_MARKED and bingo_field.vote > 0:
         field_color = marked_field_color
         word_color = MARKED_WORD_COLOR
-    elif colormode == COLOR_MODE_MARKED and bingo_field.vote is False:
+    elif colormode == COLOR_MODE_MARKED and bingo_field.vote < 0:
         field_color = VETO_FIELD_COLOR
         word_color = VETO_WORD_COLOR
     elif colormode == COLOR_MODE_VOTED:
