@@ -4,7 +4,7 @@
 {% load i18n %}
 <head>
 	<meta charset="UTF-8">
-    <title>{% block full_title %}Bingo - {% block title %}{% endblock %}{% endblock %}</title>
+    <title>{% block full_title %}{{ site_title }} - {% block title %}{% endblock %}{% endblock %}</title>
     <script src="{% static 'js/jquery.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'bingo/style.css' %}" />
     {% if site_theme %}
@@ -24,7 +24,7 @@
 <div id="wrap" style="min-height: 100%">
     {% block header %}
     <div class="header">
-        <h1><a href="{% url 'bingo.views.main' %}"{% block sitename %}>Bingo</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
+        <h1><a href="{% url 'bingo.views.main' %}">{% block sitename %}{{ site_title }}</a>{% endblock %} - {% block headline %}{% endblock %}</h1>
     </div>
     {% endblock %}
     {% if themes %}
