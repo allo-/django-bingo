@@ -5,6 +5,10 @@ django-bingo 1.7.0 ():
 	* new: Tag Cloud on the main page and the game page.
 	* new: Twitter Card for the Game page (page with all boards of a game).
 	* new: Show "create" date of the boards on the Profile page.
+	* changed: Words can now be marked as "topic", "meta" and "middle".
+	           .is_middle is now replaced by .type == TYPE_MIDDLE.
+	* new: The board url is added as a watermark in the lower right of the
+           board images.
 
 django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.
