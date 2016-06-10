@@ -11,10 +11,12 @@ with open('requirements.txt') as f:
 
 class install_lib(_install_lib):
     def run(self):
+        _install_lib.run(self)
         from django.core.management.commands.compilemessages \
-            import compile_messages
-        os.chdir('bingo')
-        compile_messages(sys.stderr)
+            import Command
+        os.chdir("bingo")
+        cmd = Command()
+        cmd.handle(verbosity=0, exclude=[], locale=[])
         os.chdir("..")
 
 setup(name='django-bingo',
@@ -32,6 +34,7 @@ setup(name='django-bingo',
       scripts=['bingo/bin/django-bingo-serversent.py'],
       include_package_data=True,
       install_requires=required,
+      cmdclass={'install_lib': install_lib},
       classifiers=[
           'Framework :: Django',
           'Topic :: Games/Entertainment :: Board Games',
