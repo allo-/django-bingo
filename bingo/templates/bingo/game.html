@@ -17,11 +17,11 @@
         <meta name="twitter:description" content="{% spaceless %}
             {% if board.game.description %}
                 {% block twittercard_description_with_topic %}
-                    {% blocktrans with game_id=game.game_id date=game.created.date description=board.game.description %}Game #{{ game_id }} (Topic: {{ description }}) from {{ date }}.{% endblocktrans %}
+                    {% blocktrans with game_id=game.game_id date=game.created|date:"SHORT_DATE_FORMAT" description=board.game.description %}Game #{{ game_id }} (Topic: {{ description }}) from {{ date }}.{% endblocktrans %}
                 {% endblock %}
             {% else %}
                 {% block twittercard_description %}
-                    {% blocktrans with game_id=game.game_id date=game.created.date %}Game #{{ game_id }} from {{ date }}.{% endblocktrans %}
+                    {% blocktrans with game_id=game.game_id date=game.created|date:"SHORT_DATE_FORMAT" %}Game #{{ game_id }} from {{ date }}.{% endblocktrans %}
                 {% endblock %}
             {% endif %}
         {% endspaceless %}" />
