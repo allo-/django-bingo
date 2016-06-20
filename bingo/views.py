@@ -10,7 +10,7 @@ from django.middleware.cache import CacheMiddleware
 from django.contrib.auth.models import User
 import json
 
-from models import Word, Game, BingoBoard, BingoField, get_game
+from models import Word, Game, BingoBoard, BingoField, get_game, WORD_TYPE_MIDDLE
 from forms import CreateForm, ClaimForm, ReclaimForm
 from forms import ChangeThemeForm, RateGameForm
 import image as image_module
@@ -284,6 +284,10 @@ def bingo(request, board_id=None):
         "tweet_hashtags": TWEETBUTTON_HASHTAGS,
         "twittercard_account": TWITTERCARD_ACCOUNT,
         })
+
+def wordlist(request):
+    fields = [{'word': word} for word in Word.objects.filter(site=get_current_site(request)).exclude(type=WORD_TYPE_MIDDLE)]
+    return render(request, "bingo/wordlist.html", {'all_word_fields': fields})
 
 
 class VoteException(Exception):

@@ -1,0 +1,9 @@
+{% extends 'bingo/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}{% trans "Word List" %}{% endblock %}
+{% block headline %}{% trans "Word List" %}{% endblock %}
+
+{% block content %}
+{% include "bingo/fields.html" %}
+{% endblock %}

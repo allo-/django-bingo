@@ -1,4 +1,4 @@
-{% if my_board == board %}
+{% if my_board and my_board == board %}
 <form action="{% url 'bingo.views.vote' ajax=False %}" method="post" class="voteform">
     {% spaceless %}
     {% csrf_token %}

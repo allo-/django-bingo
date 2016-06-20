@@ -163,14 +163,5 @@ var middleword = "{{ middle_field.word.word|lower }}";
 </table>
 <div id="titletext">&nbsp;</div>
 
-<ul class="words">
-    {% for field in all_word_fields %}
-    <li class="word{% if field.vote == 1 %} active{% elif field.vote == -1 %} veto{% endif %}" data-word-id="{{ field.word.id }}" data-field-id="{{ field.id }}"{% if field.word.description %} title="{{ field.word.description }}"{% endif %}>
-        <div class="word">
-            {{ field.word.word }} (<span class="votes">{{ field.num_votes }}</span>)
-        </div>
-        {% include 'bingo/vote_form.html' %}
-    </li>
-    {% endfor %}
-</ul>
+{% include "bingo/fields.html" %}
 {% endblock %}
