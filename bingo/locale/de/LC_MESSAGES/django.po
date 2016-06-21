@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 19:56+0100\n"
+"POT-Creation-Date: 2016-06-21 18:14+0200\n"
 "PO-Revision-Date: 2015-11-16 19:57+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -168,9 +168,6 @@ msgstr "Sendungsbewertung:"
 msgid "Rate the Show:"
 msgstr "Sendung bewerten:"
 
-msgid "Topics:"
-msgstr "Themen:"
-
 msgid "(your board)"
 msgstr "(Dein Brett)"
 
@@ -220,6 +217,9 @@ msgstr "Bewertung"
 msgid "description"
 msgstr "Spielbeschreibung"
 
+msgid "Topics"
+msgstr "Themen"
+
 msgid "newer games"
 msgstr "neuere Spiele"
 
@@ -241,29 +241,17 @@ msgstr "Startseite"
 msgid "start page"
 msgstr "Startseite"
 
-msgid "logged in as:"
-msgstr "Angemeldet als:"
-
-msgid "logout"
-msgstr "Logout"
-
-msgid "login"
-msgstr "Login"
-
-msgid "register"
-msgstr "Registrieren"
-
 msgid "Current game:"
 msgstr "Aktuelles Spiel:"
-
-msgid "Your board:"
-msgstr "Dein Brett:"
 
 msgid "You seem not to have a bingo board for the current game"
 msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
+
+msgid "Topics:"
+msgstr "Themen:"
 
 msgid "user profile:"
 msgstr "Benutzerprofil:"
@@ -293,6 +281,18 @@ msgstr ""
 msgid "claim boards"
 msgstr "Bretter hinzufügen"
 
+msgid "logged in as:"
+msgstr "Angemeldet als:"
+
+msgid "logout"
+msgstr "Logout"
+
+msgid "login"
+msgstr "Login"
+
+msgid "register"
+msgstr "Registrieren"
+
 msgid "Reclaim your board"
 msgstr "Brett wiederaktivieren"
 
@@ -304,6 +304,9 @@ msgstr "Theme:"
 
 msgid "change"
 msgstr "ändern"
+
+msgid "Word List"
+msgstr "Wortliste"
 
 msgid "Login"
 msgstr "Login"
@@ -335,6 +338,9 @@ msgstr "brett_{0}"
 
 msgid "thumbnail"
 msgstr "thumbnail"
+
+#~ msgid "Your board:"
+#~ msgstr "Dein Brett:"
 
 #~ msgid "Go to my board"
 #~ msgstr "Gehe zu meinem Brett"
