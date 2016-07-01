@@ -9,6 +9,8 @@ django-bingo 1.7.0 ():
 	           .is_middle is now replaced by .type == TYPE_MIDDLE.
 	* new: The board url is added as a watermark in the lower right of the
            board images.
+    * fixed: The server-sent-events script timeout for inactive connections works
+             now again and disconnects connections to the redis backend correctly.
 
 django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.

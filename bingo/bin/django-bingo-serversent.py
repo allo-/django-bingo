@@ -2,36 +2,36 @@
 import json
 import sys
 import os
-
 from sse import Sse
 from flask import Flask, Response
 from redis import Redis
 from gevent import Timeout
 
-redis = Redis()
-
 
 SITE_ID = int(os.environ['SITE_ID']) if 'SITE_ID' in os.environ else 1
-TIMEOUT = 120
+TIMEOUT = 30
 
-
+redis = Redis()
 application = Flask(__name__)
 event_types = ['word_votes', 'field_vote', 'num_users', 'num_active_users']
 
 
 def eventstream():
     sse = Sse()
+    pubsub = redis.pubsub()
     while True:
-        pubsub = redis.pubsub()
         for event in event_types:
             pubsub.subscribe(event)
-        try:
-            with Timeout(TIMEOUT) as timeout:
+        with Timeout(TIMEOUT) as timeout:
+            try:
                 for message in pubsub.listen():
                     if message['type'] != "message":
                         continue
-                    data = json.loads(message['data'])
-                    if not 'site_id' in data or data['site_id'] != SITE_ID:
+                    try:
+                        data = json.loads(message['data'])
+                    except ValueError:  # broken json
+                        continue
+                    if 'site_id' not in data or data['site_id'] != SITE_ID:
                         continue
 
                     sse.add_message(message['channel'], str(message['data']))
@@ -42,11 +42,14 @@ def eventstream():
                     timeout.cancel()
                     timeout.start()
 
-        # heartbeat, to detect if a user is disconnected
-        except Timeout, t:
-            if t is not timeout:  # not our timeout
-                raise
-            yield ":\n\n"  # heartbeat message
+            # heartbeat, to detect if a user is disconnected
+            except Timeout as t:
+                if t is not timeout:  # not our timeout
+                    raise
+                yield ":\n\n"  # heartbeat message
+
+            finally:
+                pubsub.close()
 
 
 @application.route("/")
@@ -57,4 +60,4 @@ def events():
 
 
 if __name__ == "__main__":
-    application.run(threaded=True)
+    application.run(threaded=False, host="0.0.0.0")
