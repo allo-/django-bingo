@@ -307,24 +307,27 @@ class BingoBoard(models.Model):
             # not be saved, when field creation fails
             fields = self.create_bingofields()
 
-            # then create a board_id
-            with transaction.atomic():
-                bingo_boards = BingoBoard.objects.filter(
-                    game__site=self.game.site)
-                current_id = bingo_boards.aggregate(
-                    max_id=models.Max('board_id'))['max_id']
-                if current_id is None:
-                    self.board_id = 1
-                else:
-                    self.board_id = current_id + 1
+            # create the board
+            super(BingoBoard, self).save()
 
-                # create the board
-                super(BingoBoard, self).save()
+            # now that the board has a pk, save the fields
+            for field in fields:
+                field.board = self
+                field.save()
 
-                # now that the board has a pk, save the fields
-                for field in fields:
-                    field.board = self
-                    field.save()
+            # then create a board_id as atomic as possible for two fields,
+            # which need to be unique together
+            bingo_boards = BingoBoard.objects.filter(
+                game__site=self.game.site)
+            current_id = bingo_boards.aggregate(
+                max_id=models.Max('board_id'))['max_id']
+            new_id = current_id + 1 if current_id else 1
+            BingoBoard.objects.filter(id=self.id).update(
+                board_id=new_id)
+
+            # set the id for the current instance
+            self.board_id = new_id
+
         else:
             super(BingoBoard, self).save()
 
