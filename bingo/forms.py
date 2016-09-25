@@ -4,11 +4,13 @@ from django.conf import settings
 from django.contrib.auth.hashers import get_hasher
 
 from models import BingoBoard, is_starttime
+import times
 from times import is_starttime
 
 
 SALT = getattr(settings, "SALT", "hackme")
 GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
+GAME_WEEK_DAYS = getattr(settings, "GAME_WEEK_DAYS", None)
 
 GAME_START_DISABLED = getattr(
     settings, "GAME_START_DISABLED", False)
@@ -49,6 +51,9 @@ class CreateForm(forms.Form):
             raise forms.ValidationError(
                 _(u"Starting new games is disabled."))
 
+        _now = times.now()
+        if GAME_WEEK_DAYS and _now.weekday() not in GAME_WEEK_DAYS:
+            raise forms.ValidationError(_(u"Games cannot be started at this day of week."))
         if not is_starttime():
             start, end = GAME_START_TIMES
             start_time_str = "{0}:{1}".format(
