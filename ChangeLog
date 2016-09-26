@@ -8,10 +8,10 @@ django-bingo 1.7.0 ():
 	* changed: Words can now be marked as "topic", "meta" and "middle".
 	           .is_middle is now replaced by .type == TYPE_MIDDLE.
 	* new: The board url is added as a watermark in the lower right of the
-           board images.
-    * fixed: The server-sent-events script timeout for inactive connections works
-             now again and disconnects connections to the redis backend correctly.
-    * new: GAME_WEEK_DAYS option to limit game start to certain days of week.
+	       board images.
+	* fixed: The server-sent-events script timeout for inactive connections works
+	         now again and disconnects connections to the redis backend correctly.
+	* new: GAME_WEEK_DAYS option to limit game start to certain days of week.
 
 django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.
@@ -64,10 +64,10 @@ django-bingo 1.4.0 (2014-02-27):
 	* improved: [-] veto buttons are now toggle buttons (veto/neutral)
 
 django-bingo 1.3.2 (2014-02-20):
-       * added: MANIFEST.in to include package_data in source distributions
+	* added: MANIFEST.in to include package_data in source distributions
 
 django-bingo 1.3.1 (2014-01-21):
-       * fix: avoid creating duplicate BingoBoards / Games
+	* fix: avoid creating duplicate BingoBoards / Games
 
 django-bingo 1.3.0 (2013-11-26):
 	* fix: mark "my board" on the game page, too.
