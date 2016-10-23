@@ -169,8 +169,12 @@ def profile(request, username):
     form = ClaimForm(request.POST or None, user=user)
     form.is_valid()
     boards = user.bingoboard_set.filter(game__site=get_current_site(request))
-    return render(request, "bingo/profile.html",
-            {'profile_user': user, 'boards': boards, 'claim_form': form})
+    return render(request, "bingo/profile.html", {
+        'profile_user': user,
+        'boards': boards,
+        'claim_form': form,
+        "twittercard_account": TWITTERCARD_ACCOUNT,
+    })
 
 
 def reclaim_board(request):

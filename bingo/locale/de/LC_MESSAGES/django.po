@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-25 23:22+0200\n"
+"POT-Creation-Date: 2016-10-23 23:05+0200\n"
 "PO-Revision-Date: 2015-11-16 19:57+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -258,6 +258,10 @@ msgstr "Themen:"
 
 msgid "user profile:"
 msgstr "Benutzerprofil:"
+
+#, python-format
+msgid "%(name)s has played %(site_title)s %(times_played)s times."
+msgstr "%(name)s hat %(times_played)s mal %(site_title)s mitgespielt."
 
 msgid "Your bingo boards"
 msgstr "Deine Bingobretter"
