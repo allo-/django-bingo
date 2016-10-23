@@ -28,7 +28,7 @@ Installing
 
 Create a django project. Then add the following options to your settings.py
 
-* append to ```INSTALLED_APPS```
+* append to ```INSTALLED_APPS``` (make sure ``bingo`` is included first)
     * 'bingo'
     * 'jquery'
     * 'colorful'
