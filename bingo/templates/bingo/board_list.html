@@ -36,9 +36,9 @@
     </li>
     {% endif %}
 {% endfor %}
-{% if total_boards > 10 %}
+{% if total_boards > 12 %}
 <li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">
-    {% blocktrans count total_boards|add:-10 as board_count %}{{ board_count }} other board{% plural %}{{ board_count }} other boards{% endblocktrans %}
+    {% blocktrans count total_boards|add:-12 as board_count %}{{ board_count }} other board{% plural %}{{ board_count }} other boards{% endblocktrans %}
 </a></li>
 {% endif %}
 </ul>
