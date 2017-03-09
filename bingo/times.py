@@ -63,7 +63,7 @@ def get_times():
 
     # some sanity checks
     if GAME_START_TIMES and VOTE_START_TIME:
-        start_time_start < vote_start_time
+        assert start_time_start < vote_start_time
     if GAME_END_TIME and VOTE_START_TIME:
         assert end_time > vote_start_time
     if GAME_START_TIMES and GAME_END_TIME:
