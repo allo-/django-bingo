@@ -39,7 +39,7 @@ if USE_SSE:
     REDIS_HOST = getattr(settings, "REDIS_HOST", None)
     REDIS_PORT = getattr(settings, "REDIS_PORT", None)
     try:
-        from redis import Redis
+        from redis import Redis, ConnectionError as RedisConnectionError
         kwargs = {}
         if REDIS_HOST:
             kwargs['host'] = REDIS_HOST
@@ -106,16 +106,20 @@ def _get_image_name(board_id, marked=False, voted=False):
 
 
 def _publish_num_users(site_id, num_users=None, num_active_users=None):
-    if num_users is not None:
-        redis.publish("num_users", json.dumps({
-            'site_id': site_id,
-            'num_users': num_users,
-        }))
-    if num_active_users is not None:
-        redis.publish("num_active_users", json.dumps({
-            'site_id': site_id,
-            'num_active_users': num_active_users,
-        }))
+    try:
+        if num_users is not None:
+            redis.publish("num_users", json.dumps({
+                'site_id': site_id,
+                'num_users': num_users,
+            }))
+        if num_active_users is not None:
+            redis.publish("num_active_users", json.dumps({
+                'site_id': site_id,
+                'num_active_users': num_active_users,
+            }))
+    except RedisConnectionError:
+        # redis server not available?
+        pass
 
 
 def main(request, reclaim_form=None, create_form=None):
@@ -337,17 +341,21 @@ def _post_vote(user_bingo_board, field, vote):
 
     # publish the new vote counts for server-sent events
     if USE_SSE:
-        votes = field.num_votes()
-        redis.publish("word_votes", json.dumps({
-            'site_id': game.site.id,
-            'word_id': field.word.id,
-            'vote_count': votes,
-        }))
-        redis.publish("field_vote", json.dumps({
-            'site_id': game.site.id,
-            'field_id': field.id,
-            'vote': vote,
-        }))
+        try:
+            votes = field.num_votes()
+            redis.publish("word_votes", json.dumps({
+                'site_id': game.site.id,
+                'word_id': field.word.id,
+                'vote_count': votes,
+            }))
+            redis.publish("field_vote", json.dumps({
+                'site_id': game.site.id,
+                'field_id': field.id,
+                'vote': vote,
+            }))
+        except RedisConnectionError:
+            # redis server not available?
+            pass
 
 
 def vote(request, ajax, board_id=None):
