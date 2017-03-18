@@ -58,7 +58,7 @@ Settings
 
 #### required settings
 
-* add the default context processors and ```bingo.context_processors.bingo`` to the ```context_processors`` in the [OPTIONS](https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-TEMPLATES-OPTIONS) section of the ```TEMPLATE``` settings.
+* add the default context processors and ```bingo.context_processors.bingo`` to the ```context_processors`` in the [OPTIONS](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-TEMPLATES-OPTIONS) section of the ```TEMPLATE``` settings.
 * at least one of
     * ```GAME_HARD_TIMEOUT``` time after which a game is stopped
     * ```GAME_SOFT_TIMEOUT``` time after which a game without any activity is stopped
