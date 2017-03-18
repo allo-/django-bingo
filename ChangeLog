@@ -13,6 +13,8 @@ django-bingo 1.7.0 ():
 	         now again and disconnects connections to the redis backend correctly.
 	* new: GAME_WEEK_DAYS option to limit game start to certain days of week.
     * new: Twitter card for the profile page.
+	* fixed: catch Redis connection errors.
+	* improved: Adapted to Django 1.10
 
 django-bingo 1.6.0 (2015-09-05):
 	* new: Show game description above the bingo board.
