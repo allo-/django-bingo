@@ -29,7 +29,7 @@
             <table class="current_game">
                 <tr>
                     <th>{% trans 'Current game:' %}</th>
-                    <td><a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</td>
+                    <td><a href="{% url 'bingo-game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})</td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -38,8 +38,8 @@
                                 <div class="thumbnail">
                                     <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
                                         {% if show_board_created_date %}{{ board.created }}<br />{% endif %}
-                                        <a href="{% url 'bingo.views.bingo' board.board_id %}">
-                                            <img class="thumbnail" src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
+                                        <a href="{% url 'bingo-bingo' board.board_id %}">
+                                            <img class="thumbnail" src="{% url 'bingo-thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
                                             <br />
                                             {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
                                         </a>
@@ -76,7 +76,7 @@
 <ul class="game_list">
     {% for game in old_games|slice:'0:10' %}
     <li>
-        <a href="{% url 'bingo.views.game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
+        <a href="{% url 'bingo-game' game_id=game.game_id %}">{% trans 'Game #' %}{{ game.game_id }}</a> ({{ game.created }})
         {% include "bingo/game_rating.html" %}
         {% if game.description %}
             <br />
@@ -90,7 +90,7 @@
     </li>
     {% endfor %}
     {% if old_games|length > 10 %}
-    <li><a href="{% url 'games_list' %}">{% trans 'older games' %}</a></li>
+    <li><a href="{% url 'bingo-games_list' %}">{% trans 'older games' %}</a></li>
     {% endif %}
 </ul>
 {% endif %}

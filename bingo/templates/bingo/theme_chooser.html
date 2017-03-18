@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="cf">
-<form action="{% url 'bingo.views.change_theme' %}" method="POST" id="theme_chooser">
+<form action="{% url 'bingo-change_theme' %}" method="POST" id="theme_chooser">
     {% trans "Theme:" %} <select name="theme">
     {% for theme in themes %}
     <option value="{{ theme.1 }}" {% if theme.1 == user_theme %}selected{% endif %}>{{ theme.0 }}</option>

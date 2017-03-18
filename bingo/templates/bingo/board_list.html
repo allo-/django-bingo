@@ -16,8 +16,8 @@
         <li class="thumbnail">
             <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
                 {% if show_board_created_date %}{{ board.created }}<br />{% endif %}
-                <a href="{% url 'bingo.views.bingo' board.board_id %}">
-                    <img class="thumbnail" src="{% url 'bingo.views.thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
+                <a href="{% url 'bingo-bingo' board.board_id %}">
+                    <img class="thumbnail" src="{% url 'bingo-thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
                     <br />
                     {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
                 </a>
@@ -29,7 +29,7 @@
         {% endif %}
     {% else %}
     <li>
-        <a href="{% url 'bingo.views.bingo' board.board_id %}">
+        <a href="{% url 'bingo-bingo' board.board_id %}">
             {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
         </a>
         {% if board == my_board %}{% trans '(your board)' %}{% endif %}
@@ -37,7 +37,7 @@
     {% endif %}
 {% endfor %}
 {% if total_boards > 12 %}
-<li><a href="{% url 'bingo.views.game' game_id=game.game_id %}">
+<li><a href="{% url 'bingo-game' game_id=game.game_id %}">
     {% blocktrans count total_boards|add:-12 as board_count %}{{ board_count }} other board{% plural %}{{ board_count }} other boards{% endblocktrans %}
 </a></li>
 {% endif %}

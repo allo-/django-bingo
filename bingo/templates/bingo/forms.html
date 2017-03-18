@@ -3,7 +3,7 @@
 <div class="create_form">
     <fieldset class="create_form">
     <legend class="form_header">{% trans 'create a new board:' %}</legend>
-    <form action="{% url 'bingo.views.create_board' %}" method="post">
+    <form action="{% url 'bingo-create_board' %}" method="post">
         <table class="create_form">
         {{ create_form.as_table }}
         {% csrf_token %}
@@ -16,7 +16,7 @@
 <div class="reclaim_form">
     <fieldset class="reclaim_form">
     <legend class="form_header">{% trans 'reclaim your board:' %}</legend>
-    <form class="reclaim_form" action="{% url 'bingo.views.reclaim_board' %}" method="post">
+    <form class="reclaim_form" action="{% url 'bingo-reclaim_board' %}" method="post">
         {{ reclaim_form.as_p }}
         {% csrf_token %}
         <input type="submit" value="{% trans 'go to my board' %}" />

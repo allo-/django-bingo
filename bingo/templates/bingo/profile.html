@@ -12,7 +12,7 @@
         <meta name="twitter:description" content="{% blocktrans with name=profile_user.username times_played=boards.count %}{{ name }} has played {{ site_title }} {{ times_played }} times.{% endblocktrans %}" />
         {% if boards.count %}
             {% with boards.0 as board %}
-            <meta name="twitter:image" content="{{ http_scheme }}://{{ http_host }}{% url 'bingo.views.image' board_id=board.board_id marked=True %}" />
+            <meta name="twitter:image" content="{{ http_scheme }}://{{ http_host }}{% url 'bingo-image' board_id=board.board_id marked=True %}" />
             {% endwith %}
         {% endif %}
     {% endif %}
