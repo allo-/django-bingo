@@ -58,8 +58,8 @@ Settings
 
 #### required settings
 
-* add the default context processors and ```bingo.context_processors.bingo`` to the ```context_processors`` in the [OPTIONS](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-TEMPLATES-OPTIONS) section of the ```TEMPLATE``` settings.
-* at least one of
+* Add ``bingo.context_processors.bingo`` to the ``context_processors`` in the [OPTIONS](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-TEMPLATES-OPTIONS) section of the ```TEMPLATE``` settings.
+* Add at least one of
     * ```GAME_HARD_TIMEOUT``` time after which a game is stopped
     * ```GAME_SOFT_TIMEOUT``` time after which a game without any activity is stopped
 
@@ -70,13 +70,14 @@ see CONFIGURATION.md
 Customizing
 -----------
 
-Many minor changes can be done with project templates:
+Many minor changes can be done with [django-apptemplates](https://pypi.python.org/pypi/django-apptemplates/). See their documentation for how to add the module to the project.
 
-* install [django-apptemplates](https://pypi.python.org/pypi/django-apptemplates/) and add it to the ```TEMPLATE_LOADER``` setting.
-* add an own templates directory to ```TEMPLATE_DIRS```.
-* create custom templates, which inherit from the app templates.
+After installation you can use add additional template folders in ``DIRS`` list of the ``TEMPLATES`` option in ``settings.py`` for customizing your installation. this allows for example a list like ``["thisbingosite_templates", "bingosites_templates", "default_templates"]`` for using template folders shared between different sites.
 
-example for "mytemplates/bingo/main.html":
+Example for ``thisbingosite_templates/bingo/main.html``:
 
     {% extends "bingo:bingo/base.html %}
-    {% block extra_content_top %}Welcome to my bingo game!{% endblock %}
+    {% block extra_content_top %}
+	    Welcome to my django-bingo game!
+	    {{ block.super }}
+	{% endblock %}
