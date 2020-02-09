@@ -68,7 +68,11 @@ var middleword = "{{ middle_field.word.word|lower }}";
 {% if tweet_text %}
 <span style="margin-left: 3ex">
 <b>Twitter:</b>
-<a class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{ tweet_text|urlencode }}&url={{ absolute_uri|urlencode }}&hashtags={{ tweet_hashtags|urlencode }}">{% trans 'Tweet' %}</a>
+<a class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{ tweet_text|urlencode }}&url={{ absolute_uri|urlencode }}&hashtags={{ tweet_hashtags_list|urlencode }}">{% trans 'Tweet' %}</a>
+</span>
+<span style="margin-left: 3ex">
+<b>Mastodon:</b>
+<a class="mastodon-share-button" target="_blank" href="web+mastodon://share?text={{ tweet_text|urlencode }}%20{{ absolute_uri|urlencode }}%20{{ tweet_hashtags_text|urlencode }}">{% trans 'Toot' %}</a>
 </span>
 {% endif %}
 {% if board.game.description %}

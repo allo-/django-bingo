@@ -289,7 +289,8 @@ def bingo(request, board_id=None):
         "all_word_fields": all_word_fields,
         "rate_form": RateGameForm(),
         "tweet_text": TWEETBUTTON_TEXT,
-        "tweet_hashtags": TWEETBUTTON_HASHTAGS,
+        "tweet_hashtags_list": TWEETBUTTON_HASHTAGS,
+        "tweet_hashtags_text": "#"+TWEETBUTTON_HASHTAGS.replace(",", " #"),
         "twittercard_account": TWITTERCARD_ACCOUNT,
         })
 
