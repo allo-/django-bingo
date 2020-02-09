@@ -48,7 +48,7 @@ def get_times():
 
         # when the end time is "before" the end of starttime_end,
         # the game ends tomorrow
-        if start_time_end is not None and end_time < start_time_end:
+        if start_time_start is not None and end_time < start_time_start:
             end_time = end_time + timezone.timedelta(1, 0)
 
     if VOTE_START_TIME:
