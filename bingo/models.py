@@ -49,13 +49,15 @@ class Word(models.Model):
         a word entry. Should not be deleted, but only disabled
         to preserve old BingoFields
     """
-    word = models.CharField(max_length=255, unique=True)
+    word = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True)
     type = models.PositiveSmallIntegerField(choices=WORD_TYPES)
-    site = models.ManyToManyField(Site, blank=True)
+    site = models.ForeignKey(Site, blank=True, null=True)
+    enabled = models.BooleanField(default=True)
 
     class Meta:
         ordering = ("word",)
+        #unique_together = ("word", "site")
 
     def __unicode__(self):
         return u"Word: " + self.word
@@ -223,7 +225,7 @@ class Game(models.Model):
 
 
 def _get_random_words(site):
-    all_words = Word.objects.filter(site=site).order_by("?")
+    all_words = Word.objects.filter(site=site, enabled=True).order_by("?")
     middle_words = all_words.filter(site=site, type=WORD_TYPE_MIDDLE).order_by("?")
     words = all_words.exclude(type=WORD_TYPE_MIDDLE)
     if middle_words.count() == 0:
@@ -392,7 +394,7 @@ def position_validator(value):
 
 
 class BingoField(models.Model):
-    word = models.ForeignKey("Word")
+    word = models.ForeignKey("Word", blank=True, null=True)
     board = models.ForeignKey("BingoBoard")
     position = models.SmallIntegerField(
         validators=[position_validator],

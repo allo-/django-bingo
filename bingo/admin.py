@@ -14,15 +14,6 @@ def bingoboard_name(bingo_board):
         bingo_board.board_id, bingo_board.game.site)
 
 
-def word_sites(word):
-    """
-        @returns: the sites, where a Word instance is active,
-        truncated, so at most 5 sites are displayed
-    """
-    sites = map(lambda site: site.domain, word.site.all()[:5])
-    return ", ".join(sites if len(sites) <= 5 else sites+["[...]"])
-
-
 def game_id(game):
     """
         just the game.id prefixed by "Game #"
@@ -40,12 +31,11 @@ def bingoboard_game_id(bingo_board):
 
 bingoboard_name.short_description = "Bingo"
 bingoboard_game_id.short_description = "Game"
-word_sites.short_description = "Sites"
 
 
 class WordAdmin(admin.ModelAdmin):
     list_filter = ("site", "site", "type")
-    list_display = ("word", word_sites, "type")
+    list_display = ("word", "site", "type")
     search_fields = ("word", )
 
     class Meta:
