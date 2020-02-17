@@ -3,9 +3,9 @@ from django.utils.translation import pgettext, ugettext as _
 from django.conf import settings
 from django.contrib.auth.hashers import get_hasher
 
-from models import BingoBoard, is_starttime
-import times
-from times import is_starttime
+from .models import BingoBoard, is_starttime
+from . import times
+from .times import is_starttime
 
 
 SALT = getattr(settings, "SALT", "hackme")
@@ -19,7 +19,7 @@ GAME_DESCRIPTION_DISABLED = getattr(
 
 
 class CreateForm(forms.Form):
-    password = forms.CharField(label=_(u"Password (optional)"),
+    password = forms.CharField(label=_("Password (optional)"),
                                widget=forms.PasswordInput(),
                                required=False)
 
@@ -34,7 +34,7 @@ class CreateForm(forms.Form):
         # when there is no active game.
         if not GAME_DESCRIPTION_DISABLED and game is None:
             self.fields['description'] = forms.CharField(
-                label=_(u'Game Description (optional)'),
+                label=_('Game Description (optional)'),
                 required=False)
 
     def clean_password(self):
@@ -49,11 +49,11 @@ class CreateForm(forms.Form):
     def clean(self):
         if GAME_START_DISABLED:
             raise forms.ValidationError(
-                _(u"Starting new games is disabled."))
+                _("Starting new games is disabled."))
 
         _now = times.now()
         if GAME_WEEK_DAYS and _now.weekday() not in GAME_WEEK_DAYS:
-            raise forms.ValidationError(_(u"Games cannot be started at this day of week."))
+            raise forms.ValidationError(_("Games cannot be started at this day of week."))
         if not is_starttime():
             start, end = GAME_START_TIMES
             start_time_str = "{0}:{1}".format(
@@ -64,7 +64,7 @@ class CreateForm(forms.Form):
                 str(end[1]).zfill(2))
 
             raise forms.ValidationError(
-                _(u"Games can only be started between {0} and {1}.").format(
+                _("Games can only be started between {0} and {1}.").format(
                     start_time_str, end_time_str))
 
         return super(CreateForm, self).clean()
@@ -97,7 +97,7 @@ class ReclaimForm(forms.Form):
             self.cleaned_data['bingo_board'] = bingo_boards[0]
         else:
             raise forms.ValidationError(
-                _(u"No active board with this password."
+                _("No active board with this password."
                     " Try again, or create a new one."))
         return hashed_password
 
@@ -147,4 +147,4 @@ class ChangeThemeForm(forms.Form):
 
 class RateGameForm(forms.Form):
     rating = forms.ChoiceField(
-        choices=zip(["None"] + range(1, 6), [_("n/a")] + range(1, 6)))
+        choices=list(zip(["None"] + list(range(1, 6)), [_("n/a")] + list(range(1, 6)))))

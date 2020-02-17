@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django import forms
 
-from models import *
+from .models import *
 
 
 def bingoboard_user(bingo_board):
@@ -10,7 +10,7 @@ def bingoboard_user(bingo_board):
 
 
 def bingoboard_name(bingo_board):
-    return u'BingoBoard #{0} (site {1})'.format(
+    return 'BingoBoard #{0} (site {1})'.format(
         bingo_board.board_id, bingo_board.game.site)
 
 
@@ -19,7 +19,7 @@ def game_id(game):
         just the game.id prefixed by "Game #"
         so its easier to click in the admin interface
     """
-    return u"Game #{0}".format(game.game_id)
+    return "Game #{0}".format(game.game_id)
 
 
 def bingoboard_game_id(bingo_board):

@@ -1,7 +1,7 @@
 from django.views.generic import ListView
 from django.contrib.sites.models import Site
 
-from models import Game
+from .models import Game
 
 
 class GameList(ListView):

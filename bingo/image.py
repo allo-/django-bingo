@@ -3,16 +3,16 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.core.urlresolvers import reverse
-import views
+from . import views
 import math
 
 from PIL import Image, ImageDraw, ImageFont
 
-from models import Word, BingoField
+from .models import Word, BingoField
 
 
 # constants
-COLOR_MODE_BLANK, COLOR_MODE_MARKED, COLOR_MODE_VOTED = range(3)
+COLOR_MODE_BLANK, COLOR_MODE_MARKED, COLOR_MODE_VOTED = list(range(3))
 
 # settings
 H_BOX_PADDING = getattr(settings, "HORIZONTAL_PADDING", 8)
@@ -175,7 +175,7 @@ def get_image(host, bingo_board, marked=False, voted=False):
 
         # draw a border. if its more than 1px, its extended
         # by drawing smaller boxes inside
-        for offset in xrange(BORDER):
+        for offset in range(BORDER):
             # -1 on the right/bottom corner is needed, because the line is
             # drawn below/right of the pixel, both for the
             # top/left and bottom/right corners

@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 
-import views
-import generic
+from . import views
+from . import generic
 
 urlpatterns = (
     url('^$', views.main, name="bingo-main"),

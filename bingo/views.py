@@ -10,11 +10,11 @@ from django.middleware.cache import CacheMiddleware
 from django.contrib.auth.models import User
 import json
 
-from models import Word, Game, BingoBoard, BingoField, get_game, WORD_TYPE_MIDDLE
-from forms import CreateForm, ClaimForm, ReclaimForm
-from forms import ChangeThemeForm, RateGameForm
-import image as image_module
-import times
+from .models import Word, Game, BingoBoard, BingoField, get_game, WORD_TYPE_MIDDLE
+from .forms import CreateForm, ClaimForm, ReclaimForm
+from .forms import ChangeThemeForm, RateGameForm
+from . import image as image_module
+from . import times
 
 import logging
 logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ def _get_user_bingo_board(request):
             bingo_board = BingoBoard.objects.get(id=session_board_id,
                                                  game=game)
             bingo_board.ip = ip
-        except BingoBoard.DoesNotExist, e:
+        except BingoBoard.DoesNotExist as e:
             pass
         # double board_id?
         except BingoBoard.MultipleObjectsReturned:
@@ -74,7 +74,7 @@ def _get_user_bingo_board(request):
     if user:
         try:
             bingo_board = BingoBoard.objects.get(game=game, user=user)
-        except BingoBoard.DoesNotExist, e:
+        except BingoBoard.DoesNotExist as e:
             pass
 
     # no board_id in the session, try the ip
@@ -83,7 +83,7 @@ def _get_user_bingo_board(request):
             # user=None is required, to prevent anonymous users from
             # getting the board of a authenticated user on the same ip.
             bingo_board = BingoBoard.objects.get(game=game, ip=ip, user=None)
-        except BingoBoard.DoesNotExist, e:
+        except BingoBoard.DoesNotExist as e:
             pass
 
     if bingo_board is not None and not bingo_board.game.is_expired():

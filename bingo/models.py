@@ -13,7 +13,7 @@ from colorful.fields import RGBColorField
 
 from random import randint
 
-from times import is_starttime, is_after_endtime, get_endtime
+from .times import is_starttime, is_after_endtime, get_endtime
 
 
 # Color ranges
@@ -60,7 +60,7 @@ class Word(models.Model):
         #unique_together = ("word", "site")
 
     def __unicode__(self):
-        return u"Word: " + self.word
+        return "Word: " + self.word
 
 
 class TimeRangeError(Exception):
@@ -92,7 +92,7 @@ def get_game(site, description="", create=False):
                 game.save()
             else:
                 raise TimeRangeError(
-                    _(u"game start outside of the valid timerange"))
+                    _("game start outside of the valid timerange"))
         else:
             game = None
 
@@ -117,9 +117,9 @@ class Game(models.Model):
         return reverse('bingo.views.game', kwargs={"game_id": self.game_id})
 
     def __unicode__(self):
-        return _(u"Game #{0} created at {1} (site {2})").format(
+        return _("Game #{0} created at {1} (site {2})").format(
             self.game_id,
-            timezone.localtime(self.created).strftime(u"%Y-%m-%d %H:%M"),
+            timezone.localtime(self.created).strftime("%Y-%m-%d %H:%M"),
             self.site)
 
     def hard_expiry(self):
@@ -190,8 +190,8 @@ class Game(models.Model):
         if only_topics:
             result = result.exclude(bingofield__word__type=WORD_TYPE_META)
 
-        result = result.annotate(
-            votes=Sum("bingofield__vote")).order_by("-votes").values()
+        result = list(result.annotate(
+            votes=Sum("bingofield__vote")).order_by("-votes").values())
 
         for item in result:
             item['votes'] = max(0, item['votes'])
@@ -229,10 +229,10 @@ def _get_random_words(site):
     middle_words = all_words.filter(site=site, type=WORD_TYPE_MIDDLE).order_by("?")
     words = all_words.exclude(type=WORD_TYPE_MIDDLE)
     if middle_words.count() == 0:
-        raise ValidationError(_(u"No middle words in database"))
+        raise ValidationError(_("No middle words in database"))
     middle = middle_words[0]
     if words.count() < 24:
-        raise ValidationError(_(u"Not enough (non-middle) words in database"))
+        raise ValidationError(_("Not enough (non-middle) words in database"))
     return list(words), middle
 
 
@@ -273,7 +273,7 @@ class BingoBoard(models.Model):
             # if its not an edit of the same BingoBoard
             if board.pk != self.pk:
                 raise ValidationError(
-                    _(u"BingoBoard ID not unique for site {0}").format(
+                    _("BingoBoard ID not unique for site {0}").format(
                         self.game.site))
         except BingoBoard.DoesNotExist:
             return  # everything okay
@@ -281,7 +281,7 @@ class BingoBoard(models.Model):
     def save(self):
         if self.ip is None and self.user is None:
             raise ValidationError(
-                _(u"BingoBoard must have either an ip or an user"))
+                _("BingoBoard must have either an ip or an user"))
 
         if self.pk is None:
             # unique_together for optional fields
@@ -289,7 +289,7 @@ class BingoBoard(models.Model):
             if not self.user is None:
                 if game_boards.filter(user=self.user).count() > 0:
                     raise ValidationError(
-                        _(u"game and user must be unique_together"))
+                        _("game and user must be unique_together"))
             # ip only needs to be unique for anonymous users
             # to check if the ip is relevant:
             # - check the current board does not have an user
@@ -297,7 +297,7 @@ class BingoBoard(models.Model):
             if not self.ip is None and not self.user:
                 if game_boards.filter(ip=self.ip, user=None).count() > 0:
                     raise ValidationError(
-                        _(u"game and ip must be unique_together"))
+                        _("game and ip must be unique_together"))
 
             # generate a color
             self.color = "#%x%x%x" % (
@@ -337,7 +337,7 @@ class BingoBoard(models.Model):
         count = 0
         words, middle = _get_random_words(site=self.game.site)
         fields = []
-        for i in xrange(25):
+        for i in range(25):
             # 13th field = middle
             if i == 12:
                 fields.append(BingoField(word=middle, position=i+1))
@@ -381,7 +381,7 @@ class BingoBoard(models.Model):
         return THUMBNAILS_ENABLED
 
     def __unicode__(self):
-        return _(u"BingoBoard #{0} created by {1} (site {2})").format(
+        return _("BingoBoard #{0} created by {1} (site {2})").format(
             self.board_id,
             self.user if self.user else self.ip,
             self.game.site)
@@ -390,7 +390,7 @@ class BingoBoard(models.Model):
 def position_validator(value):
     if not value is None and not (0 < value < 26):
         raise ValidationError(_(
-            _(u"invalid position. valid values range: 1-25 or None")))
+            _("invalid position. valid values range: 1-25 or None")))
 
 
 class BingoField(models.Model):
@@ -427,18 +427,18 @@ class BingoField(models.Model):
     def clean(self):
         if self.is_middle() and self.word.type != WORD_TYPE_MIDDLE:
             raise ValidationError(_(
-                u"The BingoField has middle position, "
-                u"but the word is no middle word"))
+                "The BingoField has middle position, "
+                "but the word is no middle word"))
         elif not self.is_middle() and self.word.type == WORD_TYPE_MIDDLE:
             raise ValidationError(_(
-                u"The BingoField is not in the middle, "
-                u"but the word is a middle word"))
+                "The BingoField is not in the middle, "
+                "but the word is a middle word"))
 
     def __unicode__(self):
         if self.position is not None:
-            return _(u"BingoField: word={0}, pos=({1},{2}){3})").format(
+            return _("BingoField: word={0}, pos=({1},{2}){3})").format(
                 self.word, self.position/5+1, self.position % 5,
-                _(u" [middle]") if self.is_middle() else u"")
+                _(" [middle]") if self.is_middle() else "")
         else:
-            return _(u"BingoField: word={0}, (not on the board)").format(
+            return _("BingoField: word={0}, (not on the board)").format(
                 self.word)

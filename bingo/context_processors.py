@@ -22,7 +22,7 @@ def themes(request):
     themes = list(getattr(settings, "THEMES", DEFAULT_THEMES))
     if len(themes) > 0:
         themes = [(_("Default"), "")] + list(themes)
-        for i in xrange(len(themes)):
+        for i in range(len(themes)):
             theme_name, theme_url = themes[i]
             if theme_url != '' and not theme_url.startswith("http://") \
                     and not theme_url.startswith("https://"):
@@ -62,7 +62,7 @@ def bingo(request):
         'http_scheme': scheme,
         'site_title': site_name,
     }
-    for key, value in themes(request).items():
+    for key, value in list(themes(request).items()):
         items[key] = value
 
     return items
