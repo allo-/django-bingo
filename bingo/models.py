@@ -57,7 +57,7 @@ class Word(models.Model):
 
     class Meta:
         ordering = ("word",)
-        #unique_together = ("word", "site")
+        unique_together = ("word", "site")
 
     def __unicode__(self):
         return "Word: " + self.word
