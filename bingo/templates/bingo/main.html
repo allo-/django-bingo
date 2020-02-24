@@ -35,17 +35,24 @@
                     <td colspan="2">
                         {% if my_board %}
                             {% with my_board as board %}
-                                <div class="thumbnail">
-                                    <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
-                                        {% if show_board_created_date %}{{ board.created }}<br />{% endif %}
-                                        <a href="{% url 'bingo-bingo' board.board_id %}">
-                                            <img class="thumbnail" src="{% url 'bingo-thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
-                                            <br />
-                                            {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
-                                        </a>
-                                        {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+                                {% if board.thumbnails_enabled %}
+                                    <div class="thumbnail">
+                                        <div class="board_thumbnail_box" style="border-color: {{ board.color }}">
+                                            {% if show_board_created_date %}{{ board.created }}<br />{% endif %}
+                                            <a href="{% url 'bingo-bingo' board.board_id %}">
+                                                <img class="thumbnail" src="{% url 'bingo-thumbnail' board_id=board.board_id voted=True %}" alt="[Thumbnail: {% trans 'Board' %} #{{ board.board_id }}]" title="{{ board.created }}" />
+                                                <br />
+                                                {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
+                                            </a>
+                                            {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+                                        </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <a href="{% url 'bingo-bingo' board.board_id %}">
+                                        {% trans 'Board' %} #{{ board.board_id }} ({{ board.get_middle_field.word.word }})
+                                    </a>
+                                    {% if board == my_board %}{% trans '(your board)' %}{% endif %}
+                                {% endif %}
                             {% endwith %}
                         {% else %}
                             {% trans 'You seem not to have a bingo board for the current game' %}
