@@ -114,7 +114,7 @@ class Game(models.Model):
         unique_together = ("game_id", "site")
 
     def get_absolute_url(self):
-        return reverse('bingo.views.game', kwargs={"game_id": self.game_id})
+        return reverse('bingo-game', kwargs={"game_id": self.game_id})
 
     def __unicode__(self):
         return _("Game #{0} created at {1} (site {2})").format(
