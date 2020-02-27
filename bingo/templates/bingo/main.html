@@ -16,6 +16,12 @@
 
 {% block content %}
 
+{% if config.bingo_description %}
+<div id="bingo_description" "">
+    {{ config.bingo_description|safe }}
+</div>
+{% endif %}
+
 {% if not my_board %}
     {% if can_start_game %}
         {% include "bingo/forms.html" %}

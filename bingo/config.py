@@ -76,6 +76,10 @@ class Config(models.Model):
         default="",
         help_text="The Twitter account associated with the Twitter card " +
         "(useful for Twitter statistics)")
+    bingo_description = models.TextField(blank=True, default="",
+        help_text="An optional description of the bingo, that will be" +
+        "shown on the main page. HTML is allowed, so make sure to escape <, >" +
+        " and similar characters correctly and close all your HTML tags.")
 
     def __str__(self):
         return "Configuration for site {0}".format(self.site)
