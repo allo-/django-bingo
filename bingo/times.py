@@ -20,9 +20,11 @@ def get_times(site):
     end_time = datetime.combine(time_now,
         config.get("end_time", site=site),
         tzinfo=timezone.get_current_timezone())
-    vote_start_time = datetime.combine(time_now,
-        config.get("vote_start_time", site=site),
-        tzinfo=timezone.get_current_timezone())
+    vote_start_time = config.get("vote_start_time", site=site)
+    if vote_start_time is not None:
+        vote_start_time = datetime.combine(time_now,
+            config.get("vote_start_time", site=site),
+            tzinfo=timezone.get_current_timezone())
 
     if start_time_begin is not None and start_time_end is not None:
         # when the end of start time is "before" the start of start time,
