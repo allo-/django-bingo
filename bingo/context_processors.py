@@ -2,6 +2,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.sites.shortcuts import get_current_site
+from .config import Config
 
 static_url = staticfiles_storage.url
 
@@ -52,6 +53,8 @@ def bingo(request):
     host = request.get_host()
     scheme = request.scheme
     site_name = get_current_site(request).name # TODO: override via bingo specific setting
+    (config, created) = Config.objects.get_or_create(
+        site=get_current_site(request))
     items = {
         'use_sse': use_sse,
         'sse_url': sse_url,
@@ -61,6 +64,7 @@ def bingo(request):
         'http_host': host,
         'http_scheme': scheme,
         'site_title': site_name,
+        'config': config
     }
     for key, value in list(themes(request).items()):
         items[key] = value
