@@ -3,6 +3,7 @@ from django.db import models
 from django import forms
 
 from .models import *
+from .config import Config
 
 
 def bingoboard_user(bingo_board):
@@ -78,8 +79,12 @@ class GameAdmin(admin.ModelAdmin):
     list_filter = ("site",)
     readonly_fields = ("created", "last_used")
 
+class ConfigAdmin(admin.ModelAdmin):
+    list_display = ("site",)
+
 
 admin.site.register(Word, WordAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(BingoBoard, BingoBoardAdmin)
 admin.site.register(BingoField, BingoFieldAdmin)
+admin.site.register(Config, ConfigAdmin)

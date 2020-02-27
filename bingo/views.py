@@ -15,11 +15,11 @@ from .forms import CreateForm, ClaimForm, ReclaimForm
 from .forms import ChangeThemeForm, RateGameForm
 from . import image as image_module
 from . import times
+from . import config
 
 import logging
 logger = logging.getLogger(__name__)
 
-GAME_START_DISABLED = getattr(settings, "GAME_START_DISABLED", False)
 THUMBNAIL_CACHE_EXPIRY = getattr(
     settings,
     "THUMBNAIL_CACHE_EXPIRY",
@@ -29,11 +29,6 @@ OLD_THUMBNAIL_CACHE_EXPIRY = getattr(
     "OLD_THUMBNAIL_CACHE_EXPIRY",
     24 * 60 * 60)
 USE_SSE = hasattr(settings, "SSE_URL")
-TWEETBUTTON_TEXT = getattr(
-    settings, "TWEETBUTTON_TEXT",
-    pgettext_lazy("tweet text", "My bingo board:"))
-TWEETBUTTON_HASHTAGS = getattr(settings, "TWEETBUTTON_HASHTAGS", "bingo")
-TWITTERCARD_ACCOUNT = getattr(settings, "TWITTERCARD_ACCOUNT", "")
 
 if USE_SSE:
     REDIS_HOST = getattr(settings, "REDIS_HOST", None)
@@ -123,10 +118,11 @@ def _publish_num_users(site_id, num_users=None, num_active_users=None):
 
 
 def main(request, reclaim_form=None, create_form=None):
-    game = get_game(site=get_current_site(request), create=False)
+    site = get_current_site(request)
+    game = get_game(site=site, create=False)
     bingo_board = _get_user_bingo_board(request)
 
-    create_form = CreateForm(prefix="create", game=game)
+    create_form = CreateForm(site=site, prefix="create", game=game)
     reclaim_form = ReclaimForm(prefix="reclaim")
 
     boards = BingoBoard.objects.filter(game=game)
@@ -150,13 +146,14 @@ def main(request, reclaim_form=None, create_form=None):
         'boards': boards,
         'current_game': game,
         'old_games': old_games,
-        'can_start_game': not GAME_START_DISABLED,
+        'can_start_game': config.get("start_enabled", request=request),
         })
 
 
 def game(request, game_id):
+    site = get_current_site(request)
     bingo_board = _get_user_bingo_board(request)
-    create_form = CreateForm(prefix="create", game=game)
+    create_form = CreateForm(site, prefix="create", game=game)
     reclaim_form = ReclaimForm(prefix="reclaim")
     return render(request, "bingo/game.html", {
         'game': get_object_or_404(
@@ -164,7 +161,8 @@ def game(request, game_id):
         'my_board': bingo_board,
         'create_form': create_form,
         'reclaim_form': reclaim_form,
-        "twittercard_account": TWITTERCARD_ACCOUNT,
+        "twittercard_account": config.get("twittercard_account",
+            request=request),
     })
 
 
@@ -177,13 +175,15 @@ def profile(request, username):
         'profile_user': user,
         'boards': boards,
         'claim_form': form,
-        "twittercard_account": TWITTERCARD_ACCOUNT,
+        "twittercard_account": config.get("twittercard_account",
+            request=request),
     })
 
 
 def reclaim_board(request):
     ip = request.META['REMOTE_ADDR']
-    game = get_game(site=get_current_site(request), create=False)
+    site = get_current_site(request)
+    game = get_game(site=site, create=False)
     if game is not None:
         Game.objects.filter(id=game.id).update(last_used=times.now())
     bingo_board = _get_user_bingo_board(request)
@@ -202,7 +202,7 @@ def reclaim_board(request):
                                                    bingo_board.board_id}))
     else:
         reclaim_form = ReclaimForm(prefix="reclaim")
-    create_form = CreateForm(prefix="create", game=game)
+    create_form = CreateForm(site, prefix="create", game=game)
     return render(request,
                   "bingo/reclaim_board.html", {
                       'reclaim_form': reclaim_form,
@@ -214,6 +214,8 @@ def create_board(request):
     bingo_board = _get_user_bingo_board(request)
     game = bingo_board.game if bingo_board is not None else None
     user = request.user
+    ip = request.META['REMOTE_ADDR']
+    site = get_current_site(request)
 
     if bingo_board:
         Game.objects.filter(id=bingo_board.game.id).update(
@@ -222,6 +224,7 @@ def create_board(request):
             'board_id': bingo_board.board_id}))
     elif request.POST:
         create_form = CreateForm(
+            site,
             request.POST,
             prefix="create",
             game=game)
@@ -233,7 +236,7 @@ def create_board(request):
                 game_description = create_form.cleaned_data.get(
                     'description', '')
                 game = get_game(
-                    site=get_current_site(request),
+                    site=site,
                     description=game_description,
                     create=True)
                 Game.objects.filter(id=game.id).update(
@@ -271,9 +274,10 @@ def create_board(request):
 
 
 def bingo(request, board_id=None):
+    site = get_current_site(request)
     bingo_board = get_object_or_404(
         BingoBoard, board_id=board_id,
-        game__site=get_current_site(request)
+        game__site=site
     )
     my_bingo_board = _get_user_bingo_board(request)
     fields_on_board = bingo_board.get_board_fields().select_related()
@@ -281,6 +285,7 @@ def bingo(request, board_id=None):
     all_word_fields = bingo_board.get_all_word_fields().order_by(
         "word__word").select_related()
 
+    tweetbutton_hashtags = config.get("tweetbutton_hashtags", request=request)
     return render(request, "bingo/bingo.html", {
         "fields_on_board": fields_on_board,
         "middle_field": middle_field,
@@ -288,10 +293,10 @@ def bingo(request, board_id=None):
         "my_board": my_bingo_board,
         "all_word_fields": all_word_fields,
         "rate_form": RateGameForm(),
-        "tweet_text": TWEETBUTTON_TEXT,
-        "tweet_hashtags_list": TWEETBUTTON_HASHTAGS,
-        "tweet_hashtags_text": "#"+TWEETBUTTON_HASHTAGS.replace(",", " #"),
-        "twittercard_account": TWITTERCARD_ACCOUNT,
+        "tweet_text": config.get("tweetbutton_text", request=request),
+        "tweet_hashtags_list": tweetbutton_hashtags,
+        "tweet_hashtags_text": "#" + tweetbutton_hashtags.replace(",", " #"),
+        "twittercard_account": config.get("twittercard_account", request=request),
         })
 
 def wordlist(request):
@@ -360,11 +365,12 @@ def _post_vote(user_bingo_board, field, vote):
 
 
 def vote(request, ajax, board_id=None):
+    site = get_current_site(request)
     user_bingo_board = _get_user_bingo_board(request)
     field = None
 
     # post request: update field.vote
-    if "field_id" in request.POST and times.is_after_votetime_start():
+    if "field_id" in request.POST and times.is_after_votetime_start(site):
         field_id = request.POST.get("field_id", 0)
         field = get_object_or_404(BingoField, id=field_id)
         vote = request.POST.get("vote", "0")

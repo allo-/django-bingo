@@ -14,25 +14,8 @@ from colorful.fields import RGBColorField
 from random import randint
 
 from .times import is_starttime, is_after_endtime, get_endtime
+from . import config
 
-
-# Color ranges
-COLOR_FROM = getattr(settings, "COLOR_FROM", 80)
-COLOR_TO = getattr(settings, "COLOR_TO", 160)
-
-# Expire game after hard-timeout seconds, or
-# soft-timeout seconds inactivity, whatever comes first.
-GAME_SOFT_TIMEOUT = getattr(settings, "GAME_SOFT_TIMEOUT", 60)
-GAME_HARD_TIMEOUT = getattr(settings, "GAME_HARD_TIMEOUT", 120)
-
-BINGO_IMAGE_DATETIME_FORMAT = getattr(
-    settings, "BINGO_IMAGE_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
-
-# if a user did not vote/refresh his board for this time,
-# he is counted as inactive
-USER_ACTIVE_TIMEOUT = getattr(settings, "USER_ACTIVE_TIMEOUT", 5)
-
-THUMBNAILS_ENABLED = getattr(settings, "THUMBNAILS_ENABLED", True)
 
 WORD_TYPE_TOPIC = 1
 WORD_TYPE_MIDDLE = 2
@@ -71,7 +54,7 @@ def get_game(site, description="", create=False):
     """
         get the current game, if its still active, else
         creates a new game, if the current time is inside the
-        GAME_START_TIMES interval and create=True
+        start interval and create=True
         @param create: create a game, if there is no active game
         @returns: None if there is no active Game, and none shoul be
         created or the (new) active Game.
@@ -85,9 +68,9 @@ def get_game(site, description="", create=False):
         game = None
 
     # no game, yet, or game expired
-    if game is None or game.is_expired() or is_after_endtime():
+    if game is None or game.is_expired() or is_after_endtime(game.site):
         if create:
-            if is_starttime():
+            if is_starttime(site):
                 game = Game(site=site, description=description)
                 game.save()
             else:
@@ -97,7 +80,7 @@ def get_game(site, description="", create=False):
             game = None
 
     # game exists and its not after the GAME_END_TIME
-    elif not is_after_endtime():
+    elif not is_after_endtime(game.site):
         game = games[0]
 
     return game
@@ -123,13 +106,15 @@ class Game(models.Model):
             self.site)
 
     def hard_expiry(self):
-        if GAME_HARD_TIMEOUT is not None:
-            return self.created + timezone.timedelta(0, GAME_HARD_TIMEOUT * 60)
+        hard_timeout = config.get("hard_timeout", site=self.site)
+        if hard_timeout:
+            return self.created + timezone.timedelta(0, hard_timeout * 60)
 
     def soft_expiry(self):
-        if GAME_SOFT_TIMEOUT is not None:
+        soft_timeout = config.get("soft_timeout", site=self.site)
+        if soft_timeout:
             return self.last_used + timezone.timedelta(
-                0, GAME_SOFT_TIMEOUT * 60)
+                0, soft_timeout * 60)
 
     def end_time(self):
         hard_expiry = self.hard_expiry()
@@ -145,6 +130,8 @@ class Game(models.Model):
 
     def is_expired(self):
         # game expired, because no one used it
+        hard_timeout = config.get("hard_timeout", site=self.site)
+        soft_timeout = config.get("soft_timeout", site=self.site)
         now = timezone.now()
         diff_last_used = now - self.last_used
         diff_created = now - self.created
@@ -155,13 +142,13 @@ class Game(models.Model):
             diff_created.days * 24 * 60 * 60 + diff_created.seconds
 
         # game expired, because nobody used it
-        if GAME_SOFT_TIMEOUT and seconds_since_last_used \
-                > (GAME_SOFT_TIMEOUT * 60):
+        if soft_timeout and seconds_since_last_used \
+                > (soft_timeout * 60):
             return True
 
         # game expired, because its too old, even when someone is using it
-        elif GAME_HARD_TIMEOUT and seconds_since_created \
-                > (GAME_HARD_TIMEOUT * 60):
+        elif hard_timeout and seconds_since_created \
+                > (hard_timeout* 60):
             return True
         else:
             return False
@@ -170,10 +157,12 @@ class Game(models.Model):
         return self.bingoboard_set.count()
 
     def num_active_users(self):
-        if USER_ACTIVE_TIMEOUT:
+        user_activity_timeout = config.get(
+            "user_activity_timeout", site=self.site)
+        if user_activity_timeout:
             return self.bingoboard_set.exclude(
                 last_used__lte=timezone.now()
-                - timezone.timedelta(0, 60 * USER_ACTIVE_TIMEOUT)
+                - timezone.timedelta(0, 60 * user_activity_timeout)
             ).count()
         else:
             return self.num_users()
@@ -300,10 +289,13 @@ class BingoBoard(models.Model):
                         _("game and ip must be unique_together"))
 
             # generate a color
+            color_from = config.get("colors_from", site=self.game.site)
+            color_to = config.get("colors_from", site=self.game.site)
             self.color = "#%x%x%x" % (
-                randint(COLOR_FROM, COLOR_TO),
-                randint(COLOR_FROM, COLOR_TO),
-                randint(COLOR_FROM, COLOR_TO))
+                randint(color_from, color_to),
+                randint(color_from, color_to),
+                randint(color_from, color_to)
+            )
 
             # first create the fields, so the board will
             # not be saved, when field creation fails
@@ -365,20 +357,13 @@ class BingoBoard(models.Model):
 
     def get_created(self):
         """
-            get created field with BINGO_IMAGE_DATETIME_FORMAT formatting
+            get created field with the configured formatting
         """
         return timezone.localtime(self.created).strftime(
-            BINGO_IMAGE_DATETIME_FORMAT)
-
-    def get_last_used(self):
-        """
-            get last_used field with BINGO_IMAGE_DATETIME_FORMAT formatting
-        """
-        return timezone.localtime(self.last_used).strftime(
-            BINGO_IMAGE_DATETIME_FORMAT)
+            config.get("middle_field_datetime_format", site=self.game.site))
 
     def thumbnails_enabled(self):
-        return THUMBNAILS_ENABLED
+        return config.get("thumbnails_enabled", site=self.game.site)
 
     def __unicode__(self):
         return _("BingoBoard #{0} created by {1} (site {2})").format(

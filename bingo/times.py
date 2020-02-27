@@ -1,118 +1,113 @@
 from django.utils import timezone
 from django.conf import settings
+from . import config
 
 import pytz
-from datetime import datetime
-
-# Time range, in which a game can be started. None = no limit
-# or a ((Hour, Minute), (Hour, Minute)) tuple defining the range.
-GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
-
-# Time, after which a running game is ended. Has only effect, if
-# GAME_START_TIMES is set, and needs to be outside of GAME_START_TIMES.
-# Values: tuple (hour, minute) or None for no restriction
-GAME_END_TIME = getattr(settings, "GAME_END_TIME", None)
-
-# Time, after which voting is possible.
-# Needs to come after the start time start.
-VOTE_START_TIME = getattr(settings, "VOTE_START_TIME", None)
-
+from datetime import datetime, timedelta
 
 def now():
     return timezone.get_current_timezone().normalize(timezone.now())
 
-
-def get_times():
+def get_times(site):
     time_now = now()
 
-    start_time_start = None
-    start_time_end = None
-    end_time = None
-    vote_start_time = None
-    if GAME_START_TIMES:
-        start, end = GAME_START_TIMES
-        start_time_start = time_now.replace(
-            hour=start[0], minute=start[1], second=0, microsecond=0)
-        start_time_end = time_now.replace(
-            hour=end[0], minute=end[1], second=0, microsecond=0)
+    start_time_begin = datetime.combine(time_now,
+        config.get("start_time_begin", site=site),
+        tzinfo=timezone.get_current_timezone())
+    start_time_end = datetime.combine(time_now,
+        config.get("start_time_end", site=site),
+        tzinfo=timezone.get_current_timezone())
+    end_time = datetime.combine(time_now,
+        config.get("end_time", site=site),
+        tzinfo=timezone.get_current_timezone())
+    vote_start_time = datetime.combine(time_now,
+        config.get("vote_start_time", site=site),
+        tzinfo=timezone.get_current_timezone())
 
+    if start_time_begin is not None and start_time_end is not None:
         # when the end of start time is "before" the start of start time,
         # the end of start time is tomorrow
-        if start_time_end < start_time_start:
+        if start_time_end < start_time_begin:
             start_time_end += timezone.timedelta(1, 0)
 
-    if GAME_END_TIME:
-        end = GAME_END_TIME
-        end_time = time_now.replace(
-            hour=end[0], minute=end[1], second=0, microsecond=0)
-
-        # when the end time is "before" the end of starttime_end,
+    if end_time is not None:
+        # when the end time is "before" the end of start_time_end,
         # the game ends tomorrow
-        if start_time_start is not None and end_time < start_time_start:
+        if start_time_begin is not None and end_time < start_time_begin:
             end_time = end_time + timezone.timedelta(1, 0)
 
-    if VOTE_START_TIME:
-        vote_start = VOTE_START_TIME
-        vote_start_time = time_now.replace(
-            hour=vote_start[0], minute=vote_start[1], second=0, microsecond=0)
-
+    if vote_start_time is not None:
         # The vote time must come after the start of starttime.
         # If it comes before, it must be tomorrow
-        if start_time_start is not None and vote_start_time < start_time_start:
+        if start_time_begin is not None and vote_start_time < start_time_begin:
             vote_start_time = vote_start_time + timezone.timedelta(1, 0)
+            # When end time is now before the vote start time, end time needs to
+            # be adjusted to be tomorrow as well
+            if end_time < vote_start_time:
+                end_time = end_time + timezone.timedelta(1, 0)
+
+    print({
+        'now': time_now,
+        'start_time_begin': start_time_begin,
+        'start_time_end': start_time_end,
+        'end_time': end_time,
+        'vote_start_time': vote_start_time,
+    })
 
     # some sanity checks
-    if GAME_START_TIMES and VOTE_START_TIME:
-        assert start_time_start < vote_start_time
-    if GAME_END_TIME and VOTE_START_TIME:
+    if start_time_begin and start_time_end and vote_start_time:
+        assert start_time_begin < vote_start_time
+    if end_time and vote_start_time:
         assert end_time > vote_start_time
-    if GAME_START_TIMES and GAME_END_TIME:
+    if start_time_begin and start_time_end and end_time:
         assert end_time > start_time_end
 
     return {
         'now': time_now,
-        'start_time_start': start_time_start,
+        'start_time_begin': start_time_begin,
         'start_time_end': start_time_end,
         'end_time': end_time,
         'vote_start_time': vote_start_time,
     }
 
 
-def get_endtime():
+def get_endtime(site):
     """ returns the (static) game end time """
-    return get_times()['end_time']
+    return get_times(site)['end_time']
 
 
-def is_starttime():
+def is_starttime(site):
     """
         returns True, if no start times are set, or the current time
         lies inside the starttime.
     """
-    if GAME_START_TIMES is None:
+    if not config.get("start_time_begin", site=site) or \
+        not config.get("start_time_end", site=site):
         return True
     else:
-        times = get_times()
-        return times['start_time_start'] \
-            < times['now'] \
+        times = get_times(site)
+        return times['start_time_begin'] \
+            < now() \
             < times['start_time_end']
 
 
-def is_after_votetime_start():
+def is_after_votetime_start(site):
     """
-        returns True, if no VOTE_START_TIME is set,
+        returns True, if no vote_start_time is set,
         or the current time is after the start of vote
         time
     """
-    if VOTE_START_TIME is None:
+    if not config.get("vote_start_time", site=site):
         return True
     else:
-        times = get_times()
+        times = get_times(site)
         return times['vote_start_time'] <= times['now']
 
 
-def is_after_endtime():
-    if GAME_END_TIME is None or is_starttime():
+def is_after_endtime(site):
+    end_time = config.get("end_time", site=site)
+    if end_time is None or is_starttime(site):
         return False
     else:
-        times = get_times()
+        times = get_times(site)
         return times['end_time'] < times['now']

@@ -3,19 +3,13 @@ from django.utils.translation import pgettext, ugettext as _
 from django.conf import settings
 from django.contrib.auth.hashers import get_hasher
 
-from .models import BingoBoard, is_starttime
+from .models import BingoBoard
 from . import times
 from .times import is_starttime
+from . import config
 
 
 SALT = getattr(settings, "SALT", "hackme")
-GAME_START_TIMES = getattr(settings, "GAME_START_TIMES", None)
-GAME_WEEK_DAYS = getattr(settings, "GAME_WEEK_DAYS", None)
-
-GAME_START_DISABLED = getattr(
-    settings, "GAME_START_DISABLED", False)
-GAME_DESCRIPTION_DISABLED = getattr(
-    settings, "GAME_DESCRIPTION_DISABLED", False)
 
 
 class CreateForm(forms.Form):
@@ -23,7 +17,7 @@ class CreateForm(forms.Form):
                                widget=forms.PasswordInput(),
                                required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, site, *args, **kwargs):
         game = kwargs.get('game')
         # forms.Form throws an error on additional kwargs
         if 'game' in kwargs:
@@ -32,10 +26,11 @@ class CreateForm(forms.Form):
 
         # add a game description field to the create form,
         # when there is no active game.
-        if not GAME_DESCRIPTION_DISABLED and game is None:
+        if config.get("description_enabled", site=site) and game is None:
             self.fields['description'] = forms.CharField(
                 label=_('Game Description (optional)'),
                 required=False)
+        self.site = site
 
     def clean_password(self):
         if self.cleaned_data['password']:
@@ -47,21 +42,31 @@ class CreateForm(forms.Form):
             return None
 
     def clean(self):
-        if GAME_START_DISABLED:
+        if not config.get("start_enabled", site=self.site):
             raise forms.ValidationError(
                 _("Starting new games is disabled."))
 
         _now = times.now()
-        if GAME_WEEK_DAYS and _now.weekday() not in GAME_WEEK_DAYS:
+        game_week_days = {
+            0: config.get("week_days_monday", site=self.site),
+            1: config.get("week_days_tuesday", site=self.site),
+            2: config.get("week_days_wednesday", site=self.site),
+            3: config.get("week_days_thursday", site=self.site),
+            4: config.get("week_days_friday", site=self.site),
+            5: config.get("week_days_saturday", site=self.site),
+            6: config.get("week_days_sunday", site=self.site)
+        }
+        if not game_week_days[_now.weekday()]:
             raise forms.ValidationError(_("Games cannot be started at this day of week."))
-        if not is_starttime():
-            start, end = GAME_START_TIMES
+        if not is_starttime(self.site):
+            start_time_begin = config.get("start_time_begin", site=self.site)
+            start_time_end = config.get("start_time_end", site=self.site)
             start_time_str = "{0}:{1}".format(
-                str(start[0]).zfill(2),
-                str(start[1]).zfill(2))
+                str(start_time_begin.hour).zfill(2),
+                str(start_time_begin.minute).zfill(2))
             end_time_str = "{0}:{1}".format(
-                str(end[0]).zfill(2),
-                str(end[1]).zfill(2))
+                str(start_time_end.hour).zfill(2),
+                str(start_time_end.minute).zfill(2))
 
             raise forms.ValidationError(
                 _("Games can only be started between {0} and {1}.").format(
