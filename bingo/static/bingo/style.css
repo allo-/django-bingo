@@ -93,18 +93,15 @@ li.word form.voteform input {
 span.form_header {
     font-weight: bold;
 }
-fieldset.reclaim_form, fieldset.create_form {
+fieldset.create_form {
     border: 2px solid darkgreen;
     display: table;
     padding: 1ex;
 }
-div.reclaim_form, div.create_form {
+div.create_form {
     float: left;
 }
-div.reclaim_form {
-    margin-left: 1ex;
-}
-form.reclaim_form p, form.create_form p {
+form.create_form p {
     margin: 0;
 }
 table.create_form {

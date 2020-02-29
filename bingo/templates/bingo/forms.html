@@ -12,15 +12,4 @@
     </form>
     </fieldset>
 </div>
-
-<div class="reclaim_form">
-    <fieldset class="reclaim_form">
-    <legend class="form_header">{% trans 'reclaim your board:' %}</legend>
-    <form class="reclaim_form" action="{% url 'bingo-reclaim_board' %}" method="post">
-        {{ reclaim_form.as_p }}
-        {% csrf_token %}
-        <input type="submit" value="{% trans 'go to my board' %}" />
-    </form>
-    </fieldset>
-</div>
 </div>

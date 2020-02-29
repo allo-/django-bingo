@@ -195,9 +195,6 @@ msgstr "Brett erstellen:"
 msgid "create board"
 msgstr "Brett erstellen"
 
-msgid "reclaim your board:"
-msgstr "Brett wiederaktivieren:"
-
 msgid "go to my board"
 msgstr "Brett aufrufen"
 
@@ -301,9 +298,6 @@ msgstr "Login"
 
 msgid "register"
 msgstr "Registrieren"
-
-msgid "Reclaim your board"
-msgstr "Brett wiederaktivieren"
 
 msgid "Statistics"
 msgstr "Statistiken"

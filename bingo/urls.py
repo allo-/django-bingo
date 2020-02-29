@@ -5,7 +5,6 @@ from . import generic
 
 urlpatterns = (
     url('^$', views.main, name="bingo-main"),
-    url('^bingo/reclaim/$', views.reclaim_board, name="bingo-reclaim_board"),
     url('^bingo/create/$', views.create_board, name="bingo-create_board"),
     url('^bingo/vote/$', views.vote, {"ajax": False}, name="bingo-vote"),
     url('^bingo/rate/$', views.rate_game, name="bingo-rate_game"),

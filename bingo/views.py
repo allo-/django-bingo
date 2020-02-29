@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 import json
 
 from .models import Word, Game, BingoBoard, BingoField, get_game, WORD_TYPE_MIDDLE
-from .forms import CreateForm, ClaimForm, ReclaimForm
+from .forms import CreateForm
 from .forms import ChangeThemeForm, RateGameForm
 from . import image as image_module
 from . import times
@@ -117,13 +117,12 @@ def _publish_num_users(site_id, num_users=None, num_active_users=None):
         pass
 
 
-def main(request, reclaim_form=None, create_form=None):
+def main(request, create_form=None):
     site = get_current_site(request)
     game = get_game(site=site, create=False)
     bingo_board = _get_user_bingo_board(request)
 
-    create_form = CreateForm(site=site, prefix="create", game=game)
-    reclaim_form = ReclaimForm(prefix="reclaim")
+    create_form = create_form or CreateForm(site=site, prefix="create", game=game)
 
     boards = BingoBoard.objects.filter(game=game)
     old_games = Game.objects.filter(
@@ -142,7 +141,6 @@ def main(request, reclaim_form=None, create_form=None):
     return render(request, "bingo/main.html", {
         'my_board': bingo_board,
         'create_form': create_form,
-        'reclaim_form': reclaim_form,
         'boards': boards,
         'current_game': game,
         'old_games': old_games,
@@ -154,13 +152,11 @@ def game(request, game_id):
     site = get_current_site(request)
     bingo_board = _get_user_bingo_board(request)
     create_form = CreateForm(site, prefix="create", game=game)
-    reclaim_form = ReclaimForm(prefix="reclaim")
     return render(request, "bingo/game.html", {
         'game': get_object_or_404(
             Game, site=get_current_site(request), game_id=game_id),
         'my_board': bingo_board,
         'create_form': create_form,
-        'reclaim_form': reclaim_form,
         "twittercard_account": config.get("twittercard_account",
             request=request),
     })
@@ -178,36 +174,6 @@ def profile(request, username):
         "twittercard_account": config.get("twittercard_account",
             request=request),
     })
-
-
-def reclaim_board(request):
-    ip = request.META['REMOTE_ADDR']
-    site = get_current_site(request)
-    game = get_game(site=site, create=False)
-    if game is not None:
-        Game.objects.filter(id=game.id).update(last_used=times.now())
-    bingo_board = _get_user_bingo_board(request)
-
-    if not bingo_board is None:
-        return redirect(reverse(bingo, kwargs={
-            'board_id': bingo_board.board_id}))
-    if request.POST:
-        reclaim_form = ReclaimForm(request.POST, game=game, prefix="reclaim")
-        if reclaim_form.is_valid():
-            bingo_board = reclaim_form.cleaned_data['bingo_board']
-            request.session['board_id'] = bingo_board.id
-            bingo_board.ip = ip
-            bingo_board.save()
-            return redirect(reverse(bingo, kwargs={'board_id':
-                                                   bingo_board.board_id}))
-    else:
-        reclaim_form = ReclaimForm(prefix="reclaim")
-    create_form = CreateForm(site, prefix="create", game=game)
-    return render(request,
-                  "bingo/reclaim_board.html", {
-                      'reclaim_form': reclaim_form,
-                      'create_form': create_form,
-                  })
 
 
 def create_board(request):
@@ -232,7 +198,6 @@ def create_board(request):
         if create_form.is_valid():
             with transaction.atomic():
                 ip = request.META['REMOTE_ADDR']
-                password = create_form.cleaned_data.get('password')
                 game_description = create_form.cleaned_data.get(
                     'description', '')
                 game = get_game(
@@ -242,15 +207,9 @@ def create_board(request):
                 Game.objects.filter(id=game.id).update(
                     last_used=times.now())
 
-                # if the user is logged in, associate the board with
-                # the user, and ignore the password
-                # (so no other user can claim the board)
                 user = user if user.is_authenticated() else None
-                if user:
-                    password = None
-
                 bingo_board = BingoBoard(
-                    game=game, user=user, ip=ip, password=password)
+                    game=game, user=user, ip=ip)
                 bingo_board.save()
 
                 if USE_SSE:
@@ -260,15 +219,7 @@ def create_board(request):
                 return redirect(reverse(bingo, kwargs={
                     'board_id': bingo_board.board_id}))
         else:
-            reclaim_form = ReclaimForm(prefix="reclaim")
-            return render(
-                request,
-                "bingo/reclaim_board.html",
-                {
-                    'reclaim_form': reclaim_form,
-                    'create_form': create_form,
-                }
-            )
+            return main(request, create_form=create_form)
     else:
         return redirect(reverse(main))
 

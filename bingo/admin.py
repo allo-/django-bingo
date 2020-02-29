@@ -65,7 +65,7 @@ class BingoBoardAdmin(admin.ModelAdmin):
     list_filter = ("game__site",)
     # cannot be changed, because its hashed.
     # if we would hash it on save, it will be hashed again on each save
-    readonly_fields = ("created", "last_used", "game", "password")
+    readonly_fields = ("created", "last_used", "game")
     inlines = (BingoFieldInline,)
 
 
