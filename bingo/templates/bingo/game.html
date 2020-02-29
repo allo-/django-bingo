@@ -11,7 +11,7 @@
         <meta name="twitter:site" content="{{ twittercard_account }}" />
         <meta name="twitter:title" content="{% spaceless %}
             {% block twittercard_title %}
-                {% blocktrans with game_id=game.game_id %}Bingo Game #{{ game_id }}{% endblocktrans %}
+                {{ site_title }} {% blocktrans with game_id=game.game_id %}Game #{{ game_id }}{% endblocktrans %}
             {% endblock %}
         {% endspaceless %}" />
         <meta name="twitter:description" content="{% spaceless %}
@@ -25,6 +25,7 @@
                 {% endblock %}
             {% endif %}
         {% endspaceless %}" />
+        <meta name="twitter:image" content="{% static 'bingo/background.png' %}" />
     {% endif %}
     {% endblock %}
 {% endblock %}

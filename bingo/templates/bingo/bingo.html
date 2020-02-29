@@ -16,7 +16,7 @@
 <meta name="twitter:site" content="{{ twittercard_account }}" />
 <meta name="twitter:title" content="{% spaceless %}
     {% block twittercard_title %}
-        {% blocktrans with board_id=board.board_id middle_word=middle_field.word.word %}Bingo Board #{{ board_id }} ({{ middle_word }}){% endblocktrans %}
+    {{ site_title }} {% blocktrans with board_id=board.board_id middle_word=middle_field.word.word %}Board #{{ board_id }} ({{ middle_word }}){% endblocktrans %}
     {% endblock %}
 {% endspaceless %}" />
 <meta name="twitter:description" content="{% spaceless %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-23 23:05+0200\n"
+"POT-Creation-Date: 2020-02-29 20:18+0100\n"
 "PO-Revision-Date: 2015-11-16 19:57+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
+
+msgctxt "tweet text"
+msgid "My bingo board:"
+msgstr "Mein Bingobrett:"
 
 msgid "Default"
 msgstr "Standard"
@@ -123,9 +127,8 @@ msgstr "powered by django-bingo"
 msgid "Board"
 msgstr "Brett"
 
-#, python-format
-msgid "Bingo Board #%(board_id)s (%(middle_word)s)"
-msgstr "Bingo Brett #%(board_id)s (%(middle_word)s)"
+msgid "Board #%(board_id)s (%(middle_word)s)"
+msgstr "Brett #%(board_id)s (%(middle_word)s)"
 
 #, python-format
 msgid "Game #%(game_id)s (Topic: %(description)s) from %(date)s."
@@ -150,6 +153,9 @@ msgstr "abgestimmt"
 msgid "Tweet"
 msgstr "Tweet"
 
+msgid "Toot"
+msgstr "Toot"
+
 msgid "Game Description:"
 msgstr "Spielbeschreibung:"
 
@@ -170,6 +176,9 @@ msgstr "Sendungsbewertung:"
 
 msgid "Rate the Show:"
 msgstr "Sendung bewerten:"
+
+msgid "Topics:"
+msgstr "Themen:"
 
 msgid "(your board)"
 msgstr "(Dein Brett)"
@@ -195,9 +204,8 @@ msgstr "Brett aufrufen"
 msgid "Game #"
 msgstr "Spiel #"
 
-#, python-format
-msgid "Bingo Game #%(game_id)s"
-msgstr "Bingo Spiel #%(game_id)s"
+msgid "Game #%(game_id)s"
+msgstr "Spiel #%(game_id)s"
 
 msgid "Old Games"
 msgstr "Alte Spiele"
@@ -219,9 +227,6 @@ msgstr "Bewertung"
 
 msgid "description"
 msgstr "Spielbeschreibung"
-
-msgid "Topics"
-msgstr "Themen"
 
 msgid "newer games"
 msgstr "neuere Spiele"
@@ -252,9 +257,6 @@ msgstr "Du scheinst kein Bingo-Brett für das aktuelle Spiel zu haben."
 
 msgid "View boards from older games:"
 msgstr "Bretter von älteren Spielen ansehen:"
-
-msgid "Topics:"
-msgstr "Themen:"
 
 msgid "user profile:"
 msgstr "Benutzerprofil:"
@@ -327,10 +329,6 @@ msgstr "Du bist jetzt ausgelogged."
 msgid "Register"
 msgstr "Registrieren"
 
-msgctxt "tweet text"
-msgid "My bingo board:"
-msgstr "Mein Bingobrett:"
-
 #, python-brace-format
 msgid "board_{0}_voted"
 msgstr "brett_{0}_abgestimmt"
@@ -345,15 +343,3 @@ msgstr "brett_{0}"
 
 msgid "thumbnail"
 msgstr "thumbnail"
-
-#~ msgid "Your board:"
-#~ msgstr "Dein Brett:"
-
-#~ msgid "Go to my board"
-#~ msgstr "Gehe zu meinem Brett"
-
-#~ msgid "more ..."
-#~ msgstr "mehr ..."
-
-#~ msgid "View a board from the current game:"
-#~ msgstr "Ein Brett vom aktuellem Spiel ansehen:"
