@@ -117,7 +117,14 @@ def _publish_num_users(site_id, num_users=None, num_active_users=None):
         pass
 
 
-def main(request, create_form=None):
+def main(request):
+    if request.POST:
+        return create_board(request)
+    else:
+        return main_page(request)
+
+
+def main_page(request, create_form=None):
     site = get_current_site(request)
     game = get_game(site=site, create=False)
     bingo_board = _get_user_bingo_board(request)
@@ -219,7 +226,7 @@ def create_board(request):
                 return redirect(reverse(bingo, kwargs={
                     'board_id': bingo_board.board_id}))
         else:
-            return main(request, create_form=create_form)
+            return main_page(request, create_form=create_form)
     else:
         return redirect(reverse(main))
 

@@ -3,7 +3,7 @@
 <div class="create_form">
     <fieldset class="create_form">
     <legend class="form_header">{% trans 'create a new board:' %}</legend>
-    <form action="{% url 'bingo-create_board' %}" method="post">
+    <form action="{% url 'bingo-main' %}" method="post">
         <table class="create_form">
         {{ create_form.as_table }}
         {% csrf_token %}
