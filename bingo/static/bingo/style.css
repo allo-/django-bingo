@@ -202,17 +202,10 @@ table.game_list th {
     padding: 0 0.5ex;
     text-align: left;
 }
-
 #bingo_description {
-    margin: 1ex 0;
-    padding: 1.5ex;
-    border: 2px solid orange;
-    max-width: 50em;
-    border-radius: 1ex;
+    padding: 1ex;
+    border: 2px solid darkgreen;
     display: table;
-    color: white;
-    background-color: #00004080;
-}
-#bingo_description a {
-    color: orange;
+    max-width: 50em;
+    background-color: #F5FFF5;
 }

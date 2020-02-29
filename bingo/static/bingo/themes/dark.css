@@ -19,3 +19,17 @@ ul.pagination li {
     background-color: #002000;
     border: thin solid darkgrey;
 }
+
+#bingo_description {
+    margin: 1ex 0;
+    padding: 1.5ex;
+    border: 2px solid orange;
+    max-width: 50em;
+    border-radius: 1ex;
+    display: table;
+    color: white;
+    background-color: #00004080;
+}
+#bingo_description a {
+    color: orange;
+}
