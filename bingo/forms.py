@@ -9,9 +9,6 @@ from .times import is_starttime
 from . import config
 
 
-SALT = getattr(settings, "SALT", "hackme")
-
-
 class CreateForm(forms.Form):
 
     def __init__(self, site, *args, **kwargs):
