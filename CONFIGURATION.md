@@ -1,22 +1,20 @@
 django-bingo Configuration
 -------------
 
+### Per game settings
+
+Settings that need to be different per game are configured in the ```Config``` model. The model will be created automatically when the game is visited with a new subdomain, otherwise you can create it manually when creating a new site. The settings are described in the help text of the model fields.
+
+#### Notes
+* At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` must be set, even when ```GAME_END_TIME``` is set. When both are ```None```, the game never ends and no new game can be created on the next day.
+
 ### Game Times
 
-* ```GAME_START_DISABLED``` set to ```True```, to disable starting new games.
-* ```GAME_START_TIMES``` ```None``` for no restriction or ```((start hour, start minute), (end hour, end minute))``` for restricting the start time to a special time range (i.e. the broadcasting time of the radio show)
-* ```GAME_END_TIME``` ```None``` for no restriction or ```(end hour, end minute)``` for setting a time, after which the game is ended. The end time needs to be outside of the ```GAME_START_TIMES``` interval.
-* ```VOTE_START_TIME``` ```None``` for no restriction or ```(hour, minute)``` for setting a start time for voting. This can be used to allow board creation before voting starts. The time needs to be between the ```GAME_START_TIMES[0]```(starttime start) and ```GAME_END_TIME```.
-* ```GAME_WEEK_DAYS``` is a list of week days when games can be started as integers ```0..6``, where ```0``` is monday.
-* ```GAME_HARD_TIMEOUT``` minutes after the game will be ended, i.e. the duration of the radio show)
-* ```GAME_SOFT_TIMEOUT``` minutes of inactivity, after which the game will be be ended.
-* ```USER_ACTIVE_TIMEOUT``` minutes after which a user is no longer considered active (number of active users is shown on the bingo page)
 * ```POLLING_INTERVAL``` how often to poll for new votes.
 * ```POLLING_INTERVAL_SSE``` how often to poll for new votes, when server-sent events are used. ```0``` disables polling, when server-sent events are used.
 
 #### Notes
-* At least one of the settings ```GAME_HARD_TIMEOUT``` or ```GAME_SOFT_TIMEOUT``` must be set, even when ```GAME_END_TIME``` is set. When both are ```None```, the game never ends and no new game can be created on the next day.
-* You may want to set ```POLLING_INTERVAL_SSE``` to a smaller (but bigger than 0) value than ```USER_ACTIVE_TIMEOUT```, to mark users as active, who still have their boards open, but did not vote for ```USER_ACTIVE_TIMEOUT``` minutes.
+* You may want to set ```POLLING_INTERVAL_SSE``` to a smaller (but bigger than 0) value than ```user active timeout``` in the ```Config``` model, to mark users as active, who still have their boards open, but did not vote for ```user active timeout``` minutes.
 
 ### Image style
 
@@ -39,7 +37,6 @@ django-bingo Configuration
 
 ### Thumbnails
 
-* ```THUMBNAILS_ENABLED``` show board thumbnails in the board list.
 * ```THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail is cached (seconds).
 * ```OLD_THUMBNAIL_CACHE_EXPIRY``` time a board thumbnail from an old game is cached (seconds).
 * ```THUMBNAIL_WIDTH``` / ```THUMBNAIL_HEIGHT``` maximum width/height of the thumbnails.
@@ -62,17 +59,8 @@ Configuration:
 * ```THEME``` relative or absolute URL to a theme. When the string does not start with "/", "http://" or "https://", the string is interpreted as a [static files path](https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/). (Default: None)
 * ```THEMES``` A list of themes, which will be available via a theme chooser. Example: ```THEMES = (('dark', 'bingo/themes/dark.css'), ('some other theme', 'http://mysite/mytheme.css'))``` (Default: a "dark" theme. ```None``` will disable the theme chooser)
 
-### Other
-
-* ```SALT``` a salt for hashing the Bingo password hashs. The salt needs to be static, so a BingoBoard can be selected with a query for the hashed password. The users should not use important passwords there, anyway.
-* ```GAME_DESCRIPTION_DISABLED``` disable the "Game Description" field for new Games.
-* ```TWEETBUTTON_TEXT``` the text for the "Tweet" link. Use ```""``` to disable the twitter link.
-* ```TWEETBUTTON_HASHTAGS``` (comma separated) twitter hashtags, which should be added to the tweet. Example: ```"bingo,coolradioshow"```
-* ```TWITTERCARD_ACCOUNT``` if set to a twitter account (including the ```@```) for your game, the meta-tags for a [Twitter Card](https://dev.twitter.com/cards/overview) will be added to the bingo page. Default: ```""``` (disabled).
-
 ## django settings
 
-* ```SITE_ID``` id of the current site in the Sites-Framework
 * [```CACHE```](https://docs.djangoproject.com/en/1.8/topics/cache/#setting-up-the-cache)
   You need to increase ```'OPTIONS': {'MAX_ENTRIES': XXXXX}``` to cache enough entries.
   The cached entries can quickly add up to a large number of keys, while the stored data is rather small,
