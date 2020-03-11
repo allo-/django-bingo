@@ -289,7 +289,7 @@ class BingoBoard(models.Model):
 
             # generate a color
             color_from = config.get("colors_from", site=self.game.site)
-            color_to = config.get("colors_from", site=self.game.site)
+            color_to = config.get("colors_to", site=self.game.site)
             self.color = "#%x%x%x" % (
                 randint(color_from, color_to),
                 randint(color_from, color_to),
