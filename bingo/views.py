@@ -171,13 +171,10 @@ def game(request, game_id):
 
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    form = ClaimForm(request.POST or None, user=user)
-    form.is_valid()
     boards = user.bingoboard_set.filter(game__site=get_current_site(request))
     return render(request, "bingo/profile.html", {
         'profile_user': user,
         'boards': boards,
-        'claim_form': form,
         "twittercard_account": config.get("twittercard_account",
             request=request),
     })
