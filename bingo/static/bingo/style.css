@@ -143,9 +143,13 @@ div.board_thumbnail_box {
     margin-right: 0.6ex;
     margin-bottom: 0.6ex;
     padding: 0.5ex;
-    border-width: 0.3ex;
-    border-style: solid;
     min-width: 200px;
+}
+div.board_thumbnail_box img {
+    box-shadow: 3px 3px 5px black;
+}
+div.board_thumbnail_box img:hover {
+    box-shadow: 5px 5px 5px black;
 }
 input {
     background-color: lightgrey;

@@ -33,3 +33,8 @@ ul.pagination li {
 #bingo_description a {
     color: orange;
 }
+
+div.board_thumbnail_box {
+    border-width: 0.3ex;
+    border-style: solid;
+}
