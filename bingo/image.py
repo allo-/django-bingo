@@ -35,9 +35,6 @@ VOTED_WORD_COLOR = getattr(settings, "VOTED_WORD_COLOR", (0, 0, 0))
 VETO_FIELD_COLOR = getattr(settings, "VETO_FIELD_COLOR", (255, 255, 255))
 VETO_WORD_COLOR = getattr(settings, "VETO_WORD_COLOR", (255, 0, 0))
 
-BINGO_IMAGE_DATETIME_FORMAT = getattr(
-    settings, "BINGO_IMAGE_DATETIME_FORMAT", "%Y-%m-%d %H:%M")
-
 THUMBNAIL_WIDTH = getattr(settings, "THUMBNAIL_WIDTH", 300)
 THUMBNAIL_HEIGHT = getattr(settings, "THUMBNAIL_HEIGHT", 80)
 

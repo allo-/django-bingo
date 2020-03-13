@@ -64,6 +64,7 @@ class Config(models.Model):
     middle_field_datetime_format = models.CharField(max_length=30,
         default="%Y-%m-%d %H:%M",
         help_text="Format for the date and time on the middle field.")
+    # Twitter integration
     tweetbutton_text = models.CharField(max_length=280, blank=True,
         default=pgettext_lazy("tweet text", "My bingo board:"),
         help_text="The text that is used when a user clicks " +
@@ -76,6 +77,11 @@ class Config(models.Model):
         default="",
         help_text="The Twitter account associated with the Twitter card " +
         "(useful for Twitter statistics)")
+    twittercard_image = models.URLField(blank=True,
+        default="",
+        help_text="An Image URL for a Twitter card image." +
+        " (leave blank to use the default)")
+    # Description and announcements on the main page
     bingo_description = models.TextField(blank=True, default="",
         help_text="An optional description of the bingo, that will be" +
         "shown on the main page. HTML is allowed, so make sure to escape <, >" +
