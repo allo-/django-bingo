@@ -183,6 +183,7 @@ ul.pagination li.inactive {
 
 #theme_chooser {
     float: right;
+    margin-right: 1em;
 }
 
 .cf:before, .cf:after {
