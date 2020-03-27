@@ -55,7 +55,7 @@ var middleword = "{{ middle_field.word.word|lower }}";
 {% block headline %}{% trans "Board" %} #{{ board.board_id }}{% endblock %}
 
 {% block content %}
-<span>
+<span style="margin-left: 5px">
 <b>Link:</b>
 <input type="text" value="{{ absolute_uri }}" style="width: 35ex" onclick="this.select()" />
 </span>
@@ -165,7 +165,7 @@ var middleword = "{{ middle_field.word.word|lower }}";
     {% endif %}
     {% endfor %}
 </table>
-<div id="titletext">&nbsp;</div>
+<div id="titletext" style="margin-left: 5px">&nbsp;</div>
 
 {% include "bingo/fields.html" %}
 {% endblock %}
