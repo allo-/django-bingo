@@ -152,6 +152,8 @@ def main_page(request, create_form=None):
         'current_game': game,
         'old_games': old_games,
         'can_start_game': config.get("start_enabled", request=request),
+        "twittercard_account": config.get("twittercard_account",
+            request=request),
         })
 
 
