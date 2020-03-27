@@ -4,7 +4,7 @@
 <li>
     <b>{% trans "Topics:" %}</b>
     {% for wordvote in game.words_with_votes|slice:":10" %}
-        {% if wordvote.percent > 80 %}
+        {% if wordvote.percent > 60 %}
             {% if not forloop.first %}&bull;{% endif %}
             <span>{{ wordvote.word }}</span>
         {% endif %}
