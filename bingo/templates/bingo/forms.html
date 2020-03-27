@@ -2,13 +2,19 @@
 <div class="cf" style="padding: 0 0 2ex 0">
 <div class="create_form">
     <fieldset class="create_form">
-    <legend class="form_header">{% trans 'create a new board:' %}</legend>
+    <legend class="form_header">
+        {% spaceless %}{% if current_game %}
+            {% trans 'Join the game' %}
+        {% else %}
+            {% trans 'Start a game' %}
+            {% endif %}{% endspaceless %}:
+    </legend>
     <form action="{% url 'bingo-main' %}" method="post">
         <table class="create_form">
         {{ create_form.as_table }}
         {% csrf_token %}
         </table>
-        <input type="submit" value="{% trans 'create board' %}" />
+        <input type="submit" value="{% trans 'Create bingo board' %}" />
     </form>
     </fieldset>
 </div>

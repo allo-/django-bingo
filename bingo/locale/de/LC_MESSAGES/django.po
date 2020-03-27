@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-29 20:18+0100\n"
+"POT-Creation-Date: 2020-03-27 19:39+0100\n"
 "PO-Revision-Date: 2015-11-16 19:57+0100\n"
 "Last-Translator: Alexander Schier <allo@laxu.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -25,9 +25,6 @@ msgstr "Mein Bingobrett:"
 msgid "Default"
 msgstr "Standard"
 
-msgid "Password (optional)"
-msgstr "Passwort (optional)"
-
 msgid "Game Description (optional)"
 msgstr "Spielbeschreibung (optional)"
 
@@ -40,14 +37,6 @@ msgstr "Spiele können an diesem Wochentag nicht gestartet werden."
 #, python-brace-format
 msgid "Games can only be started between {0} and {1}."
 msgstr "Spiele können nur zwischen {0} und {1} gestartet werden."
-
-msgid "The game is expired, please create a new board."
-msgstr "Das Spiel ist nicht mehr aktiv, bitte erstelle ein neues Brett."
-
-msgid "No active board with this password. Try again, or create a new one."
-msgstr ""
-"Keine aktiven Bretter mit diesem Passwort. Versuche es noch einmal, oder "
-"erstelle ein Neues."
 
 msgid "n/a"
 msgstr "n/a"
@@ -127,6 +116,7 @@ msgstr "powered by django-bingo"
 msgid "Board"
 msgstr "Brett"
 
+#, python-format
 msgid "Board #%(board_id)s (%(middle_word)s)"
 msgstr "Brett #%(board_id)s (%(middle_word)s)"
 
@@ -189,18 +179,19 @@ msgid_plural "%(board_count)s other boards"
 msgstr[0] "%(board_count)s weiteres Brett"
 msgstr[1] "%(board_count)s weitere Bretter"
 
-msgid "create a new board:"
-msgstr "Brett erstellen:"
+msgid "Join the game"
+msgstr "Mitspielen"
 
-msgid "create board"
-msgstr "Brett erstellen"
+msgid "Start a game"
+msgstr "Spiel starten"
 
-msgid "go to my board"
-msgstr "Brett aufrufen"
+msgid "Create bingo board"
+msgstr "Bingobrett erstellen"
 
 msgid "Game #"
 msgstr "Spiel #"
 
+#, python-format
 msgid "Game #%(game_id)s"
 msgstr "Spiel #%(game_id)s"
 
@@ -273,19 +264,6 @@ msgid ""
 msgstr ""
 "\n"
 "%(profile_user)ss Bingobretter"
-
-msgid "Claim other boards"
-msgstr "Andere Bretter hinzufügen"
-
-msgid ""
-"If you have have created boards with a password, you can add them to your "
-"profile:"
-msgstr ""
-"Wenn du Bingobretter mit einem Passwort erstellt hast, kannst du sie zu "
-"deinem Profil hinzufügen:"
-
-msgid "claim boards"
-msgstr "Bretter hinzufügen"
 
 msgid "logged in as:"
 msgstr "Angemeldet als:"
