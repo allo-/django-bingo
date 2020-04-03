@@ -42,7 +42,7 @@ class Word(models.Model):
         ordering = ("word",)
         unique_together = ("word", "site")
 
-    def __unicode__(self):
+    def __str__(self):
         return "Word: " + self.word
 
 
@@ -99,7 +99,7 @@ class Game(models.Model):
     def get_absolute_url(self):
         return reverse('bingo-game', kwargs={"game_id": self.game_id})
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Game #{0} created at {1} (site {2})").format(
             self.game_id,
             timezone.localtime(self.created).strftime("%Y-%m-%d %H:%M"),
@@ -364,7 +364,7 @@ class BingoBoard(models.Model):
     def thumbnails_enabled(self):
         return config.get("thumbnails_enabled", site=self.game.site)
 
-    def __unicode__(self):
+    def __str__(self):
         return _("BingoBoard #{0} created by {1} (site {2})").format(
             self.board_id,
             self.user if self.user else self.ip,
@@ -418,7 +418,7 @@ class BingoField(models.Model):
                 "The BingoField is not in the middle, "
                 "but the word is a middle word"))
 
-    def __unicode__(self):
+    def __str__(self):
         if self.position is not None:
             return _("BingoField: word={0}, pos=({1},{2}){3})").format(
                 self.word, self.position/5+1, self.position % 5,
