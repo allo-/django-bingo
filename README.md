@@ -6,22 +6,16 @@ django-bingo is a bingo app to play bingo games like "bullshit bingo" while list
 Dependencies
 ------------
 
-Python packages:
+Install everything from requirements.txt, e.g., with `pip install -e requirements.txt`.
 
-* django 1.8
-* django-jquery 1.9.1
-* django-colorful 0.1.3
-* pytz 2013b
-* pillow 2.1.0
-
-For SSE:
+Additional dependencies for SSE:
 
 * sse 1.2
 * redis 2.10.3
 * flask 0.10.1
 * gevent 1.0.2
 
-Other: a ttf-file as font for the image-export.
+Other: You need a ttf-file as font for the image export.
 
 Installing
 ----------
