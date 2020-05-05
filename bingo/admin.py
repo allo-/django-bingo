@@ -36,7 +36,8 @@ bingoboard_game_id.short_description = "Game"
 
 class WordAdmin(admin.ModelAdmin):
     list_filter = ("site", "type")
-    list_display = ("word", "description", "site", "type")
+    list_display = ("word", "description", "site", "type", "enabled")
+    list_editable = ("enabled",)
     search_fields = ("word", "description")
 
     class Meta:
