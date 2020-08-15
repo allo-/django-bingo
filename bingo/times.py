@@ -2,36 +2,32 @@ from django.utils import timezone
 from django.conf import settings
 from . import config
 
-import pytz
 from datetime import datetime, timedelta
 
 def now():
-    return timezone.get_current_timezone().normalize(timezone.now())
+    return timezone.localtime()
 
 def get_times(site):
     time_now = now()
 
     start_time_begin = config.get("start_time_begin", site=site)
     if start_time_begin is not None:
-        start_time_begin = datetime.combine(time_now, start_time_begin,
-            tzinfo=timezone.get_current_timezone())
+        start_time_begin = timezone.make_aware(
+                datetime.combine(time_now, start_time_begin))
 
     start_time_end = config.get("start_time_end", site=site)
     if start_time_end is not None:
-        start_time_end = datetime.combine(time_now, start_time_end,
-            tzinfo=timezone.get_current_timezone())
+        start_time_end = timezone.make_aware(datetime.combine(
+            time_now, start_time_end))
 
     end_time = config.get("end_time", site=site)
     if end_time is not None:
-        end_time = datetime.combine(time_now,
-            end_time,
-            tzinfo=timezone.get_current_timezone())
+        end_time = timezone.make_aware(datetime.combine(time_now, end_time))
 
     vote_start_time = config.get("vote_start_time", site=site)
     if vote_start_time is not None:
-        vote_start_time = datetime.combine(time_now,
-            vote_start_time,
-            tzinfo=timezone.get_current_timezone())
+        vote_start_time = timezone.make_aware(datetime.combine(
+            time_now,vote_start_time))
 
     if start_time_begin is not None and start_time_end is not None:
         # when the end of start time is "before" the start of start time,
